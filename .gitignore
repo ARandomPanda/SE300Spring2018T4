@@ -1,0 +1,16 @@
+# Eclipse files
+.classpath
+.project
+.settings/
+
+# Intellij files
+.idea/
+*.iml
+*.iws
+
+# Mac files
+.DS_Store
+
+# Build directories
+bin/
+out/
