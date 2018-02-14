@@ -48,13 +48,13 @@ class CourseTest {
     }
 
     @Test
-    void getGrade() {
-        fail("Unimplemented");
-    }
-
-    @Test
     void setGrade() {
-        fail("Unimplemented");
+        assertTrue(Grade.NONE == testA.getGrade());
+        testA.setGrade(Grade.A);
+        assertTrue(Grade.A == testA.getGrade());
+        assertTrue(testA.isAttempted());
+        testA.setGrade(Grade.NONE);
+        assertFalse(testA.isAttempted());
     }
 
     @Test
