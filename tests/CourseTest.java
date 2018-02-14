@@ -34,15 +34,17 @@ class CourseTest {
     }
 
     @Test
-    void getNumCredits() {
-        assertEquals(0, testA.getNumCredits());
-        assertEquals(3, testB.getNumCredits());
-        assertEquals(6, testC.getNumCredits());
-    }
-
-    @Test
     void setNumCredits() {
-        fail("Unimplemented");
+        testA.setNumCredits(1);
+        assertEquals(1, testA.getNumCredits());
+        testB.setNumCredits(2);
+        assertEquals(2, testB.getNumCredits());
+        testC.setNumCredits(5);
+        assertEquals(5, testC.getNumCredits());
+        assertThrows(IllegalArgumentException.class,
+                () -> testA.setNumCredits(-1));
+        assertThrows(IllegalArgumentException.class,
+                () -> testA.setNumCredits(7));
     }
 
     @Test
