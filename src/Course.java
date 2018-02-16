@@ -37,7 +37,7 @@ public class Course {
         }
 
         if (coreqs == null) {
-            this.prereqs = new ArrayList<>(0);
+            this.coreqs = new ArrayList<>(0);
         } else {
             this.coreqs = new ArrayList<>(coreqs);
         }
