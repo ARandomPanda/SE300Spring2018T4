@@ -81,32 +81,40 @@ class CourseTest {
     }
 
     @Test
-    void getPrereqs() {
-        fail("Unimplemented");
+    void getAddRemovePrereqs() {
+        Course noCourses[] = new Course[0];
+        Course oneCourse[] = {testB};
+        Course twoCourse[] = {testB, testC};
+        Course remCourse[] = {testC};
+        assertArrayEquals(noCourses, testA.getPrereqs());
+        testA.addPrereq(testB);
+        assertArrayEquals(oneCourse, testA.getPrereqs());
+        testA.addPrereq(testC);
+        assertArrayEquals(twoCourse, testA.getPrereqs());
+        testA.removePrereq(testB);
+        assertArrayEquals(remCourse, testA.getPrereqs());
+        assertThrows(NullPointerException.class,
+                () -> testA.addPrereq(null));
+        assertThrows(NullPointerException.class,
+                () -> testA.removePrereq(null));
     }
 
     @Test
-    void getCoreqs() {
-        fail("Unimplemented");
-    }
-
-    @Test
-    void addPrereq() {
-        fail("Unimplemented");
-    }
-
-    @Test
-    void addCoreq() {
-        fail("Unimplemented");
-    }
-
-    @Test
-    void removePrereq() {
-        fail("Unimplemented");
-    }
-
-    @Test
-    void removeCoreq() {
-        fail("Unimplemented");
+    void getAddRemoveCoreqs() {
+        Course noCourses[] = new Course[0];
+        Course oneCourse[] = {testB};
+        Course twoCourse[] = {testB, testC};
+        Course remCourse[] = {testC};
+        assertArrayEquals(noCourses, testA.getCoreqs());
+        testA.addCoreq(testB);
+        assertArrayEquals(oneCourse, testA.getCoreqs());
+        testA.addCoreq(testC);
+        assertArrayEquals(twoCourse, testA.getCoreqs());
+        testA.removeCoreq(testB);
+        assertArrayEquals(remCourse, testA.getCoreqs());
+        assertThrows(NullPointerException.class,
+                () -> testA.addCoreq(null));
+        assertThrows(NullPointerException.class,
+                () -> testA.removeCoreq(null));
     }
 }
