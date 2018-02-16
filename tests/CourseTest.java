@@ -54,7 +54,8 @@ class CourseTest {
         assertTrue(Grade.A == testA.getGrade());
         assertTrue(testA.isAttempted());
         testA.setGrade(Grade.NONE);
-        assertFalse(testA.isAttempted());
+        assertTrue(Grade.A == testA.getGrade());
+        assertTrue(testA.isAttempted());
     }
 
     @Test
