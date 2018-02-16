@@ -60,12 +60,24 @@ class CourseTest {
 
     @Test
     void setName() {
-        fail("Unimplemented");
+        String var = "varTest";
+        testA.setName("test");
+        assertEquals("test", testA.getName());
+        testA.setName(var);
+        assertEquals(var, testA.getName());
+        assertThrows(NullPointerException.class,
+                () -> testA.setName(null));
     }
 
     @Test
     void setID() {
-        fail("Unimplemented");
+        String var = "varTest";
+        testA.setID("test");
+        assertEquals("test", testA.getID());
+        testA.setID(var);
+        assertEquals(var, testA.getID());
+        assertThrows(NullPointerException.class,
+                () -> testA.setID(null));
     }
 
     @Test
