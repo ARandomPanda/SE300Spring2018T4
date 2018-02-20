@@ -27,19 +27,23 @@ public class NewCourseWindow {
     public static void set(Stage s) {
         stage = s;
         initInputSanitizers();
+        initButtons();
         grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
         grid.addColumn(1, IDField, nameField, creditsField, okButton);
         stage.setScene(scene);
     }
 
     public static void init() {
-        if (stage == null) {
-            stage = new Stage();
-            initInputSanitizers();
-            grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
-            grid.addColumn(1, IDField, nameField, creditsField, okButton);
-            stage.setScene(scene);
-        }
+        if (stage != null) return;
+
+        stage = new Stage();
+
+        initInputSanitizers();
+        initButtons();
+
+        grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
+        grid.addColumn(1, IDField, nameField, creditsField, okButton);
+        stage.setScene(scene);
     }
 
     public static void show() {
@@ -76,10 +80,56 @@ public class NewCourseWindow {
     }
 
     private static void initIDSanitizer() {
-
+        // TODO incrementally sanitize i.e. allow letters until a space, then numbers
+        IDField.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue.isEmpty() || newValue.matches("[a-zA-Z 0-9]+")) {
+                        ((StringProperty) observable).setValue(newValue.toUpperCase());
+                    } else {
+                        ((StringProperty) observable).setValue(oldValue);
+                    }
+                }
+        );
     }
 
     private static void initNameSanitizer() {
+        nameField.textProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    if (newValue.isEmpty() || newValue.matches("[a-zA-Z ]+")) {
+                        ((StringProperty) observable).setValue(newValue);
+                    } else {
+                        ((StringProperty) observable).setValue(oldValue);
+                    }
+                }
+        );
+    }
 
+    private static void initButtons() {
+        initOkButton();
+        initCancelButton();
+    }
+
+    private static void initOkButton() {
+        // TODO verify inputs, show error to user instead of throwing exception
+        okButton.setDefaultButton(true);
+        okButton.setOnAction(
+                (e) -> {
+                    int numCredits = Integer.parseInt(creditsField.getText());
+                    MasterCourseList.addCourse(new Course(
+                            IDField.getText(),
+                            nameField.getText(),
+                            numCredits
+                    ));
+
+                    hide();
+                }
+        );
+    }
+
+    private static void initCancelButton() {
+        cancelButton.setCancelButton(true);
+        cancelButton.setOnAction(
+                (e) -> hide()
+        );
     }
 }

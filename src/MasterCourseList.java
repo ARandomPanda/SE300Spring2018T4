@@ -7,15 +7,13 @@ public class MasterCourseList {
     // update to use a file.
     private static final String fileName = "";
 
-    private static ArrayList<Course> courseList = null;
+    private static ArrayList<Course> courseList = new ArrayList<>();
 
     // Essentially remove default constructor
     private MasterCourseList() { }
 
     public static void init() {
-        if (courseList == null) {
-            courseList = new ArrayList<>();
-        }
+        // TODO populate courseList from file
     }
 
     public static void addCourse(Course course) {
