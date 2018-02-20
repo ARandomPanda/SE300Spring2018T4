@@ -7,11 +7,10 @@ public class MasterCourseList {
     // update to use a file.
     private static final String fileName = "";
 
-    private static ArrayList<Course> courseList;
+    private static ArrayList<Course> courseList = null;
 
-    private MasterCourseList() {
-
-    }
+    // Essentially remove default constructor
+    private MasterCourseList() { }
 
     public static void init() {
         if (courseList == null) {
