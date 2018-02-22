@@ -16,7 +16,7 @@ public class MasterCourseList implements Serializable {
         courseList = new ArrayList<>();
     }
 
-    public static MasterCourseList get() throws IOException {
+    public static MasterCourseList get() {
         if (file.exists()) {
             if (masterCourseList == null) {
                 try {
@@ -26,10 +26,16 @@ public class MasterCourseList implements Serializable {
                     e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                     System.err.println("Error reading from master course list file");
+                    e.printStackTrace();
                 }
             }
         } else {
-            file.createNewFile();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.err.println("Error creating master course list file");
+                e.printStackTrace();
+            }
         }
         return masterCourseList;
     }
