@@ -7,7 +7,7 @@ public class MasterCourseList {
     // update to use a file.
     private static final String fileName = "";
 
-    private static ArrayList<Course> courseList = new ArrayList<>();
+    private static ArrayList<BaseCourse> courseList = new ArrayList<>();
 
     // Essentially remove default constructor
     private MasterCourseList() { }
@@ -16,11 +16,15 @@ public class MasterCourseList {
         // TODO populate courseList from file
     }
 
-    public static void addCourse(Course course) {
+    public static void addCourse(BaseCourse course) {
         courseList.add(course);
     }
 
-    public static List<Course> getCourseList() {
+    public static boolean removeCourse(BaseCourse course) {
+        return courseList.remove(course);
+    }
+
+    public static List<BaseCourse> getCourseList() {
         return Collections.unmodifiableList(courseList);
     }
 }
