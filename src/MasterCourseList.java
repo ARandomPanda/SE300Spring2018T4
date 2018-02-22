@@ -42,6 +42,12 @@ public class MasterCourseList implements Serializable {
 
     public void addCourse(BaseCourse course) {
         courseList.add(course);
+        try {
+            saveData();
+        } catch (IOException e) {
+            System.err.println("Error writing to master course list file");
+            e.printStackTrace();
+        }
     }
 
     public boolean removeCourse(BaseCourse course) {
