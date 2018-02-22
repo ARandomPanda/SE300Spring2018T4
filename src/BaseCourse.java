@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BaseCourse {
+public class BaseCourse implements Serializable {
 
     private String ID;
     private String name;

@@ -1,30 +1,63 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MasterCourseList {
+public class MasterCourseList implements Serializable {
 
-    // update to use a file.
-    private static final String fileName = "";
+    private static String fileName = "master_course_list.dat";
+    private static File file = new File(fileName);
 
-    private static ArrayList<BaseCourse> courseList = new ArrayList<>();
+    private ArrayList<BaseCourse> courseList;
 
-    // Essentially remove default constructor
-    private MasterCourseList() { }
+    private static MasterCourseList masterCourseList = null;
 
-    public static void init() {
-        // TODO populate courseList from file
+    private MasterCourseList() {
+        courseList = new ArrayList<>();
     }
 
-    public static void addCourse(BaseCourse course) {
+    public static MasterCourseList get() throws IOException {
+        if (file.exists()) {
+            if (masterCourseList == null) {
+                try {
+                    loadData();
+                } catch (IOException e) {
+                    System.err.println("Error opening master course list file");
+                    e.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                    System.err.println("Error reading from master course list file");
+                }
+            }
+        } else {
+            file.createNewFile();
+        }
+        return masterCourseList;
+    }
+
+    public void addCourse(BaseCourse course) {
         courseList.add(course);
     }
 
-    public static boolean removeCourse(BaseCourse course) {
+    public boolean removeCourse(BaseCourse course) {
         return courseList.remove(course);
     }
 
-    public static List<BaseCourse> getCourseList() {
+    public List<BaseCourse> getCourseList() {
         return Collections.unmodifiableList(courseList);
+    }
+
+    private static void saveData() throws IOException {
+        FileOutputStream outStream = new FileOutputStream(file);
+        ObjectOutputStream objOutStream = new ObjectOutputStream(outStream);
+        objOutStream.writeObject(masterCourseList);
+        objOutStream.flush();
+        objOutStream.close();
+    }
+
+    private static void loadData() throws IOException, ClassNotFoundException {
+        FileInputStream inStream = new FileInputStream(file);
+        ObjectInputStream objInStream = new ObjectInputStream(inStream);
+        masterCourseList = (MasterCourseList) objInStream.readObject();
+        objInStream.close();
     }
 }
