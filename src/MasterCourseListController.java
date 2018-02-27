@@ -29,6 +29,9 @@ public class MasterCourseListController {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             if (verifyID() && verifyName()) {
                 masterCourseList.get().addCourse(course);
+                IDField.clear();
+                nameField.clear();
+                numCreditsField.setValue(3);
             }
         }
 
