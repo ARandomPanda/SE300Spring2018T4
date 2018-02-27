@@ -6,15 +6,17 @@ import java.util.ArrayList;
 
 public class MasterCourseList implements Serializable {
 
-    private static String fileName = "master_course_list.dat";
+    private static String fileName = "assets/master_course_list.dat";
     private static File file = new File(fileName);
 
-    private ObservableList<BaseCourse> courseList;
+    private static ObservableList<BaseCourse> courseList;
+
+    private ArrayList<BaseCourse> baseList;
 
     private static MasterCourseList masterCourseList = null;
 
     private MasterCourseList() {
-        courseList = FXCollections.observableList(new ArrayList<>());
+        baseList = new ArrayList<>();
     }
 
     public static MasterCourseList get() {
@@ -22,6 +24,7 @@ public class MasterCourseList implements Serializable {
             if (masterCourseList == null) {
                 try {
                     loadData();
+                    courseList = FXCollections.observableList(masterCourseList.baseList);
                 } catch (IOException e) {
                     System.err.println("Error opening master course list file");
                     e.printStackTrace();
@@ -32,6 +35,7 @@ public class MasterCourseList implements Serializable {
             }
         } else {
             masterCourseList = new MasterCourseList();
+            courseList = FXCollections.observableList(masterCourseList.baseList);
             try {
                 file.createNewFile();
             } catch (IOException e) {
