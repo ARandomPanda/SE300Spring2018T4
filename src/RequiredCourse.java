@@ -72,6 +72,10 @@ public class RequiredCourse implements Serializable {
         return requiredGrade;
     }
 
+    public BaseCourse getBaseCourse() {
+        return course;
+    }
+
     public List<BaseCourse> getPrereqs() {
         if (prereqsOveride == null) {
             return course.getPrereqs();
