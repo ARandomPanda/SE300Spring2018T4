@@ -1,5 +1,7 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 
 import java.util.List;
 
@@ -9,13 +11,23 @@ public class MasterCourseListController {
 
     public static class AddCourse implements EventHandler<ActionEvent> {
 
-        private BaseCourse course;
+        private TextField IDField;
+        private TextField nameField;
+        private ChoiceBox<Integer> numCreditsField;
+        private TextField prereqsField;
+        private TextField coreqsField;
 
-        public AddCourse(String ID, String name, int numCredits, List<BaseCourse> prereqs, List<BaseCourse> coreqs) {
-            course = new BaseCourse(ID, name, numCredits, prereqs, coreqs);
+        public AddCourse(TextField IDField, TextField nameField, ChoiceBox<Integer> numCreditsField,
+                         TextField prereqsField, TextField coreqsField) {
+            this.IDField = IDField;
+            this.nameField = nameField;
+            this.numCreditsField = numCreditsField;
+            this.prereqsField = prereqsField;
+            this.coreqsField = coreqsField;
         }
 
         public void handle(ActionEvent e) {
+            BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             masterCourseList.addCourse(course);
         }
     }
