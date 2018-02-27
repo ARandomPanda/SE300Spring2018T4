@@ -3,7 +3,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 
-import java.util.List;
 
 public class MasterCourseListController {
 
@@ -19,6 +18,7 @@ public class MasterCourseListController {
 
         public AddCourse(TextField IDField, TextField nameField, ChoiceBox<Integer> numCreditsField,
                          TextField prereqsField, TextField coreqsField) {
+            System.out.println("Adding");
             this.IDField = IDField;
             this.nameField = nameField;
             this.numCreditsField = numCreditsField;
@@ -27,8 +27,10 @@ public class MasterCourseListController {
         }
 
         public void handle(ActionEvent e) {
+            System.out.println("Handling");
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             masterCourseList.addCourse(course);
+            NewCourseWindow.hide();
         }
     }
 }

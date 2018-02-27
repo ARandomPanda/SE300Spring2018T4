@@ -1,19 +1,20 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class MasterCourseList implements Serializable {
 
     private static String fileName = "master_course_list.dat";
     private static File file = new File(fileName);
 
-    private ArrayList<BaseCourse> courseList;
+    private ObservableList<BaseCourse> courseList;
 
     private static MasterCourseList masterCourseList = null;
 
     private MasterCourseList() {
-        courseList = new ArrayList<>();
+        courseList = FXCollections.observableList(new ArrayList<>());
     }
 
     public static MasterCourseList get() {
@@ -30,6 +31,7 @@ public class MasterCourseList implements Serializable {
                 }
             }
         } else {
+            masterCourseList = new MasterCourseList();
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -54,11 +56,12 @@ public class MasterCourseList implements Serializable {
         return courseList.remove(course);
     }
 
-    public List<BaseCourse> getCourseList() {
-        return Collections.unmodifiableList(courseList);
+    public ObservableList<BaseCourse> getCourseList() {
+        return FXCollections.unmodifiableObservableList(courseList);
     }
 
     private static void saveData() throws IOException {
+        System.out.println("Saving");
         FileOutputStream outStream = new FileOutputStream(file);
         ObjectOutputStream objOutStream = new ObjectOutputStream(outStream);
         objOutStream.writeObject(masterCourseList);

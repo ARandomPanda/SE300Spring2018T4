@@ -9,10 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+
 
 public class NewCourseWindow {
 
@@ -32,6 +30,7 @@ public class NewCourseWindow {
     private NewCourseWindow() { }
 
     // Testing only
+    // TODO remove when access from main window is added.
     public static void set(Stage s) {
         stage = s;
         initInputSanitizers();
@@ -119,7 +118,6 @@ public class NewCourseWindow {
                 new MasterCourseListController.AddCourse(
                         IDField, nameField, creditsField, null, null)
         );
-        okButton.setOnAction((e) -> hide());
     }
 
     private static void initCancelButton() {
