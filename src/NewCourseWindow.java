@@ -86,7 +86,7 @@ public class NewCourseWindow {
         IDField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
                     if (newValue.isEmpty() || newValue.matches("[a-zA-Z 0-9]+")) {
-                        ((StringProperty) observable).setValue(newValue.toUpperCase());
+                        ((StringProperty) observable).setValue(newValue);
                     } else {
                         ((StringProperty) observable).setValue(oldValue);
                     }

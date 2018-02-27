@@ -27,8 +27,21 @@ public class MasterCourseListController {
 
         public void handle(ActionEvent e) {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
-            masterCourseList.get().addCourse(course);
-            NewCourseWindow.hide();
+            if (verifyID() && verifyName()) {
+                masterCourseList.get().addCourse(course);
+            }
+        }
+
+        private boolean verifyID() {
+            String currentText = IDField.getText();
+            IDField.setText(currentText.toUpperCase());
+            currentText = IDField.getText();
+
+            return currentText.matches("[A-Z]{2,5} [0-9]{3}");
+        }
+
+        private boolean verifyName() {
+            return true;
         }
     }
 }
