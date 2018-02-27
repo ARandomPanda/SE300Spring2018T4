@@ -32,7 +32,9 @@ public class MasterCourseListController {
                 IDField.clear();
                 nameField.clear();
                 numCreditsField.setValue(3);
+                // TODO do something with prereqs and coreqs
             }
+            // TODO do something when false
         }
 
         private boolean verifyID() {
