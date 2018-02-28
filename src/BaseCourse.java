@@ -73,6 +73,22 @@ public class BaseCourse implements Serializable {
         this.numCredits = numCredits;
     }
 
+    public void addPrereq(BaseCourse course) {
+        prereqs.add(course);
+    }
+
+    public void addCoreq(BaseCourse course) {
+        coreqs.add(course);
+    }
+
+    public boolean removePrereq(BaseCourse course) {
+        return prereqs.remove(course);
+    }
+
+    public boolean removeCoreq(BaseCourse course) {
+        return coreqs.remove(course);
+    }
+
     public List<BaseCourse> getPrereqs() {
         return Collections.unmodifiableList(prereqs);
     }
