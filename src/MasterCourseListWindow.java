@@ -22,7 +22,10 @@ public class MasterCourseListWindow extends Application {
     }
 
     public void startAsChild(Stage parentStage) {
-
+        stage = new Stage();
+        stage.initOwner(parentStage);
+        initWindow();
+        stage.show();
     }
 
     private void initWindow() {

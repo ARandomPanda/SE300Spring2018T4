@@ -26,20 +26,6 @@ public class NewCourseWindow {
 
     private NewCourseWindow() { }
 
-    // Testing only
-    // TODO remove when access from main window is added.
-    public static void set(Stage s) {
-        stage = s;
-        initInputSanitizers();
-        initButtons();
-        Integer numCreditsArray[] = {0, 1, 2, 3, 4, 5, 6};
-        ObservableList<Integer> posCredits = FXCollections.observableList(Arrays.asList(numCreditsArray));
-        creditsField.setItems(posCredits);
-        creditsField.setValue(3);
-        grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
-        grid.addColumn(1, IDField, nameField, creditsField, new ComboBox(MasterCourseList.get().getCourseList()), okButton);
-        stage.setScene(scene);
-    }
 
     public static void init() {
         if (stage != null) return;
