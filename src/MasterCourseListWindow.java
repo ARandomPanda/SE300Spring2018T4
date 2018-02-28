@@ -24,14 +24,14 @@ public class MasterCourseListWindow extends Application {
         stage.show();
     }
 
-    public void startAsChild(Stage parentStage) {
+    public static void startAsChild(Stage parentStage) {
         stage = new Stage();
         stage.initOwner(parentStage);
         initWindow();
         stage.show();
     }
 
-    private void initWindow() {
+    private static void initWindow() {
         initStage();
         initScene();
     }
