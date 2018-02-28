@@ -8,12 +8,7 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 
-/**
- * @author Christopher McFall
- *
- * A window for adding courses to the master course list. Intended to be used only by advisors and/or program
- * coordinators.
- */
+
 public class CreateMasterCourseWindow {
 
     private static Stage stage = null;
@@ -26,12 +21,10 @@ public class CreateMasterCourseWindow {
     private static Label creditsLabel = new Label("Credits: ");
     private static ChoiceBox<Integer> creditsField = new ChoiceBox<>();
 
-    // TODO ensure a blank choice is available
     private static Label prereqsLabel = new Label("Prerequisites: ");
     private static ComboBox<BaseCourse> pre1 = new ComboBox<>(MasterCourseList.get().getCourseList());
     private static ComboBox<BaseCourse> pre2 = new ComboBox<>(MasterCourseList.get().getCourseList());
 
-    // TODO ensure a blank choice is available
     private static Label coreqsLabel = new Label("Corequisites: ");
     private static ComboBox<BaseCourse> co1 = new ComboBox<>(MasterCourseList.get().getCourseList());
     private static ComboBox<BaseCourse> co2 = new ComboBox<>(MasterCourseList.get().getCourseList());
@@ -39,13 +32,9 @@ public class CreateMasterCourseWindow {
     private static Button okButton = new Button("Add Course");
     private static Button cancelButton = new Button("Close");
 
-    // Disable creation of this object
     private CreateMasterCourseWindow() { }
 
-    /**
-     * Initializes the window if it hasn't been initialize before. If it has already been initlialized this method
-     * does nothing.
-     */
+
     public static void init() {
         if (stage != null) return;
 
@@ -73,24 +62,15 @@ public class CreateMasterCourseWindow {
         stage.setScene(scene);
     }
 
-    /**
-     * Resets the fields and shows the window
-     */
     public static void show() {
         resetScene();
         stage.show();
     }
 
-    /**
-     * hides the window
-     */
     public static void hide() {
         stage.hide();
     }
 
-    /**
-     * clears text fields
-     */
     private static void resetScene() {
         IDField.clear();
         nameField.clear();
@@ -101,13 +81,10 @@ public class CreateMasterCourseWindow {
         initNameSanitizer();
     }
 
-    /**
-     * Ensures only alphanumeric characters can be typed into the text field
-     */
     private static void initIDSanitizer() {
+        // TODO incrementally sanitize i.e. allow letters until a space, then numbers
         IDField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
-                    // TODO allow L after number
                     if (newValue.isEmpty() || newValue.matches("[a-zA-Z 0-9]+")) {
                         ((StringProperty) observable).setValue(newValue);
                     } else {
@@ -117,9 +94,6 @@ public class CreateMasterCourseWindow {
         );
     }
 
-    /**
-     * Ensures only characters a-z and spaces can be typed into the text field
-     */
     private static void initNameSanitizer() {
         nameField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -140,10 +114,10 @@ public class CreateMasterCourseWindow {
     private static void initOkButton() {
         // TODO verify inputs, show error to user instead of throwing exception
         okButton.setDefaultButton(true);
-        okButton.setOnAction(e -> {
-            MasterCourseListController.addCourse(IDField, nameField, creditsField,
-                                                 pre1, pre2, co1, co2);
-        });
+        okButton.setOnAction(
+                new MasterCourseListController.AddCourse(
+                        IDField, nameField, creditsField, null, null)
+        );
     }
 
     private static void initCancelButton() {
