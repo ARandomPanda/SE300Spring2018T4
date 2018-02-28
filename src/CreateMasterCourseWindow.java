@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.util.Arrays;
 
 
-public class NewCourseWindow {
+public class CreateMasterCourseWindow {
 
     private static Stage stage = null;
     private static GridPane grid = new GridPane();
@@ -24,7 +24,7 @@ public class NewCourseWindow {
     private static Button okButton = new Button("Add Course");
     private static Button cancelButton = new Button("Cancel");
 
-    private NewCourseWindow() { }
+    private CreateMasterCourseWindow() { }
 
 
     public static void init() {

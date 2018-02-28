@@ -2,7 +2,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 
 public class MasterCourseListController {
@@ -13,8 +12,8 @@ public class MasterCourseListController {
 
         @Override
         public void handle(ActionEvent e) {
-            NewCourseWindow.init();
-            NewCourseWindow.show();
+            CreateMasterCourseWindow.init();
+            CreateMasterCourseWindow.show();
         }
     }
 
