@@ -3,34 +3,34 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BaseCourseTest {
+class BaseBaseCourseTest {
 
-    Course testA;
-    Course testB;
-    Course testC;
+    BaseCourse testA;
+    BaseCourse testB;
+    BaseCourse testC;
 
     @BeforeEach
-    void makeTestCourse() {
-        testA = new Course("AA 101", "TestA", 0);
-        testB = new Course("BB 101", "TestB", 3);
-        testC = new Course("CC 101", "TestC", 6);
+    void makeTestBaseCourse() {
+        testA = new BaseCourse("AA 101", "TestA", 0);
+        testB = new BaseCourse("BB 101", "TestB", 3);
+        testC = new BaseCourse("CC 101", "TestC", 6);
     }
 
     @Test
     void constructor() {
-        Course a = new Course("AA 101", "TestA", 0);
-        Course b = new Course("BB 101", "TestB", 6);
-        Course c = new Course("CC 101", "TestC", 3);
+        BaseCourse a = new BaseCourse("AA 101", "TestA", 0);
+        BaseCourse b = new BaseCourse("BB 101", "TestB", 6);
+        BaseCourse c = new BaseCourse("CC 101", "TestC", 3);
         assertThrows(NullPointerException.class,
-                () -> new Course(null, "Test", 0));
+                () -> new BaseCourse(null, "Test", 0));
         assertThrows(NullPointerException.class,
-                () -> new Course("Test", null, 0));
+                () -> new BaseCourse("Test", null, 0));
         assertThrows(NullPointerException.class,
-                () -> new Course(null, null, 0));
+                () -> new BaseCourse(null, null, 0));
         assertThrows(IllegalArgumentException.class,
-                () -> new Course("a", "b", -1));
+                () -> new BaseCourse("a", "b", -1));
         assertThrows(IllegalArgumentException.class,
-                () -> new Course("a", "b", 7));
+                () -> new BaseCourse("a", "b", 7));
     }
 
     @Test
@@ -45,17 +45,6 @@ class BaseCourseTest {
                 () -> testA.setNumCredits(-1));
         assertThrows(IllegalArgumentException.class,
                 () -> testA.setNumCredits(7));
-    }
-
-    @Test
-    void setGrade() {
-        assertTrue(Grade.NONE == testA.getGrade());
-        testA.setGrade(Grade.A);
-        assertTrue(Grade.A == testA.getGrade());
-        assertTrue(testA.isAttempted());
-        testA.setGrade(Grade.NONE);
-        assertTrue(Grade.A == testA.getGrade());
-        assertTrue(testA.isAttempted());
     }
 
     @Test
