@@ -2,10 +2,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -40,7 +37,7 @@ public class NewCourseWindow {
         creditsField.setItems(posCredits);
         creditsField.setValue(3);
         grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
-        grid.addColumn(1, IDField, nameField, creditsField, okButton);
+        grid.addColumn(1, IDField, nameField, creditsField, new ComboBox(MasterCourseList.get().getCourseList()), okButton);
         stage.setScene(scene);
     }
 
