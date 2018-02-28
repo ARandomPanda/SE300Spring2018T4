@@ -67,7 +67,7 @@ public class MasterCourseListController {
         }
     }
 
-    public static class DeleteCourse implements EventHandler<Event> {
+    public static class DeleteCourse implements EventHandler<ActionEvent> {
 
         private TableView.TableViewSelectionModel<BaseCourse> selectionModel;
 
@@ -76,19 +76,8 @@ public class MasterCourseListController {
         }
 
         @Override
-        public void handle(Event e) {
+        public void handle(ActionEvent e) {
             BaseCourse course = selectionModel.getSelectedItem();
-            if (e.getEventType() == ActionEvent.ACTION) {
-                delete(course);
-            }
-            if (e.getEventType() == KeyEvent.KEY_RELEASED) {
-                if (((KeyEvent) e).getCode() == KeyCode.DELETE) {
-                    delete(course);
-                }
-            }
-        }
-
-        private void delete(BaseCourse course) {
             // popup to confirm
             masterCourseList.removeCourse(course);
         }

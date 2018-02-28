@@ -15,6 +15,7 @@ public class MasterCourseListWindow extends Application {
     private static MasterCourseList masterCourseList = MasterCourseList.get();
 
     private static Stage stage = null;
+    private static TableView<BaseCourse> masterCourseTable;
 
     @Override
     public void start(Stage primaryStage) {
@@ -48,17 +49,17 @@ public class MasterCourseListWindow extends Application {
         BorderPane borderPane = new BorderPane();
         Scene scene = new Scene(borderPane, 800, 800);
 
-        TableView<BaseCourse> courseListView = initTableView();
-        borderPane.setCenter(courseListView);
+        initTableView();
+        borderPane.setCenter(masterCourseTable);
 
         MenuBar menuBar = createMenu();
         borderPane.setTop(menuBar);
         stage.setScene(scene);
     }
 
-    private static TableView<BaseCourse> initTableView() {
+    private static void initTableView() {
 
-        TableView<BaseCourse> courseListView = new TableView<>(masterCourseList.getCourseList());
+        masterCourseTable = new TableView<>(masterCourseList.getCourseList());
 
         TableColumn<BaseCourse, String> IDcol = new TableColumn<>("Course ID");
         IDcol.setCellValueFactory(p -> {
@@ -114,9 +115,7 @@ public class MasterCourseListWindow extends Application {
             return new ReadOnlyObjectWrapper<>(sb.toString());
         });
 
-        courseListView.getColumns().setAll(IDcol, nameCol, creditsCol, prereqsCol, coreqsCol);
-
-        return courseListView;
+        masterCourseTable.getColumns().setAll(IDcol, nameCol, creditsCol, prereqsCol, coreqsCol);
     }
 
     private static MenuBar createMenu() {
@@ -124,9 +123,10 @@ public class MasterCourseListWindow extends Application {
         create.setOnAction(new MasterCourseListController.CreateCourseWindow());
         MenuItem edit = new MenuItem("Edit");
         MenuItem delete = new MenuItem("Delete");
+        delete.setOnAction(new MasterCourseListController.DeleteCourse(masterCourseTable.getSelectionModel()));
 
         Menu courseMenu = new Menu("Course");
-        courseMenu.getItems().addAll(create);
+        courseMenu.getItems().addAll(create, delete);
 
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(courseMenu);
