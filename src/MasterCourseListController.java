@@ -1,7 +1,14 @@
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import static javafx.event.ActionEvent.ACTION;
 
 
 public class MasterCourseListController {
@@ -38,7 +45,7 @@ public class MasterCourseListController {
         public void handle(ActionEvent e) {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             if (verifyID() && verifyName()) {
-                masterCourseList.get().addCourse(course);
+                masterCourseList.addCourse(course);
                 IDField.clear();
                 nameField.clear();
                 numCreditsField.setValue(3);
@@ -57,6 +64,33 @@ public class MasterCourseListController {
 
         private boolean verifyName() {
             return true;
+        }
+    }
+
+    public static class DeleteCourse implements EventHandler<Event> {
+
+        private TableView.TableViewSelectionModel<BaseCourse> selectionModel;
+
+        public DeleteCourse(TableView.TableViewSelectionModel<BaseCourse> selectionModel) {
+            this.selectionModel = selectionModel;
+        }
+
+        @Override
+        public void handle(Event e) {
+            BaseCourse course = selectionModel.getSelectedItem();
+            if (e.getEventType() == ActionEvent.ACTION) {
+                delete(course);
+            }
+            if (e.getEventType() == KeyEvent.KEY_RELEASED) {
+                if (((KeyEvent) e).getCode() == KeyCode.DELETE) {
+                    delete(course);
+                }
+            }
+        }
+
+        private void delete(BaseCourse course) {
+            // popup to confirm
+            masterCourseList.removeCourse(course);
         }
     }
 }
