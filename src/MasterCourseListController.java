@@ -2,11 +2,21 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 
 public class MasterCourseListController {
 
     private static final MasterCourseList masterCourseList = MasterCourseList.get();
+
+    public static class CreateCourseWindow implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent e) {
+            NewCourseWindow.init();
+            NewCourseWindow.show();
+        }
+    }
 
     public static class AddCourse implements EventHandler<ActionEvent> {
 
@@ -25,6 +35,7 @@ public class MasterCourseListController {
             this.coreqsField = coreqsField;
         }
 
+        @Override
         public void handle(ActionEvent e) {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             if (verifyID() && verifyName()) {

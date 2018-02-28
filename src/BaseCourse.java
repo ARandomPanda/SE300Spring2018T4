@@ -83,6 +83,6 @@ public class BaseCourse implements Serializable {
 
     @Override
     public String toString() {
-        return this.getID();
+        return this.getID() + "\t\t" + this.getName();
     }
 }
