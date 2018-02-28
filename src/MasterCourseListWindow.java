@@ -1,11 +1,13 @@
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+
+import java.util.List;
 
 
 public class MasterCourseListWindow extends Application {
@@ -44,15 +46,77 @@ public class MasterCourseListWindow extends Application {
 
     private static void initScene() {
         BorderPane borderPane = new BorderPane();
-        Scene scene = new Scene(borderPane, 400, 800);
+        Scene scene = new Scene(borderPane, 800, 800);
 
-        ListView<BaseCourse> courseListView = new ListView<>(masterCourseList.getCourseList());
+        TableView<BaseCourse> courseListView = initTableView();
         borderPane.setCenter(courseListView);
-
 
         MenuBar menuBar = createMenu();
         borderPane.setTop(menuBar);
         stage.setScene(scene);
+    }
+
+    private static TableView<BaseCourse> initTableView() {
+
+        TableView<BaseCourse> courseListView = new TableView<>(masterCourseList.getCourseList());
+
+        TableColumn<BaseCourse, String> IDcol = new TableColumn<>("Course ID");
+        IDcol.setCellValueFactory(p -> {
+            return new ReadOnlyObjectWrapper<>(p.getValue().getID());
+        });
+
+        TableColumn<BaseCourse, String> nameCol = new TableColumn<>("Course Name");
+        nameCol.setCellValueFactory(p -> {
+            return new ReadOnlyObjectWrapper<>(p.getValue().getName());
+        });
+
+        TableColumn<BaseCourse, Integer> creditsCol = new TableColumn<>("Credits");
+        creditsCol.setCellValueFactory(p -> {
+            return new ReadOnlyObjectWrapper<>(p.getValue().getNumCredits());
+        });
+
+        TableColumn<BaseCourse, String> prereqsCol = new TableColumn<>("Prerequisites");
+        prereqsCol.setCellValueFactory(p -> {
+            List<BaseCourse> prereqs = p.getValue().getPrereqs();
+            StringBuilder sb;
+            if (prereqs.isEmpty()) {
+                sb = new StringBuilder("None");
+            } else {
+                sb = new StringBuilder();
+                for (BaseCourse c : prereqs) {
+                    sb.append(c.getID());
+                    sb.append(", ");
+                }
+                if (sb.substring(sb.length() - 2).equals(", ")) {
+                    sb.delete(sb.length() - 2, sb.length() - 1);
+                }
+            }
+
+            return new ReadOnlyObjectWrapper<>(sb.toString());
+        });
+
+        TableColumn<BaseCourse, String> coreqsCol = new TableColumn<>("Corequisites");
+        coreqsCol.setCellValueFactory(p -> {
+            List<BaseCourse> coreqs = p.getValue().getCoreqs();
+            StringBuilder sb;
+            if (coreqs.isEmpty()) {
+                sb = new StringBuilder("None");
+            } else {
+                sb = new StringBuilder();
+                for (BaseCourse c : coreqs) {
+                    sb.append(c.getID());
+                    sb.append(", ");
+                }
+                if (sb.substring(sb.length() - 2).equals(", ")) {
+                    sb.delete(sb.length() - 2, sb.length() - 1);
+                }
+            }
+            return new ReadOnlyObjectWrapper<>(sb.toString());
+        });
+
+        courseListView.getColumns().setAll(IDcol, nameCol, creditsCol, prereqsCol, coreqsCol);
+
+        return courseListView;
     }
 
     private static MenuBar createMenu() {
