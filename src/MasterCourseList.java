@@ -57,7 +57,15 @@ public class MasterCourseList implements Serializable {
     }
 
     public boolean removeCourse(BaseCourse course) {
-        return courseList.remove(course);
+        boolean success = courseList.remove(course);
+        try {
+            saveData();
+        } catch (IOException e) {
+            System.err.println("Error saving data");
+            e.printStackTrace();
+        }
+
+        return success;
     }
 
     public ObservableList<BaseCourse> getCourseList() {
@@ -65,7 +73,6 @@ public class MasterCourseList implements Serializable {
     }
 
     private static void saveData() throws IOException {
-        System.out.println("Saving");
         FileOutputStream outStream = new FileOutputStream(file);
         ObjectOutputStream objOutStream = new ObjectOutputStream(outStream);
         objOutStream.writeObject(masterCourseList);

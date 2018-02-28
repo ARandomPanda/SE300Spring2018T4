@@ -2,17 +2,14 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.Arrays;
 
 
-public class NewCourseWindow {
+public class CreateMasterCourseWindow {
 
     private static Stage stage = null;
     private static GridPane grid = new GridPane();
@@ -27,22 +24,8 @@ public class NewCourseWindow {
     private static Button okButton = new Button("Add Course");
     private static Button cancelButton = new Button("Cancel");
 
-    private NewCourseWindow() { }
+    private CreateMasterCourseWindow() { }
 
-    // Testing only
-    // TODO remove when access from main window is added.
-    public static void set(Stage s) {
-        stage = s;
-        initInputSanitizers();
-        initButtons();
-        Integer numCreditsArray[] = {0, 1, 2, 3, 4, 5, 6};
-        ObservableList<Integer> posCredits = FXCollections.observableList(Arrays.asList(numCreditsArray));
-        creditsField.setItems(posCredits);
-        creditsField.setValue(3);
-        grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
-        grid.addColumn(1, IDField, nameField, creditsField, okButton);
-        stage.setScene(scene);
-    }
 
     public static void init() {
         if (stage != null) return;

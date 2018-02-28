@@ -5,6 +5,9 @@ import java.util.List;
 
 public class BaseCourse implements Serializable {
 
+    // This keeps the serialization backwards compatable if we add or change methods.
+    static final long serialVersionUID = -3027139528909119438L;
+
     private String ID;
     private String name;
     private int numCredits;
@@ -70,11 +73,32 @@ public class BaseCourse implements Serializable {
         this.numCredits = numCredits;
     }
 
+    public void addPrereq(BaseCourse course) {
+        prereqs.add(course);
+    }
+
+    public void addCoreq(BaseCourse course) {
+        coreqs.add(course);
+    }
+
+    public boolean removePrereq(BaseCourse course) {
+        return prereqs.remove(course);
+    }
+
+    public boolean removeCoreq(BaseCourse course) {
+        return coreqs.remove(course);
+    }
+
     public List<BaseCourse> getPrereqs() {
         return Collections.unmodifiableList(prereqs);
     }
 
     public List<BaseCourse> getCoreqs() {
         return Collections.unmodifiableList(coreqs);
+    }
+
+    @Override
+    public String toString() {
+        return this.getID() + "\t\t" + this.getName();
     }
 }

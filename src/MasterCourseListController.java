@@ -1,12 +1,28 @@
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
+import static javafx.event.ActionEvent.ACTION;
 
 
 public class MasterCourseListController {
 
     private static final MasterCourseList masterCourseList = MasterCourseList.get();
+
+    public static class CreateCourseWindow implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent e) {
+            CreateMasterCourseWindow.init();
+            CreateMasterCourseWindow.show();
+        }
+    }
 
     public static class AddCourse implements EventHandler<ActionEvent> {
 
@@ -25,10 +41,11 @@ public class MasterCourseListController {
             this.coreqsField = coreqsField;
         }
 
+        @Override
         public void handle(ActionEvent e) {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             if (verifyID() && verifyName()) {
-                masterCourseList.get().addCourse(course);
+                masterCourseList.addCourse(course);
                 IDField.clear();
                 nameField.clear();
                 numCreditsField.setValue(3);
@@ -47,6 +64,22 @@ public class MasterCourseListController {
 
         private boolean verifyName() {
             return true;
+        }
+    }
+
+    public static class DeleteCourse implements EventHandler<ActionEvent> {
+
+        private TableView.TableViewSelectionModel<BaseCourse> selectionModel;
+
+        public DeleteCourse(TableView.TableViewSelectionModel<BaseCourse> selectionModel) {
+            this.selectionModel = selectionModel;
+        }
+
+        @Override
+        public void handle(ActionEvent e) {
+            BaseCourse course = selectionModel.getSelectedItem();
+            // popup to confirm
+            masterCourseList.removeCourse(course);
         }
     }
 }
