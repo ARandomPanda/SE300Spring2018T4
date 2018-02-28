@@ -99,6 +99,6 @@ public class BaseCourse implements Serializable {
 
     @Override
     public String toString() {
-        return this.getID() + "\t\t" + this.getName();
+        return this.getID();
     }
 }
