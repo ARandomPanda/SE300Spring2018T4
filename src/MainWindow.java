@@ -3,6 +3,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -60,7 +61,12 @@ public class MainWindow extends Application{
 	{
 		MenuBar toolBar = new MenuBar();
 		Menu dummy = new Menu("This is a Test");
+		MenuItem newCourse = new MenuItem("Opens Course List");
 		
+		
+		newCourse.setOnAction(e -> {
+			MasterCourseListWindow.startAsChild(primaryStage);});
+		dummy.getItems().add(newCourse);
 		toolBar.getMenus().add(dummy);
 		
 		return toolBar;
