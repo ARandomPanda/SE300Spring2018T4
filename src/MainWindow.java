@@ -55,7 +55,7 @@ public class MainWindow extends Application{
 	/**
 	 * Creates the frame for the new menu
 	 * 
-	 * @return toolbar		The menu bar to be added in the window.
+	 * @return toolbar	The menu bar to be added in the window.
 	 */
 	private MenuBar makeMenu()
 	{
