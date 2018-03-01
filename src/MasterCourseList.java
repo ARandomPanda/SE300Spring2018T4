@@ -3,18 +3,13 @@ import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
- * @author Christopher McFall
- *
  * A BaseCourse collection that uses the singleton design pattern. Essentially acts as a wrapper for a List
  * List object that is serializeable and a limited interface. Only one object can ever be created, and is accessed
  * with the get() method.
  */
 public class MasterCourseList implements Serializable {
-
-    // TODO Serialize UID
 
     private static final String fileName = "assets/master_course_list.dat";
     private static final File file = new File(fileName);
@@ -32,11 +27,7 @@ public class MasterCourseList implements Serializable {
         baseList = new ArrayList<>();
     }
 
-    /**
-     * If the master course list hasn't been accessed yet, it is initialized. Returns the master course list.
-     *
-     * @returns the MasterCourseList object
-     */
+    // If the master course list hasn't been accessed yet, it is initialized. Returns the master course list.
     public static MasterCourseList get() {
         if (file.exists()) {
             if (masterCourseList == null) {
@@ -70,7 +61,6 @@ public class MasterCourseList implements Serializable {
      */
     public void addCourse(BaseCourse course) {
         courseList.add(course);
-        Collections.sort(baseList);
         try {
             saveData();
         } catch (IOException e) {
@@ -97,7 +87,7 @@ public class MasterCourseList implements Serializable {
     }
 
     /**
-     * @return An immutable ObserverableList view of the master course list
+     * @return A ObserverableList view of the master course list
      */
     public ObservableList<BaseCourse> getCourseList() {
         return FXCollections.unmodifiableObservableList(courseList);
