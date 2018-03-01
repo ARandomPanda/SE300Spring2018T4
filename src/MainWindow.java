@@ -1,16 +1,19 @@
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class MainWindow extends Application{
 	
 	// Instantiates the main window for the program 
 	private Stage primaryStage = null;
+	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 	
 	
 	public static void main(String[] args)
@@ -20,14 +23,17 @@ public class MainWindow extends Application{
 	
 	
 	// Standard start program required to use JavaFX
-	public void start(Stage primaryStage)
+	public void start(Stage stage)
 	{
-		this.primaryStage = primaryStage;
-
-		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("This is a dummy window");
+		primaryStage = stage;
 		
-		this.primaryStage.setScene(setupScene());
+		primaryStage.setTitle("This is a dummy window");
+		primaryStage.setScene(setupScene());
+		
+		primaryStage.setX(screenSize.getMaxX());
+		primaryStage.setY(screenSize.getMaxY());
+		primaryStage.setHeight(screenSize.getHeight());
+		primaryStage.setWidth(screenSize.getWidth());
 		
 		this.primaryStage.show();
 		
@@ -41,7 +47,9 @@ public class MainWindow extends Application{
 	 */
 	private Scene setupScene()
 	{
+		// the Highest level pane that contains all the other panes
 		BorderPane highestPane = new BorderPane();
+		
 		BorderPane topBorderPane = new BorderPane();
 		
 		topBorderPane.setTop(makeMenu());
@@ -60,8 +68,8 @@ public class MainWindow extends Application{
 	private MenuBar makeMenu()
 	{
 		MenuBar toolBar = new MenuBar();
-		Menu dummy = new Menu("This is a Test");
-		MenuItem newCourse = new MenuItem("Opens Course List");
+		Menu dummy = new Menu("File");
+		MenuItem newCourse = new MenuItem("Display Master Course List");
 		
 		
 		newCourse.setOnAction(e -> {
