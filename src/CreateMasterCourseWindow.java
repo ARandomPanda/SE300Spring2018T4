@@ -21,10 +21,12 @@ public class CreateMasterCourseWindow {
     private static Label creditsLabel = new Label("Credits: ");
     private static ChoiceBox<Integer> creditsField = new ChoiceBox<>();
 
+    // TODO ensure a blank choice is available
     private static Label prereqsLabel = new Label("Prerequisites: ");
     private static ComboBox<BaseCourse> pre1 = new ComboBox<>(MasterCourseList.get().getCourseList());
     private static ComboBox<BaseCourse> pre2 = new ComboBox<>(MasterCourseList.get().getCourseList());
 
+    // TODO ensure a blank choice is available
     private static Label coreqsLabel = new Label("Corequisites: ");
     private static ComboBox<BaseCourse> co1 = new ComboBox<>(MasterCourseList.get().getCourseList());
     private static ComboBox<BaseCourse> co2 = new ComboBox<>(MasterCourseList.get().getCourseList());
@@ -32,9 +34,13 @@ public class CreateMasterCourseWindow {
     private static Button okButton = new Button("Add Course");
     private static Button cancelButton = new Button("Close");
 
+    // Disable creation of this object
     private CreateMasterCourseWindow() { }
 
-
+    /**
+     * Initializes the window if it hasn't been initialize before. If it has already been initlialized this method
+     * does nothing.
+     */
     public static void init() {
         if (stage != null) return;
 
@@ -62,11 +68,17 @@ public class CreateMasterCourseWindow {
         stage.setScene(scene);
     }
 
+    /**
+     * Resets the fields and shows the window
+     */
     public static void show() {
         resetScene();
         stage.show();
     }
 
+    /**
+     * hides the window
+     */
     public static void hide() {
         stage.hide();
     }
@@ -82,9 +94,9 @@ public class CreateMasterCourseWindow {
     }
 
     private static void initIDSanitizer() {
-        // TODO incrementally sanitize i.e. allow letters until a space, then numbers
         IDField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    // TODO allow L after number
                     if (newValue.isEmpty() || newValue.matches("[a-zA-Z 0-9]+")) {
                         ((StringProperty) observable).setValue(newValue);
                     } else {
@@ -114,6 +126,7 @@ public class CreateMasterCourseWindow {
     private static void initOkButton() {
         // TODO verify inputs, show error to user instead of throwing exception
         okButton.setDefaultButton(true);
+        // TODO Set to pull from pre/coreq dropdown menus.
         okButton.setOnAction(
                 new MasterCourseListController.AddCourse(
                         IDField, nameField, creditsField, null, null)
