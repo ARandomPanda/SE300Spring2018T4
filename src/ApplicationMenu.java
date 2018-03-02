@@ -1,13 +1,73 @@
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+
 /**
  * @authors Tyler Warner
+ * Last modified: 03/01/2018
  *
  * Menu class holds the methods called by menu commands within the interface. These include, but are 
  * not limited to saving the academic plan, editing the plan, and modifying courses within the plan.
  */
 public class ApplicationMenu {
 
-	// Attributes
-	// private int tmp = 1;
+	MenuBar menuBar = new MenuBar();
+
+	// Menu tabs
+	Menu file = new Menu("File");
+	Menu course = new Menu("Course");
+	Menu edit = new Menu("Edit");
+	Menu status = new Menu("Status");
+	
+	// File
+	MenuItem savePlan = new MenuItem("Save");
+	MenuItem saveasPlan = new MenuItem("Save as");
+	MenuItem loadPlan = new MenuItem("Load");
+	MenuItem exportPlan = new MenuItem("Export");
+	MenuItem printPlan = new MenuItem("Print");
+	MenuItem refreshPlan = new MenuItem("Refresh Plan");
+	// Course
+	MenuItem addCourse = new MenuItem("Add Course");
+	MenuItem addMajor = new MenuItem("Add Major");
+	MenuItem addMinor = new MenuItem("Add Minor");
+	MenuItem removeCourse = new MenuItem("Remove Course");
+	MenuItem removeMajor = new MenuItem("Remove Major");
+	MenuItem removeMinor = new MenuItem("Remove Minor");
+	// Edit
+	MenuItem resetCoursesToPool = new MenuItem("Send Courses to Pool");
+	MenuItem resetCoursesToSemester = new MenuItem("Reset to Default");
+	// Status
+	MenuItem markDoneCourse = new MenuItem("Mark Course Completed");
+	MenuItem markDoneSemester = new MenuItem("Mark Entire Semester Completed");
+	
+	ApplicationMenu() {
+		// File 	
+		file.getItems().add(savePlan);
+		file.getItems().add(saveasPlan);
+		file.getItems().add(loadPlan);
+		file.getItems().add(exportPlan);
+		file.getItems().add(printPlan);
+		file.getItems().add(refreshPlan);
+		// Course
+		course.getItems().add(addCourse);
+		course.getItems().add(addMajor);
+		course.getItems().add(addMinor);
+		course.getItems().add(removeCourse);
+		course.getItems().add(removeMajor);
+		course.getItems().add(removeMinor);
+		// Edit
+		edit.getItems().add(resetCoursesToPool);
+		edit.getItems().add(resetCoursesToSemester);
+		// Status
+		status.getItems().add(markDoneCourse);
+		status.getItems().add(markDoneSemester);
+		
+		
+		EventHandler<ActionEvent> ctrlS = null;
+		savePlan.setOnAction(ctrlS);
+	}
 	
 	/**
 	 * Just like pressing Ctrl-S in Microsoft Office applications
