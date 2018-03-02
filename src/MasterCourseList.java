@@ -11,6 +11,8 @@ import java.util.ArrayList;
  */
 public class MasterCourseList implements Serializable {
 
+    // TODO Serialize UID
+
     private static final String fileName = "assets/master_course_list.dat";
     private static final File file = new File(fileName);
 
@@ -27,7 +29,11 @@ public class MasterCourseList implements Serializable {
         baseList = new ArrayList<>();
     }
 
-    // If the master course list hasn't been accessed yet, it is initialized. Returns the master course list.
+    /**
+     * If the master course list hasn't been accessed yet, it is initialized. Returns the master course list.
+     *
+     * @returns the MasterCourseList object
+     */
     public static MasterCourseList get() {
         if (file.exists()) {
             if (masterCourseList == null) {
@@ -87,7 +93,7 @@ public class MasterCourseList implements Serializable {
     }
 
     /**
-     * @return A ObserverableList view of the master course list
+     * @return An immutable ObserverableList view of the master course list
      */
     public ObservableList<BaseCourse> getCourseList() {
         return FXCollections.unmodifiableObservableList(courseList);
