@@ -10,11 +10,16 @@ import javafx.scene.input.KeyEvent;
 
 import static javafx.event.ActionEvent.ACTION;
 
-
+/**
+ * @author Christopher McFall
+ *
+ * Controller for the master course list. Any actions for the master course list from the gui must go through this class
+ */
 public class MasterCourseListController {
 
     private static final MasterCourseList masterCourseList = MasterCourseList.get();
 
+    // TODO this needs to be handled with a static method, not a static class
     public static class CreateCourseWindow implements EventHandler<ActionEvent> {
 
         @Override
@@ -24,6 +29,7 @@ public class MasterCourseListController {
         }
     }
 
+    // TODO this needs to be handled with a static method, not a static class
     public static class AddCourse implements EventHandler<ActionEvent> {
 
         private TextField IDField;
@@ -67,6 +73,7 @@ public class MasterCourseListController {
         }
     }
 
+    // TODO this needs to be handled with a static method, not a static class
     public static class DeleteCourse implements EventHandler<ActionEvent> {
 
         private TableView.TableViewSelectionModel<BaseCourse> selectionModel;

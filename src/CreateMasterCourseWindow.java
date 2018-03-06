@@ -8,7 +8,12 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 
-
+/**
+ * @author Christopher McFall
+ *
+ * A window for adding courses to the master course list. Intended to be used only by advisors and/or program
+ * coordinators.
+ */
 public class CreateMasterCourseWindow {
 
     private static Stage stage = null;
@@ -83,6 +88,9 @@ public class CreateMasterCourseWindow {
         stage.hide();
     }
 
+    /**
+     * clears text fields
+     */
     private static void resetScene() {
         IDField.clear();
         nameField.clear();
@@ -93,6 +101,9 @@ public class CreateMasterCourseWindow {
         initNameSanitizer();
     }
 
+    /**
+     * Ensures only alphanumeric characters can be typed into the text field
+     */
     private static void initIDSanitizer() {
         IDField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -106,6 +117,9 @@ public class CreateMasterCourseWindow {
         );
     }
 
+    /**
+     * Ensures only characters a-z and spaces can be typed into the text field
+     */
     private static void initNameSanitizer() {
         nameField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
