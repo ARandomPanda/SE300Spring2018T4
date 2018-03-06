@@ -3,6 +3,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Christopher McFall
+ *
+ * Represents a course requirement of an academic plan. The co/prerequisites of the BaseCourse can be overwritten.
+ */
 public class RequiredCourse implements Serializable {
 
     private BaseCourse course;

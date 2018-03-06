@@ -3,6 +3,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * @author Christopher McFall
+ *
+ * Data class that stores information about an ERAU course. BaseCourse objects are meant to be kept in a master list
+ * to be referenced by courses required by a major, minor, or elective, or by courses planned in an academic plan.
+ */
 public class BaseCourse implements Serializable {
 
     // This keeps the serialization backwards compatable if we add or change methods.
