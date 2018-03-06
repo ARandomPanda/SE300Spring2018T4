@@ -5,7 +5,7 @@ import java.util.List;
 public class Semester {
     private String term;
     private int year;
-    private ArrayList<RequiredCourse> semesterClass = new ArrayList();
+    private ArrayList<RequiredCourse> semesterClass = new ArrayList<RequiredCourse>();
 
     public void setTerm(String term) {
         this.term = term;
