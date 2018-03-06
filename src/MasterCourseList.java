@@ -5,6 +5,8 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
+ * @author Christopher McFall
+ *
  * A BaseCourse collection that uses the singleton design pattern. Essentially acts as a wrapper for a List
  * List object that is serializeable and a limited interface. Only one object can ever be created, and is accessed
  * with the get() method.
