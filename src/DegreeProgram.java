@@ -10,7 +10,7 @@ public class DegreeProgram {
     private float semestergpa;
     private String program;
 
-    private ArrayList<RequiredCourse> requiredClass = new ArrayList();
+    private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
 
     public void setProgram(String program) {
         this.program = program;
