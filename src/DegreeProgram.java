@@ -8,10 +8,9 @@ public class DegreeProgram {
     private int catalogYear;
     private float overallgpa;
     private float semestergpa;
-
     private String program;
 
-    private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
+    private ArrayList<RequiredCourse> requiredClass = new ArrayList();
 
     public void setProgram(String program) {
         this.program = program;
@@ -21,14 +20,12 @@ public class DegreeProgram {
         this.catalogYear = catalogYear;
     }
 
-
     public void setRequiredClass(BaseCourse course, Grade grade) {
         requiredClass.add(new RequiredCourse(course, grade));
     }
 
     public List<RequiredCourse> getRequiredClass() {
         return Collections.unmodifiableList(requiredClass);
-
     }
 
     public float getOverallgpa() {
@@ -39,14 +36,12 @@ public class DegreeProgram {
         return semestergpa;
     }
 
-    public String getProgram(){
+    public String getProgram() {
         return program;
     }
 
-    public int getCatalogYear(){
+    public int getCatalogYear() {
         return catalogYear;
     }
-
-
 
 }

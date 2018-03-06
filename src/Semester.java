@@ -1,12 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-
 // push comment
 public class Semester {
     private String term;
     private int year;
-    private ArrayList<RequiredCourse> semesterClass = new ArrayList<RequiredCourse>();
+    private ArrayList<RequiredCourse> semesterClass = new ArrayList();
 
     public void setTerm(String term) {
         this.term = term;
