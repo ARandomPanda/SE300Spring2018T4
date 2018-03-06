@@ -1,12 +1,12 @@
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-
-import java.util.ArrayList;
 
 import static javafx.event.ActionEvent.ACTION;
 
@@ -19,58 +19,74 @@ public class MasterCourseListController {
 
     private static final MasterCourseList masterCourseList = MasterCourseList.get();
 
-    public static void openNewCourseWindow() {
-        CreateMasterCourseWindow.init();
-        CreateMasterCourseWindow.show();
+    // TODO this needs to be handled with a static method, not a static class
+    public static class CreateCourseWindow implements EventHandler<ActionEvent> {
+
+        @Override
+        public void handle(ActionEvent e) {
+            CreateMasterCourseWindow.init();
+            CreateMasterCourseWindow.show();
+        }
     }
 
-    public static void deleteCourse(TableView.TableViewSelectionModel<BaseCourse> selection) {
-        BaseCourse course = selection.getSelectedItem();
-        masterCourseList.removeCourse(course);
-    }
+    // TODO this needs to be handled with a static method, not a static class
+    public static class AddCourse implements EventHandler<ActionEvent> {
 
-    public static void addCourse(TextField IDField, TextField nameField, ChoiceBox<Integer> numCreditsField,
-                                 ComboBox<BaseCourse> pre1, ComboBox<BaseCourse> pre2,
-                                 ComboBox<BaseCourse> co1, ComboBox<BaseCourse> co2) {
+        private TextField IDField;
+        private TextField nameField;
+        private ChoiceBox<Integer> numCreditsField;
+        private TextField prereqsField;
+        private TextField coreqsField;
 
-        String currentText = IDField.getText();
-        IDField.setText(currentText.toUpperCase());
-        currentText = IDField.getText();
+        public AddCourse(TextField IDField, TextField nameField, ChoiceBox<Integer> numCreditsField,
+                         TextField prereqsField, TextField coreqsField) {
+            this.IDField = IDField;
+            this.nameField = nameField;
+            this.numCreditsField = numCreditsField;
+            this.prereqsField = prereqsField;
+            this.coreqsField = coreqsField;
+        }
 
-        boolean validID = currentText.matches("[A-Z]{2,5} [0-9]{3}");
-
-        if (validID) {
-            ArrayList<BaseCourse> prereqs = new ArrayList<>(2);
-            ArrayList<BaseCourse> coreqs = new ArrayList<>(2);
-
-            BaseCourse pre1Selection = pre1.getSelectionModel().getSelectedItem();
-            BaseCourse pre2Selection = pre2.getSelectionModel().getSelectedItem();
-            BaseCourse co1Selection = co1.getSelectionModel().getSelectedItem();
-            BaseCourse co2Selection = co2.getSelectionModel().getSelectedItem();
-
+        @Override
+        public void handle(ActionEvent e) {
             BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
-            if (pre1Selection != null) {
-                course.addPrereq(pre1Selection);
+            if (verifyID() && verifyName()) {
+                masterCourseList.addCourse(course);
+                IDField.clear();
+                nameField.clear();
+                numCreditsField.setValue(3);
+                // TODO do something with prereqs and coreqs
             }
-            if (pre2Selection != null) {
-                course.addPrereq(pre2Selection);
-            }
-            if (co1Selection != null) {
-                course.addCoreq(co1Selection);
-            }
-            if (co2Selection != null) {
-                course.addCoreq((co2Selection));
-            }
+            // TODO do something when false
+        }
 
-            masterCourseList.addCourse(course);
-            IDField.clear();
-            nameField.clear();
+        private boolean verifyID() {
+            String currentText = IDField.getText();
+            IDField.setText(currentText.toUpperCase());
+            currentText = IDField.getText();
 
-            pre1.getSelectionModel().clearSelection();
-            pre2.getSelectionModel().clearSelection();
-            co1.getSelectionModel().clearSelection();
-            co2.getSelectionModel().clearSelection();
-            numCreditsField.setValue(3);
+            return currentText.matches("[A-Z]{2,5} [0-9]{3}");
+        }
+
+        private boolean verifyName() {
+            return true;
+        }
+    }
+
+    // TODO this needs to be handled with a static method, not a static class
+    public static class DeleteCourse implements EventHandler<ActionEvent> {
+
+        private TableView.TableViewSelectionModel<BaseCourse> selectionModel;
+
+        public DeleteCourse(TableView.TableViewSelectionModel<BaseCourse> selectionModel) {
+            this.selectionModel = selectionModel;
+        }
+
+        @Override
+        public void handle(ActionEvent e) {
+            BaseCourse course = selectionModel.getSelectedItem();
+            // popup to confirm
+            masterCourseList.removeCourse(course);
         }
     }
 }
