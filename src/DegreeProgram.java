@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -7,11 +8,11 @@ public class DegreeProgram {
     private int catalogYear;
     private float overallgpa;
     private float semestergpa;
-    private string program;
+    private String program;
 
-    ArrayList requiredClass = new ArrayList();
+    private ArrayList<RequiredCourse> requiredClass = new ArrayList();
 
-    public setProgram(string program) {
+    public void setProgram(String program) {
         this.program = program;
     }
 
@@ -19,12 +20,12 @@ public class DegreeProgram {
         this.catalogYear = catalogYear;
     }
 
-    public ArrayList setRequiredClass(ArrayList course){
-        requiredClass = add.course;
+    public void setRequiredClass(BaseCourse course, Grade grade) {
+        requiredClass.add(new RequiredCourse(course, grade));
     }
 
-    public ArrayList getRequiredClass() {
-        return requiredClass;
+    public List<RequiredCourse> getRequiredClass() {
+        return Collections.unmodifiableList(requiredClass);
     }
 
     public float getOverallgpa() {
@@ -35,12 +36,12 @@ public class DegreeProgram {
         return semestergpa;
     }
 
-    public getProgram{
+    public String getProgram() {
         return program;
     }
 
-    public getCatalogYear{
-        return catalogYear; 
+    public int getCatalogYear() {
+        return catalogYear;
     }
 
 }
