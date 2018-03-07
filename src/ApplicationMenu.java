@@ -42,7 +42,7 @@ public class ApplicationMenu {
 	MenuItem markDoneCourse = new MenuItem("Mark Course Completed");
 	MenuItem markDoneSemester = new MenuItem("Mark Entire Semester Completed");
 	
-	ApplicationMenu() {
+	public ApplicationMenu() {
 		// File 	
 		file.getItems().add(savePlan);
 		file.getItems().add(saveasPlan);
@@ -64,6 +64,10 @@ public class ApplicationMenu {
 		status.getItems().add(markDoneCourse);
 		status.getItems().add(markDoneSemester);
 		
+		menuBar.getMenus().add(file);
+		menuBar.getMenus().add(course);
+		menuBar.getMenus().add(edit);
+		menuBar.getMenus().add(status);
 		
 		EventHandler<ActionEvent> ctrlS = null;
 		savePlan.setOnAction(ctrlS);
@@ -190,4 +194,11 @@ public class ApplicationMenu {
 	void markSemesterCompleted() {
 		
 	}
+	
+	public MenuBar getMenuBar()
+	{
+		return menuBar;
+	}
+	
+	
 }
