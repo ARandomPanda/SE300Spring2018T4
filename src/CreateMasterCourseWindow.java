@@ -8,12 +8,17 @@ import javafx.stage.Stage;
 
 import java.util.Arrays;
 
-
+/**
+ * @author Christopher McFall
+ *
+ * A window for adding courses to the master course list. Intended to be used only by advisors and/or program
+ * coordinators.
+ */
 public class CreateMasterCourseWindow {
 
     private static Stage stage = null;
     private static GridPane grid = new GridPane();
-    private static Scene scene = new Scene(grid, 400, 300);
+    private static Scene scene = new Scene(grid, 300, 180);
     private static Label IDLabel = new Label("Course ID: ");
     private static TextField IDField = new TextField();
     private static Label nameLabel = new Label("Course Name: ");
@@ -21,16 +26,31 @@ public class CreateMasterCourseWindow {
     private static Label creditsLabel = new Label("Credits: ");
     private static ChoiceBox<Integer> creditsField = new ChoiceBox<>();
 
-    private static Button okButton = new Button("Add Course");
-    private static Button cancelButton = new Button("Cancel");
+    // TODO ensure a blank choice is available
+    private static Label prereqsLabel = new Label("Prerequisites: ");
+    private static ComboBox<BaseCourse> pre1 = new ComboBox<>(MasterCourseList.get().getCourseList());
+    private static ComboBox<BaseCourse> pre2 = new ComboBox<>(MasterCourseList.get().getCourseList());
 
+    // TODO ensure a blank choice is available
+    private static Label coreqsLabel = new Label("Corequisites: ");
+    private static ComboBox<BaseCourse> co1 = new ComboBox<>(MasterCourseList.get().getCourseList());
+    private static ComboBox<BaseCourse> co2 = new ComboBox<>(MasterCourseList.get().getCourseList());
+
+    private static Button okButton = new Button("Add Course");
+    private static Button cancelButton = new Button("Close");
+
+    // Disable creation of this object
     private CreateMasterCourseWindow() { }
 
-
+    /**
+     * Initializes the window if it hasn't been initialize before. If it has already been initlialized this method
+     * does nothing.
+     */
     public static void init() {
         if (stage != null) return;
 
         stage = new Stage();
+        stage.setTitle("New Course");
 
         initInputSanitizers();
         initButtons();
@@ -40,20 +60,37 @@ public class CreateMasterCourseWindow {
         creditsField.setItems(posCredits);
         creditsField.setValue(3);
 
-        grid.addColumn(0, IDLabel, nameLabel, creditsLabel, cancelButton);
-        grid.addColumn(1, IDField, nameField, creditsField, okButton);
+        grid.add(IDLabel,0, 1);
+        grid.add(IDField, 1, 1, 2, 1);
+        grid.add(nameLabel, 0, 2);
+        grid.add(nameField, 1, 2, 2, 1);
+        grid.addRow(3, creditsLabel, creditsField);
+        grid.addRow(4, prereqsLabel, pre1, pre2);
+        grid.addRow(5, coreqsLabel, co1, co2);
+
+        grid.add(cancelButton, 1, 7);
+        grid.add(okButton, 2, 7);
         stage.setScene(scene);
     }
 
+    /**
+     * Resets the fields and shows the window
+     */
     public static void show() {
         resetScene();
         stage.show();
     }
 
+    /**
+     * hides the window
+     */
     public static void hide() {
         stage.hide();
     }
 
+    /**
+     * clears text fields
+     */
     private static void resetScene() {
         IDField.clear();
         nameField.clear();
@@ -64,10 +101,13 @@ public class CreateMasterCourseWindow {
         initNameSanitizer();
     }
 
+    /**
+     * Ensures only alphanumeric characters can be typed into the text field
+     */
     private static void initIDSanitizer() {
-        // TODO incrementally sanitize i.e. allow letters until a space, then numbers
         IDField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
+                    // TODO allow L after number
                     if (newValue.isEmpty() || newValue.matches("[a-zA-Z 0-9]+")) {
                         ((StringProperty) observable).setValue(newValue);
                     } else {
@@ -77,6 +117,9 @@ public class CreateMasterCourseWindow {
         );
     }
 
+    /**
+     * Ensures only characters a-z and spaces can be typed into the text field
+     */
     private static void initNameSanitizer() {
         nameField.textProperty().addListener(
                 (observable, oldValue, newValue) -> {
@@ -97,6 +140,7 @@ public class CreateMasterCourseWindow {
     private static void initOkButton() {
         // TODO verify inputs, show error to user instead of throwing exception
         okButton.setDefaultButton(true);
+        // TODO Set to pull from pre/coreq dropdown menus.
         okButton.setOnAction(
                 new MasterCourseListController.AddCourse(
                         IDField, nameField, creditsField, null, null)

@@ -4,21 +4,38 @@ import javafx.collections.ObservableList;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * @author Christopher McFall
+ *
+ * A BaseCourse collection that uses the singleton design pattern. Essentially acts as a wrapper for a List
+ * List object that is serializeable and a limited interface. Only one object can ever be created, and is accessed
+ * with the get() method.
+ */
 public class MasterCourseList implements Serializable {
 
-    private static String fileName = "assets/master_course_list.dat";
-    private static File file = new File(fileName);
+    // TODO Serialize UID
 
+    private static final String fileName = "assets/master_course_list.dat";
+    private static final File file = new File(fileName);
+
+    // For viewing by the GUI
     private static ObservableList<BaseCourse> courseList;
 
     private ArrayList<BaseCourse> baseList;
 
+    // To ensure only one will ever be created.
     private static MasterCourseList masterCourseList = null;
 
+    // Private to ensure only one is ever created.
     private MasterCourseList() {
         baseList = new ArrayList<>();
     }
 
+    /**
+     * If the master course list hasn't been accessed yet, it is initialized. Returns the master course list.
+     *
+     * @returns the MasterCourseList object
+     */
     public static MasterCourseList get() {
         if (file.exists()) {
             if (masterCourseList == null) {
@@ -46,6 +63,10 @@ public class MasterCourseList implements Serializable {
         return masterCourseList;
     }
 
+    /**
+     * Adds a course to the master list and saves the data to the master_course_list.dat file
+     * @param course The course to be added.
+     */
     public void addCourse(BaseCourse course) {
         courseList.add(course);
         try {
@@ -56,6 +77,11 @@ public class MasterCourseList implements Serializable {
         }
     }
 
+    /**
+     * Removes a course from the course list if it is there.
+     * @param course The course to be removed
+     * @return Whether the course specified was in the list before removal
+     */
     public boolean removeCourse(BaseCourse course) {
         boolean success = courseList.remove(course);
         try {
@@ -68,6 +94,9 @@ public class MasterCourseList implements Serializable {
         return success;
     }
 
+    /**
+     * @return An immutable ObserverableList view of the master course list
+     */
     public ObservableList<BaseCourse> getCourseList() {
         return FXCollections.unmodifiableObservableList(courseList);
     }

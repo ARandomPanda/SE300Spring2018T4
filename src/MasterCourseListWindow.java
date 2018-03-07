@@ -1,15 +1,20 @@
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 import java.util.List;
 
-
+/**
+ * @author Christopher McFall
+ *
+ * This window lists each course in the master course list. Any modifications the user wishes to make to the master
+ * course list should be made from this window.
+ *
+ * This window can be opened on its own from main, or from another stage using the startAsChild(Stage) method.
+ */
 public class MasterCourseListWindow extends Application {
 
     private static MasterCourseList masterCourseList = MasterCourseList.get();
@@ -61,6 +66,8 @@ public class MasterCourseListWindow extends Application {
 
         masterCourseTable = new TableView<>(masterCourseList.getCourseList());
 
+        // All columns are read only because the BaseCourse class has no properties.
+        // TODO find a way to make writable while keeping BaseCourse Serializable
         TableColumn<BaseCourse, String> IDcol = new TableColumn<>("Course ID");
         IDcol.setCellValueFactory(p -> {
             return new ReadOnlyObjectWrapper<>(p.getValue().getID());
@@ -76,6 +83,7 @@ public class MasterCourseListWindow extends Application {
             return new ReadOnlyObjectWrapper<>(p.getValue().getNumCredits());
         });
 
+        // List the prerequisite courses in the column
         TableColumn<BaseCourse, String> prereqsCol = new TableColumn<>("Prerequisites");
         prereqsCol.setCellValueFactory(p -> {
             List<BaseCourse> prereqs = p.getValue().getPrereqs();
@@ -96,6 +104,7 @@ public class MasterCourseListWindow extends Application {
             return new ReadOnlyObjectWrapper<>(sb.toString());
         });
 
+        // List the corequisite courses in the column
         TableColumn<BaseCourse, String> coreqsCol = new TableColumn<>("Corequisites");
         coreqsCol.setCellValueFactory(p -> {
             List<BaseCourse> coreqs = p.getValue().getCoreqs();
