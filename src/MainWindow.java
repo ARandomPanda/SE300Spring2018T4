@@ -1,11 +1,13 @@
 
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -28,12 +30,15 @@ public class MainWindow extends Application{
 		primaryStage = stage;
 		
 		primaryStage.setTitle("This is a dummy window");
-		primaryStage.setScene(setupScene());
 		
 		primaryStage.setX(screenSize.getMaxX());
 		primaryStage.setY(screenSize.getMaxY());
 		primaryStage.setHeight(screenSize.getHeight());
 		primaryStage.setWidth(screenSize.getWidth());
+		primaryStage.setMinHeight(300);
+		primaryStage.setMinWidth(500);
+		
+		primaryStage.setScene(setupScene());
 		
 		this.primaryStage.show();
 		
@@ -55,9 +60,38 @@ public class MainWindow extends Application{
 		topBorderPane.setTop(makeMenu());
 		highestPane.setTop(topBorderPane);
 		
-		Scene scene = new Scene(highestPane, 600, 600);
+		highestPane.setBottom(setUpSemesterPane());
+		
+		Scene scene = new Scene(highestPane);
 		
 		return scene;
+	}
+	
+	private GridPane setUpSemesterPane()
+	{
+		GridPane semesterGrid = new GridPane();
+		Pane p1 = new Pane();
+		Pane p2 = new Pane();
+		Pane p3 = new Pane();
+		
+		p1.prefWidthProperty().bind(primaryStage.widthProperty().multiply(.3333));
+		p2.prefWidthProperty().bind(primaryStage.widthProperty().multiply(.3333));
+		p3.prefWidthProperty().bind(primaryStage.widthProperty().multiply(.3333));
+		
+		p1.setStyle("-fx-border-color: black");
+		p2.setStyle("-fx-border-color: red");
+		p3.setStyle("-fx-border-color: blue");
+		
+		semesterGrid.add(p1, 1, 0);
+		semesterGrid.add(p2, 2, 0);
+		semesterGrid.add(p3, 3, 0);
+		
+
+
+		semesterGrid.prefHeightProperty().bind(primaryStage.heightProperty().multiply(.6666));
+		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());
+		
+		return semesterGrid;
 	}
 	
 	/**
@@ -67,15 +101,16 @@ public class MainWindow extends Application{
 	 */
 	private MenuBar makeMenu()
 	{
-		MenuBar toolBar = new MenuBar();
-		Menu dummy = new Menu("File");
+		MenuBar toolBar = new ApplicationMenu().getMenuBar();
 		MenuItem newCourse = new MenuItem("Display Master Course List");
+		Menu toAdd = new Menu("To Open List");
 		
+		toAdd.getItems().add(newCourse);
 		
 		newCourse.setOnAction(e -> {
 			MasterCourseListWindow.startAsChild(primaryStage);});
-		dummy.getItems().add(newCourse);
-		toolBar.getMenus().add(dummy);
+		
+		toolBar.getMenus().add(toAdd);
 		
 		return toolBar;
 	}
