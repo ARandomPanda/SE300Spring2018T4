@@ -29,15 +29,14 @@ public class MainWindow extends Application{
 	{
 		primaryStage = stage;
 		
-		primaryStage.setTitle("This is a dummy window");
+		primaryStage.setTitle("Curriculum Map");
 		
-		primaryStage.setX(screenSize.getMaxX());
-		primaryStage.setY(screenSize.getMaxY());
+		//primaryStage.setX(screenSize.getMaxX());
+		//primaryStage.setY(screenSize.getMaxY());
 		primaryStage.setHeight(screenSize.getHeight());
 		primaryStage.setWidth(screenSize.getWidth());
 		primaryStage.setMinHeight(300);
 		primaryStage.setMinWidth(500);
-		
 		primaryStage.setScene(setupScene());
 		
 		this.primaryStage.show();
