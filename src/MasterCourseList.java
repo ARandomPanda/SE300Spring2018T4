@@ -3,6 +3,7 @@ import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Christopher McFall
@@ -69,6 +70,7 @@ public class MasterCourseList implements Serializable {
      */
     public void addCourse(BaseCourse course) {
         courseList.add(course);
+        Collections.sort(baseList);
         try {
             saveData();
         } catch (IOException e) {
