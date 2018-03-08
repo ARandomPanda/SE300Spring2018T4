@@ -49,8 +49,8 @@ public class MasterCourseListController {
 
         @Override
         public void handle(ActionEvent e) {
-            BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
             if (verifyID() && verifyName()) {
+                BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
                 masterCourseList.addCourse(course);
                 IDField.clear();
                 nameField.clear();
