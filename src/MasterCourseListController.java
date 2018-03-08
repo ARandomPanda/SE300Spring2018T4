@@ -73,48 +73,4 @@ public class MasterCourseListController {
             numCreditsField.setValue(3);
         }
     }
-
-    // TODO this needs to be handled with a static method, not a static class
-    public static class AddCourse implements EventHandler<ActionEvent> {
-
-        private TextField IDField;
-        private TextField nameField;
-        private ChoiceBox<Integer> numCreditsField;
-        private TextField prereqsField;
-        private TextField coreqsField;
-
-        public AddCourse(TextField IDField, TextField nameField, ChoiceBox<Integer> numCreditsField,
-                         TextField prereqsField, TextField coreqsField) {
-            this.IDField = IDField;
-            this.nameField = nameField;
-            this.numCreditsField = numCreditsField;
-            this.prereqsField = prereqsField;
-            this.coreqsField = coreqsField;
-        }
-
-        @Override
-        public void handle(ActionEvent e) {
-            if (verifyID() && verifyName()) {
-                BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
-                masterCourseList.addCourse(course);
-                IDField.clear();
-                nameField.clear();
-                numCreditsField.setValue(3);
-                // TODO do something with prereqs and coreqs
-            }
-            // TODO do something when false
-        }
-
-        private boolean verifyID() {
-            String currentText = IDField.getText();
-            IDField.setText(currentText.toUpperCase());
-            currentText = IDField.getText();
-
-            return currentText.matches("[A-Z]{2,5} [0-9]{3}");
-        }
-
-        private boolean verifyName() {
-            return true;
-        }
-    }
 }
