@@ -22,7 +22,7 @@ public class BaseCourse implements Serializable {
     private ArrayList<BaseCourse> coreqs;
 
     // disable default constructor
-    private BaseCourse() { };
+    BaseCourse() { };
 
     /**
      * @throws NullPointerException if ID or name are null

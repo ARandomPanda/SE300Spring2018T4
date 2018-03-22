@@ -1,20 +1,48 @@
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
-public class DegreeProgram {
-
+public class DegreeProgram extends Semester {
     private int catalogYear;
-    private float overallgpa;
-    private float semestergpa;
-
     private String program;
 
-    private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
+    private ArrayList<RequiredCourse> requiredClass;
+    private ArrayList<String> semesters;
+
+    public static void main(String[] args) {
+    }
+
+    private DegreeProgram() {
+        super();
+        requiredClass = new ArrayList<RequiredCourse>();
+    }
+
+
+    public void addCourse(BaseCourse course) {
+        requiredClass.add(new RequiredCourse(course));
+    }
+
+    public void removeCourse(BaseCourse course){
+        requiredClass.remove(course);
+    }
+
+    public void addSemester(String Semester){
+        semesters.add(Semester);
+    }
+
+    public void removeSemester(String Semester){
+        semesters.remove(Semester);
+    }
+
+    public ArrayList<String> getSemesters(){
+        return semesters;
+    }
 
     public void setProgram(String program) {
         this.program = program;
+    }
+
+    public String getProgram() {
+        return program;
     }
 
     public void setYear(int catalogYear) {
@@ -22,31 +50,13 @@ public class DegreeProgram {
     }
 
 
-    public void setRequiredClass(BaseCourse course, Grade grade) {
-        requiredClass.add(new RequiredCourse(course, grade));
+    public void setCatalogYear(int Year){
+        catalogYear = Year;
     }
 
-    public List<RequiredCourse> getRequiredClass() {
-        return Collections.unmodifiableList(requiredClass);
-
-    }
-
-    public float getOverallgpa() {
-        return overallgpa;
-    }
-
-    public float getSemestergpa() {
-        return semestergpa;
-    }
-
-    public String getProgram(){
-        return program;
-    }
-
-    public int getCatalogYear(){
+    public int getCatalogYear() {
         return catalogYear;
     }
-
 
 
 }
