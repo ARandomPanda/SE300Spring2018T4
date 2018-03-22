@@ -1,6 +1,5 @@
 
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -9,7 +8,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -68,11 +67,21 @@ public class MainWindow extends Application{
 	private GridPane setUpSemesterPane()
 	{
 		GridPane semesterGrid = new GridPane();
-		for (int i = 0; i < 8; i++)
+		String[] s = {"black", "red", "blue"};
+		for (int i = 0; i < 3; i++)
 		{
-			Pane semesterPane = new Pane();
+			VBox semesterPane = new VBox();
 			Label l = new Label("This is a Semester");
+			for (int k = 0; k < 6; k ++)
+			{
+				Label course = new Label("This is a course number " + k);
+				
+				course.setMinHeight(semesterPane.getHeight()/5);
+				
+				semesterPane.getChildren().add(course);
+			}
 			
+			semesterPane.setStyle("-fx-background-color: " + s[i]);
 			semesterPane.prefWidthProperty().bind(primaryStage.widthProperty().multiply(.3333));
 		
 			semesterPane.getChildren().add(l);
