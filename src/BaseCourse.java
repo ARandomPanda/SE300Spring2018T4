@@ -9,7 +9,7 @@ import java.util.List;
  * Data class that stores information about an ERAU course. BaseCourse objects are meant to be kept in a master list
  * to be referenced by courses required by a major, minor, or elective, or by courses planned in an academic plan.
  */
-public class BaseCourse implements Serializable {
+public class BaseCourse implements Serializable, Comparable<BaseCourse> {
 
     // This keeps the serialization backwards compatable if we add or change methods.
     static final long serialVersionUID = -3027139528909119438L;
@@ -22,7 +22,7 @@ public class BaseCourse implements Serializable {
     private ArrayList<BaseCourse> coreqs;
 
     // disable default constructor
-    BaseCourse() { };
+    public BaseCourse() { }
 
     /**
      * @throws NullPointerException if ID or name are null
@@ -147,5 +147,10 @@ public class BaseCourse implements Serializable {
     @Override
     public String toString() {
         return this.getID();
+    }
+
+    @Override
+    public int compareTo(BaseCourse o) {
+        return this.ID.compareTo(o.ID);
     }
 }
