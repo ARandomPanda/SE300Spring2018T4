@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+//comment
 public class Semester extends BaseCourse {
     private String term;
     private int year;
