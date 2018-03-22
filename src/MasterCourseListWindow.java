@@ -129,10 +129,14 @@ public class MasterCourseListWindow extends Application {
 
     private static MenuBar createMenu() {
         MenuItem create = new MenuItem("Create");
-        create.setOnAction(new MasterCourseListController.CreateCourseWindow());
+        create.setOnAction(e -> {
+            MasterCourseListController.openNewCourseWindow();
+        });
         MenuItem edit = new MenuItem("Edit");
         MenuItem delete = new MenuItem("Delete");
-        delete.setOnAction(new MasterCourseListController.DeleteCourse(masterCourseTable.getSelectionModel()));
+        delete.setOnAction(e -> {
+            MasterCourseListController.deleteCourse(masterCourseTable.getSelectionModel());
+        });
 
         Menu courseMenu = new Menu("Course");
         courseMenu.getItems().addAll(create, delete);
