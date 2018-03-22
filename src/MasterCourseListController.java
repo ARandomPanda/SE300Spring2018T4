@@ -20,8 +20,8 @@ public class MasterCourseListController {
     private static final MasterCourseList masterCourseList = MasterCourseList.get();
 
     public static void openNewCourseWindow() {
-        CreateMasterCourseWindow.init();
-        CreateMasterCourseWindow.show();
+        MasterCourseWindowDialog.init();
+        MasterCourseWindowDialog.show();
     }
 
     public static void deleteCourse(TableView.TableViewSelectionModel<BaseCourse> selection) {
