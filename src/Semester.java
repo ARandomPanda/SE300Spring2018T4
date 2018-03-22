@@ -1,12 +1,14 @@
 import java.util.ArrayList;
-import java.util.List;
 
-
-// push comment
-public class Semester {
+public class Semester extends BaseCourse {
     private String term;
     private int year;
-    private ArrayList<RequiredCourse> semesterClass = new ArrayList<RequiredCourse>();
+    private ArrayList<RequiredCourse> semesterClass;
+
+    Semester() {
+        super();
+        semesterClass = new ArrayList<>();
+    }
 
     public void setTerm(String term) {
         this.term = term;
@@ -16,8 +18,12 @@ public class Semester {
         this.year = year;
     }
 
-    public void setCourse(BaseCourse course, Grade grade) {
-        semesterClass.add(new RequiredCourse(course, grade));
+    public void addCourse(BaseCourse course) {
+        semesterClass.add(new RequiredCourse(course));
+    }
+
+    public void removeCourse(BaseCourse course){
+        semesterClass.remove(course);
     }
 
     public String getTerm() {
@@ -28,7 +34,4 @@ public class Semester {
         return year;
     }
 
-    public List<RequiredCourse> getCourse() {
-        return semesterClass;
-    }
 }

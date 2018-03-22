@@ -27,7 +27,7 @@ public class MasterCourseList implements Serializable {
     private static MasterCourseList masterCourseList = null;
 
     // Private to ensure only one is ever created.
-    private MasterCourseList() {
+    MasterCourseList() {
         baseList = new ArrayList<>();
     }
 
