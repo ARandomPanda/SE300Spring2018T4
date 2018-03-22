@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class DegreeProgram {
+public class PersonalPlan {
 
     private int catalogYear;
     private float overallgpa;
