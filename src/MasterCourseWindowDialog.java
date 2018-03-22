@@ -14,52 +14,49 @@ import java.util.Arrays;
  * A window for adding courses to the master course list. Intended to be used only by advisors and/or program
  * coordinators.
  */
-public class CreateMasterCourseWindow {
+public class MasterCourseWindowDialog {
 
-    private static Stage stage = null;
-    private static GridPane grid = new GridPane();
-    private static Scene scene = new Scene(grid, 300, 180);
-    private static Label IDLabel = new Label("Course ID: ");
-    private static TextField IDField = new TextField();
-    private static Label nameLabel = new Label("Course Name: ");
-    private static TextField nameField = new TextField();
-    private static Label creditsLabel = new Label("Credits: ");
-    private static ChoiceBox<Integer> creditsField = new ChoiceBox<>();
+    private static Stage stage;
+    private static GridPane grid;
+    private static Scene scene;
+    private static Label IDLabel, nameLabel, creditsLabel;
+    private static TextField IDField, nameField;
+    private static ChoiceBox<Integer> creditsField;
 
     // TODO ensure a blank choice is available
-    private static Label prereqsLabel = new Label("Prerequisites: ");
-    private static ComboBox<BaseCourse> pre1 = new ComboBox<>(MasterCourseList.get().getCourseList());
-    private static ComboBox<BaseCourse> pre2 = new ComboBox<>(MasterCourseList.get().getCourseList());
+    private static Label prereqsLabel, coreqsLabel;
+    private static ComboBox<BaseCourse> pre1, pre2, co1, co2;
 
-    // TODO ensure a blank choice is available
-    private static Label coreqsLabel = new Label("Corequisites: ");
-    private static ComboBox<BaseCourse> co1 = new ComboBox<>(MasterCourseList.get().getCourseList());
-    private static ComboBox<BaseCourse> co2 = new ComboBox<>(MasterCourseList.get().getCourseList());
-
-    private static Button okButton = new Button("Add Course");
-    private static Button cancelButton = new Button("Close");
+    private static Button okButton, cancelButton;
 
     // Disable creation of this object
-    private CreateMasterCourseWindow() { }
+    private MasterCourseWindowDialog() { }
 
     /**
      * Initializes the window if it hasn't been initialize before. If it has already been initlialized this method
      * does nothing.
      */
     public static void init() {
+    	
         if (stage != null) return;
 
-        stage = new Stage();
-        stage.setTitle("New Course");
-
+        initializeobjects();
         initInputSanitizers();
         initButtons();
+        setupCredits();
+        fillInGridLabels();
 
+        stage.setScene(scene); // show dialog
+    }
+
+    private static void setupCredits() {
         Integer numCreditsArray[] = {0, 1, 2, 3, 4, 5, 6};
         ObservableList<Integer> posCredits = FXCollections.observableList(Arrays.asList(numCreditsArray));
         creditsField.setItems(posCredits);
-        creditsField.setValue(3);
+        creditsField.setValue(3);		
+	}
 
+	private static void fillInGridLabels() {
         grid.add(IDLabel,0, 1);
         grid.add(IDField, 1, 1, 2, 1);
         grid.add(nameLabel, 0, 2);
@@ -69,11 +66,36 @@ public class CreateMasterCourseWindow {
         grid.addRow(5, coreqsLabel, co1, co2);
 
         grid.add(cancelButton, 1, 7);
-        grid.add(okButton, 2, 7);
-        stage.setScene(scene);
+        grid.add(okButton, 2, 7);		
+	}
+
+	private static void initializeobjects() {
+        stage = null;
+        grid = new GridPane();
+        scene = new Scene(grid, 300, 180);
+        IDLabel = new Label("Course ID: ");
+        IDField = new TextField();
+        nameLabel = new Label("Course Name: ");
+        nameField = new TextField();
+        creditsLabel = new Label("Credits: ");
+        creditsField = new ChoiceBox<>();
+
+        prereqsLabel = new Label("Prerequisites: ");
+        pre1 = new ComboBox<>(MasterCourseList.get().getCourseList());
+        pre2 = new ComboBox<>(MasterCourseList.get().getCourseList());
+
+        coreqsLabel = new Label("Corequisites: ");
+        co1 = new ComboBox<>(MasterCourseList.get().getCourseList());
+        co2 = new ComboBox<>(MasterCourseList.get().getCourseList());
+
+        okButton = new Button("Add Course");
+        cancelButton = new Button("Close");
+        
+        stage = new Stage();
+        stage.setTitle("New Course");
     }
 
-    /**
+	/**
      * Resets the fields and shows the window
      */
     public static void show() {
