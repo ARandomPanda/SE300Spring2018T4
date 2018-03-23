@@ -22,7 +22,7 @@ public class DegreeProgram extends Semester {
     public void removeCourse(BaseCourse course){
         requiredClass.remove(course);
     }
-    
+
     public void setProgram(String program) {
         this.program = program;
     }
