@@ -7,7 +7,6 @@ public class Semester extends BaseCourse {
     private ArrayList<RequiredCourse> semesterClass;
 
     Semester() {
-        super();
         semesterClass = new ArrayList<>();
     }
 

@@ -162,11 +162,10 @@ public class MasterCourseWindowDialog {
     private static void initOkButton() {
         // TODO verify inputs, show error to user instead of throwing exception
         okButton.setDefaultButton(true);
-        // TODO Set to pull from pre/coreq dropdown menus.
-        okButton.setOnAction(
-                new MasterCourseListController.AddCourse(
-                        IDField, nameField, creditsField, null, null)
-        );
+        okButton.setOnAction(e -> {
+            MasterCourseListController.addCourse(IDField, nameField, creditsField,
+                                                 pre1, pre2, co1, co2);
+        });
     }
 
     private static void initCancelButton() {
