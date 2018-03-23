@@ -15,7 +15,6 @@ public class DegreeProgram extends Semester {
         requiredClass = new ArrayList<RequiredCourse>();
     }
 
-
     public void addCourse(BaseCourse course) {
         requiredClass.add(new RequiredCourse(course));
     }
@@ -23,8 +22,7 @@ public class DegreeProgram extends Semester {
     public void removeCourse(BaseCourse course){
         requiredClass.remove(course);
     }
-
-
+    
     public void setProgram(String program) {
         this.program = program;
     }
@@ -35,11 +33,6 @@ public class DegreeProgram extends Semester {
 
     public void setYear(int catalogYear) {
         this.catalogYear = catalogYear;
-    }
-
-
-    public void setCatalogYear(int Year){
-        catalogYear = Year;
     }
 
     public int getCatalogYear() {
