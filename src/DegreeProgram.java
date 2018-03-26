@@ -1,8 +1,13 @@
+
 import java.util.ArrayList;
 
 
 public class DegreeProgram extends Semester {
-    private int catalogYear;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 377635845681135207L;
+	private int catalogYear;
     private String program;
 
     private ArrayList<RequiredCourse> requiredClass;
@@ -11,7 +16,7 @@ public class DegreeProgram extends Semester {
     public static void main(String[] args) {
     }
 
-    private DegreeProgram() {
+    DegreeProgram() {
         super();
         requiredClass = new ArrayList<RequiredCourse>();
     }
@@ -57,6 +62,5 @@ public class DegreeProgram extends Semester {
     public int getCatalogYear() {
         return catalogYear;
     }
-
 
 }
