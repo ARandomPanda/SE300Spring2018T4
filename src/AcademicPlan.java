@@ -64,6 +64,8 @@ public class AcademicPlan implements Serializable{
 		try { //TODO complete to save academic plan
 			fOut = new FileOutputStream(current_directory);
 			oos = new ObjectOutputStream(fOut);
+			oos.writeObject(this);
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
