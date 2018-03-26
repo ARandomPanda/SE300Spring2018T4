@@ -24,5 +24,10 @@ class AcademicPlanTest {
 	void removeDegree() {
 		assertEquals(true, plan.removeDegree(degree));
 	}
+	
+	@Test
+	void savePlan() {
+		assertEquals(true, plan.savePlan());
+	}
 
 }

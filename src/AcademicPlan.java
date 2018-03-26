@@ -1,7 +1,16 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class AcademicPlan {
+public class AcademicPlan implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ArrayList<DegreeProgram> degrees;
 	@SuppressWarnings("unused")
 	private String name;
@@ -45,5 +54,25 @@ public class AcademicPlan {
 	 */
 	public boolean removeDegree(DegreeProgram degree) {
 		return degrees.remove(degree);
+	}
+	
+	public boolean savePlan() {
+		FileOutputStream fOut = null;
+		ObjectOutputStream oos = null;
+		String current_directory = System.getProperty("user_dir");
+		
+		try { //TODO complete to save academic plan
+			fOut = new FileOutputStream(current_directory);
+			oos = new ObjectOutputStream(fOut);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			
+		}
+		return false;
 	}
 }
