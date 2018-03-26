@@ -3,7 +3,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BaseBaseCourseTest {
+class BaseCourseTest {
 
     private BaseCourse testA;
     private BaseCourse testB;
