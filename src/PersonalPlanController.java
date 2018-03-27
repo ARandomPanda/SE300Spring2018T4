@@ -2,39 +2,33 @@ import java.io.File;
 
 public class PersonalPlanController {
 
-    private static PersonalPlan plan;
+    private PersonalPlan plan;
 
-    private static File planSaveFile;
-
-    public static void savePersonalPlan() {
-
+    public PersonalPlanController(PersonalPlan plan) {
+        plan = plan;
     }
 
-    public static void savePersonalPlan(String filename) {
-
+    public void addSemester() {
+        plan.addSemester(new Semester());
     }
 
-    public static void newPersonalPlan() {
-
+    public void removeSemester(Semester semester) {
+        plan.removeSemester(semester);
     }
 
-    public static void loadPersonalPlan() {
-
+    public void addCourse(BaseCourse course, Semester semester) {
+        if (plan.getSemesters().contains(semester)) {
+            semester.addCourse(course);
+        } else {
+            throw new IllegalStateException("Attempted to add a course to a semester not in the PersonalPlan");
+        }
     }
 
-    public static void addSemester() {
-
-    }
-
-    public static void removeSemester(Semester semester) {
-
-    }
-
-    public static void addCourse(BaseCourse course, Semester semester) {
-
-    }
-
-    public static void removeCourse(BaseCourse course, Semester semester) {
-
+    public void removeCourse(BaseCourse course, Semester semester) {
+        if (plan.getSemesters().contains(semester)) {
+            semester.removeCourse(course);
+        } else {
+            throw new IllegalStateException("Attempted to remove a course to a semester not in the PersonalPlan");
+        }
     }
 }
