@@ -1,3 +1,11 @@
+/**
+ * @author Tyler Warner
+ * Created: 03/23/2018
+ * Modified: 03/26/2018
+ * Fulfills the requirements to make an academic plan within the school planner application.
+ * 
+ */
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,22 +17,25 @@ import java.util.ArrayList;
 
 public class AcademicPlan implements Serializable{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private ArrayList<DegreeProgram> degrees;
-	private short credits;
+	private ArrayList<Integer> credits;
 	private double GPA;
-	private String fileLocation, catalogYear;
-	private ArrayList<String> degreeTitles;
+	private String fileLocation, catalogFallYear, catalogSpringYear;
 	
-	AcademicPlan() {
+	/**
+	 * Creates an empty academic plan
+	 */
+	public AcademicPlan() {
 		degrees = new ArrayList<DegreeProgram>();
 		initializeConstants();
 	}
 
-	AcademicPlan(DegreeProgram degree) {
+	/**
+	 * Creates an academic plan with the degree program attached
+	 * @param degree A DegreeProgram object representing the chosen major of the student
+	 */
+	public AcademicPlan(DegreeProgram degree) {
 		this.degrees.add(degree);
 		initializeConstants();
 	}
@@ -36,8 +47,9 @@ public class AcademicPlan implements Serializable{
 	}
 */
 	private void initializeConstants() {
-		credits = 0;
+		this.credits = new ArrayList<Integer>();
 		GPA = 0.0;
+		// TODO allow user to specify location
 		fileLocation = "assets/academicPlan.obj";
 	}
 
@@ -59,6 +71,10 @@ public class AcademicPlan implements Serializable{
 		return degrees.remove(degree);
 	}
 	
+	/**
+	 * Save the plan's state
+	 * @return true when successful
+	 */
 	public boolean savePlan() {
 		FileOutputStream fOut = null;
 		ObjectOutputStream oos = null;
@@ -80,6 +96,10 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 	
+	/**
+	 * Load the previous plan's state
+	 * @return true when successful
+	 */
 	public boolean loadPlan() {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
@@ -104,25 +124,32 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 
-	public double calculateGPA() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public int calculateCredits() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 	
-	public void setCatalogYear(String year) {
-		this.catalogYear = year;
+	/**
+	 * Sets the years for the first academic calender in which the student made contractual relations with the school
+	 * @param FallYear A string of the first year (YYYY format) of your first academic calender
+	 * @param SpringYear A string of the second year (YYYY format) of your first academic calender
+	 */
+	public void setCatalogYear(String FallYear, String SpringYear) {
+		this.catalogFallYear = FallYear;
+		this.catalogSpringYear = SpringYear;
 	}
 	
-	private boolean addDegreeTitle(String title) {
-		return this.degreeTitles.add(title);
+	/**
+	 * Gives the GPA of the cumulative credits.
+	 * @return A double value of the Grade Point Average (GPA) on a 4.0 scale.
+	 */
+	protected double calculateGPA() {
+
+		double gpa = 0;
+		for (int tmp : credits) {
+			gpa += tmp;
+		}
+		return gpa;
 	}
 	
-	private boolean removeDegreeTitle(String title) {
-		return this.degreeTitles.remove(title);
-	}
 }
