@@ -8,7 +8,7 @@ public class PersonalPlan {
 
     private int catalogYear;
     private String program;
-    private ArrayList<ArrayList> semesters;
+    private ArrayList<Semester> semesters;
 
     private ArrayList<BaseCourse> requiredClass = new ArrayList<>();
 
@@ -37,15 +37,15 @@ public class PersonalPlan {
         return program;
     }
 
-    public void addSemester(Semester Semester){
-        semesters.add(semesters);
+    public void addSemester(Semester semester){
+        semesters.add(semester);
     }
 
-    public void removeSemester(Semester Semester){
-        semesters.remove(semesters);
+    public void removeSemester(Semester semester){
+        semesters.remove(semester);
     }
 
-    public ArrayList<ArrayList> getSemesters() {
+    public ArrayList<Semester> getSemesters() {
         return semesters;
     }
 
