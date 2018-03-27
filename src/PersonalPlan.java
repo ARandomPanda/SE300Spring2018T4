@@ -11,11 +11,15 @@ public class PersonalPlan {
 
     private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
 
+
+    PersonalPlan(){
+    }
+
     public void setProgram(String program) {
         this.program = program;
     }
 
-    public void setYear(int catalogYear) {
+    public void setCatalogYear(int catalogYear) {
         this.catalogYear = catalogYear;
     }
 
