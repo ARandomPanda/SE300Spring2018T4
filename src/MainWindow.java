@@ -18,13 +18,7 @@ public class MainWindow extends Application{
 	private Stage primaryStage = null;
 	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 	
-	
-	public static void main(String[] args)
-	{
-		launch();
-	}
-	
-	
+
 	// Standard start program required to use JavaFX
 	public void start(Stage stage)
 	{
@@ -132,5 +126,9 @@ public class MainWindow extends Application{
 		
 		return toolBar;
 	}
-
+	
+	public static void main(String[] args)
+	{
+		launch();
+	}
 }
