@@ -20,44 +20,32 @@ class SemesterTest {
 
     @Test
     void addCourseTest() {
-        fail("Unimplemented");
-        /*
         semesterUnderTest.addCourse(course1);
         assertTrue(semesterUnderTest.getCourses().contains(course), "Failed to add course");
         semesterUnderTest.addCourse(course2);
         assertTrue(semesterUnderTest.getCourses().contains(course2), "Failed to add another course");
-        */
     }
 
     @Test
     void addCourseFailTest() {
-        fail("Unimplemented");
-        /*
         assertThrows(NullPointerException.class, () -> semesterUnderTest.addCourse(null),
                 "Failed to throw NullPointerException");
-                */
     }
 
     @Test
     void removeCourseTest() {
-        fail("Unimplemented");
-        /*
         semesterUnderTest.addCourse(course1);
         semesterUnderTest.addCourse(course2);
         semesterUnderTest.removeCourse(course1);
         assertFalse(semesterUnderTest.getCourses().contains(course1), "Failed to remove course");
         assertTrue(semesterUnderTest.getcourses().contains(course2), "Removed a course that wasn't meant to be");
-        */
     }
 
     @Test
     void getCoursesTest() {
-        fail("Unimplemented");
-        /*
         assertTrue(semesterUnderTest.getCourses().getClass() == ObservableList.class);
         assertThrows(UnsupportedOperationException.class, () -> {
             semesterUnderTest.getCourses().add(course1);
         });
-        */
     }
 }
