@@ -43,7 +43,6 @@ class SemesterTest {
 
     @Test
     void getCoursesTest() {
-        assertTrue(semesterUnderTest.getCourses().getClass() == ObservableList.class);
         assertThrows(UnsupportedOperationException.class, () -> {
             semesterUnderTest.getCourses().add(course1);
         });
