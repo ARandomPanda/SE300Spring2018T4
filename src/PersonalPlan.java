@@ -12,7 +12,7 @@ public class PersonalPlan {
     private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
 
 
-    PersonalPlan(){
+    PersonalPlan() {
     }
 
     public void setProgram(String program) {
@@ -30,29 +30,26 @@ public class PersonalPlan {
 
     public List<RequiredCourse> getRequiredClass() {
         return Collections.unmodifiableList(requiredClass);
-
     }
 
-    public String getProgram(){
+    public String getProgram() {
         return program;
     }
 
-    public void addSemester(ArrayList Semester){
+    public void addSemester(ArrayList Semester) {
         semesters.add(Semester);
     }
 
-    public void removeSemester(ArrayList Semester){
+    public void removeSemester(ArrayList Semester) {
         semesters.remove(Semester);
     }
 
-    public ArrayList<ArrayList> getSemesters(){
+    public ArrayList<ArrayList> getSemesters() {
         return semesters;
     }
 
-    public int getCatalogYear(){
+    public int getCatalogYear() {
         return catalogYear;
     }
-
-
-
+    
 }
