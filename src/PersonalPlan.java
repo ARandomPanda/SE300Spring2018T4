@@ -1,6 +1,7 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 public class PersonalPlan {
@@ -9,7 +10,7 @@ public class PersonalPlan {
     private String program;
     private ArrayList<ArrayList> semesters;
 
-    private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
+    private ArrayList<BaseCourse> requiredClass = new ArrayList<>();
 
 
     PersonalPlan() {
@@ -25,23 +26,23 @@ public class PersonalPlan {
 
 
     public void setRequiredClass(BaseCourse course) {
-        requiredClass.add(new RequiredCourse(course));
+        requiredClass.add(course);
     }
 
-    public List<RequiredCourse> getRequiredClass() {
-        return Collections.unmodifiableList(requiredClass);
+    public ObservableList<BaseCourse> getRequiredClass() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(requiredClass));
     }
 
     public String getProgram() {
         return program;
     }
 
-    public void addSemester(ArrayList Semester) {
-        semesters.add(Semester);
+    public void addSemester(Semester Semester){
+        semesters.add(semesters);
     }
 
-    public void removeSemester(ArrayList Semester) {
-        semesters.remove(Semester);
+    public void removeSemester(Semester Semester){
+        semesters.remove(semesters);
     }
 
     public ArrayList<ArrayList> getSemesters() {
@@ -51,5 +52,5 @@ public class PersonalPlan {
     public int getCatalogYear() {
         return catalogYear;
     }
-    
+
 }
