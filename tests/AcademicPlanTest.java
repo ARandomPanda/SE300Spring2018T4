@@ -12,7 +12,7 @@ class AcademicPlanTest {
 	void init() {
 		plan = new AcademicPlan();
 		degree = new DegreeProgram();
-		degree.setProgram("Computer Science");
+		//degree.setProgram("Computer Science");
 	}
 	
 	@Test
