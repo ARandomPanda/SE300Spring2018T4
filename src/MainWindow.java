@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -13,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.geometry.*;
 
 public class MainWindow extends Application{
 	
@@ -21,7 +19,7 @@ public class MainWindow extends Application{
 	private Stage primaryStage = null;
 	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 	private PersonalPlan p;
-	private MasterCourseListController m = new MasterCourseListController();
+	private MasterCourseList m = MasterCourseList.get();
 
 	//TODO remove, for testing purposes
 	private void initPlan()
@@ -35,13 +33,16 @@ public class MainWindow extends Application{
 		b[3] = new BaseCourse("EGR 101", "EGR", 3, null, null);
 		b[4] = new BaseCourse("EGR 101", "EGR", 3, null, null);
 		
-		for (int i = 0; i < 8; i++)
+		int count = 0;
+		
+		for (int i = 0; i < 6; i++)
 		{
 			Semester s = new Semester();
 			
-			for (int k = 0; k<b.length; k++)
+			for (int k = 0; k<5; k++)
 			{
-				s.addCourse(b[k]);
+				s.addCourse(m.getCourseList().get(count));
+				count ++;
 			}
 			p.addSemester(s);
 		}
@@ -97,13 +98,8 @@ public class MainWindow extends Application{
 			
 			Semester sTemp = p.getSemesters().get(i);
 			
-			ObservableList<String> test = FXCollections.observableArrayList();
+			ObservableList<String> test = setUpCourseList(sTemp);
 			
-			for (int k = 0; k < sTemp.getCourses().size(); k ++)
-			{
-				test.add(sTemp.getCourses().get(k).toString());
-				
-			}
 			semesterPane.setItems(test);
 
 			semesterGrid.add(semesterPane, i+1, 0);
@@ -113,6 +109,19 @@ public class MainWindow extends Application{
 		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());
 		
 		return semesterGrid;
+	}
+	
+	private ObservableList<String> setUpCourseList(Semester activeSemester)
+	{
+		ObservableList<String> listOfCourses = FXCollections.observableArrayList();
+		
+		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
+		{
+			BaseCourse activeCourse = activeSemester.getCourses().get(k);
+			listOfCourses.add(activeCourse.getID() + " " + activeCourse.getName());	
+		}
+		
+		return listOfCourses;
 	}
 	
 	/**
