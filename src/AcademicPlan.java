@@ -21,7 +21,7 @@ public class AcademicPlan implements Serializable{
 	private ArrayList<DegreeProgram> degrees;
 	private ArrayList<Integer> credits;
 	private double GPA;
-	private String fileLocation, catalogFallYear, catalogSpringYear;
+	private String fileLocation, catalogYear;
 	
 	/**
 	 * Creates an empty academic plan
@@ -135,8 +135,8 @@ public class AcademicPlan implements Serializable{
 	 * @param SpringYear A string of the second year (YYYY format) of your first academic calender
 	 */
 	public void setCatalogYear(String FallYear, String SpringYear) {
-		this.catalogFallYear = FallYear;
-		this.catalogSpringYear = SpringYear;
+		// TODO restrict inputs to just numbers like 20XX
+		this.catalogYear = FallYear + " - " + SpringYear;
 	}
 	
 	/**
