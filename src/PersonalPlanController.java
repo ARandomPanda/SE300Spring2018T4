@@ -5,7 +5,7 @@ public class PersonalPlanController {
     private PersonalPlan plan;
 
     public PersonalPlanController(PersonalPlan plan) {
-        plan = plan;
+        this.plan = plan;
     }
 
     public void addSemester() {
