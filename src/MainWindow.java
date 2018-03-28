@@ -112,7 +112,7 @@ public class MainWindow extends Application{
 		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
 		{
 			BaseCourse activeCourse = activeSemester.getCourses().get(k);
-			listOfCourses.add(activeCourse.getID() + " " + activeCourse.getName());	
+			listOfCourses.add(activeCourse.getID() + " | " + activeCourse.getName());	
 		}
 		
 		return listOfCourses;
