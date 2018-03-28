@@ -1,52 +1,57 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 public class PersonalPlan {
 
     private int catalogYear;
-    private float overallgpa;
-    private float semestergpa;
-
     private String program;
 
-    private ArrayList<RequiredCourse> requiredClass = new ArrayList<RequiredCourse>();
+    private ArrayList<Semester> semesters = new ArrayList<>();
+
+    private ArrayList<BaseCourse> requiredClass = new ArrayList<>();
+
+
+    PersonalPlan() {
+    }
 
     public void setProgram(String program) {
         this.program = program;
     }
 
-    public void setYear(int catalogYear) {
+    public void setCatalogYear(int catalogYear) {
         this.catalogYear = catalogYear;
     }
 
 
-    public void setRequiredClass(BaseCourse course, Grade grade) {
-        requiredClass.add(new RequiredCourse(course, grade));
+    public void setRequiredClass(BaseCourse course) {
+        requiredClass.add(course);
     }
 
-    public List<RequiredCourse> getRequiredClass() {
-        return Collections.unmodifiableList(requiredClass);
-
+    public ObservableList<BaseCourse> getRequiredClass() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(requiredClass));
     }
 
-    public float getOverallgpa() {
-        return overallgpa;
-    }
-
-    public float getSemestergpa() {
-        return semestergpa;
-    }
-
-    public String getProgram(){
+    public String getProgram() {
         return program;
     }
 
-    public int getCatalogYear(){
-        return catalogYear;
+    public void addSemester(Semester semester){
+        semesters.add(semester);
     }
 
+    public void removeSemester(Semester semester){
+        semesters.remove(semester);
+    }
 
+    public ObservableList<Semester> getSemesters() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesters));
+    }
+
+    public int getCatalogYear() {
+        return catalogYear;
+    }
 
 }

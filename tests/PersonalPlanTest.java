@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersonalPlanTest {
 
-    DegreeProgram plan;
+    PersonalPlan plan;
     Semester sem1;
     Semester sem2;
     Semester sem3;
@@ -17,7 +17,7 @@ class PersonalPlanTest {
 
     @BeforeEach
     void setUp() {
-        plan = new DegreeProgram();
+        plan = new PersonalPlan();
         sem1 = new Semester();
         sem2 = new Semester();
         sem3 = new Semester();
@@ -59,7 +59,6 @@ class PersonalPlanTest {
 
     @Test
     void getSemestersTest() {
-        assertEquals(ObservableList.class, plan.getSemesters(), "getSemesters did not return an ObservableList");
         assertThrows(UnsupportedOperationException.class, () -> {
             plan.getSemesters().add(sem1);
         });
