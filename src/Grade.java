@@ -12,9 +12,18 @@ public enum Grade {
     NONE(-1);
 
     private int gradeValue;
-
+    private char courseCredits;
+    
     private Grade(int gradeValue) {
         this.gradeValue = gradeValue;
+    }
+    
+    protected void setCourseCredits(char credits) {
+    	this.courseCredits = credits;
+    }
+    
+    protected int gpaCredits() {
+    	return gradeValue * courseCredits;
     }
 
     /**
@@ -23,5 +32,12 @@ public enum Grade {
      */
     public int getGradeValue() {
         return this.gradeValue;
+    }
+    
+    /**
+     * @return The number of credits in the current course from 1 to 6.
+     */
+    public char getCourseCredits () {
+    	return this.courseCredits;
     }
 }
