@@ -26,12 +26,6 @@ public class MainWindow extends Application{
 	{
 		
 		p = new PersonalPlan();
-		BaseCourse[] b = new BaseCourse[5];
-		b[0] = new BaseCourse("EGR 101", "EGR", 3, null, null);
-		b[1] = new BaseCourse("UNIV 101", "College Success", 3, null, null);
-		b[2] = new BaseCourse("SE 300", "Software Engineering Practices", 3, null, null);
-		b[3] = new BaseCourse("EGR 101", "EGR", 3, null, null);
-		b[4] = new BaseCourse("EGR 101", "EGR", 3, null, null);
 		
 		int count = 0;
 		
