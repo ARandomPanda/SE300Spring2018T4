@@ -8,6 +8,7 @@ public class PersonalPlan {
 
     private int catalogYear;
     private String program;
+
     private ArrayList<Semester> semesters = new ArrayList<>();
 
     private ArrayList<BaseCourse> requiredClass = new ArrayList<>();
