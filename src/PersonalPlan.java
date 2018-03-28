@@ -8,7 +8,8 @@ public class PersonalPlan {
 
     private int catalogYear;
     private String program;
-    private ArrayList<Semester> semesters = new ArrayList<Semester>();
+
+    private ArrayList<Semester> semesters = new ArrayList<>();
 
     private ArrayList<BaseCourse> requiredClass = new ArrayList<>();
 
@@ -45,8 +46,8 @@ public class PersonalPlan {
         semesters.remove(semester);
     }
 
-    public ArrayList<Semester> getSemesters() {
-        return semesters;
+    public ObservableList<Semester> getSemesters() {
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesters));
     }
 
     public int getCatalogYear() {
