@@ -15,11 +15,14 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javafx.collections.ObservableList;
+
 public class AcademicPlan implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private ArrayList<DegreeProgram> degrees;
 	private ArrayList<Integer> credits;
+	//private ObservableList<Course> courses = new ObservableList<Course>();
 	private double GPA;
 	private String fileLocation, catalogYear;
 	
@@ -39,13 +42,7 @@ public class AcademicPlan implements Serializable{
 		this.degrees.add(degree);
 		initializeConstants();
 	}
-/* TODO replace this constructor by extracting the catalog year, title, etc. from the degree program object
-	AcademicPlan(ArrayList<DegreeProgram> listOfDegrees, String degreeTitle) {
-		this.degrees = listOfDegrees;
-		this.addDegreeTitle(degreeTitle);
-		initializeConstants();
-	}
-*/
+	
 	private void initializeConstants() {
 		this.credits = new ArrayList<Integer>();
 		GPA = 0.0;
