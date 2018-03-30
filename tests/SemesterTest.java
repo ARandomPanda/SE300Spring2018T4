@@ -8,14 +8,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class SemesterTest {
 
     Semester semesterUnderTest;
-    BaseCourse course1;
-    BaseCourse course2;
+    Course course1;
+    Course course2;
+    BaseCourse baseCourse1;
+    BaseCourse baseCourse2;
 
     @BeforeEach
     void setUp() {
         semesterUnderTest = new Semester();
-        course1 = new BaseCourse("Test 101", "Test Course", 3);
-        course2 = new BaseCourse("Test 201", "Test Course", 3);
+        baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
+        baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
+        course1 = new Course(baseCourse1);
+        course2 = new Course(baseCourse2);
     }
 
     @Test

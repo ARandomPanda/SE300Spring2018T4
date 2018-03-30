@@ -20,8 +20,8 @@ public class Semester implements Comparable<Semester> {
         this.year = year;
     }
 
-    public void addCourse(BaseCourse course) {
-        semesterClass.add(new Course(course));
+    public void addCourse(Course course) {
+        semesterClass.add(course);
     }
 
     public void removeCourse(Course course){
