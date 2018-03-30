@@ -25,6 +25,9 @@ public class Semester implements Comparable<Semester> {
     }
 
     public void addCourse(Course course) {
+        if (course == null) {
+            throw new NullPointerException();
+        }
         courses.add(course);
     }
 
@@ -46,6 +49,9 @@ public class Semester implements Comparable<Semester> {
 
     @Override
     public int compareTo(Semester other) {
+        if (other == null) {
+            return 1;
+        }
         if (this.year == other.year) {
             return term.compareTo(other.term);
         } else {
