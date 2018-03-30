@@ -11,7 +11,10 @@ public class PersonalPlan {
 
     PersonalPlan() { }
 
-    public void addSemester(Semester semester){
+    public void addSemester(Semester semester) {
+        if (semester == null) {
+            throw new NullPointerException();
+        }
         semesters.add(semester);
         Collections.sort(semesters);
     }
