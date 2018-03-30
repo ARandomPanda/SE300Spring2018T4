@@ -9,7 +9,11 @@ public class Semester implements Comparable<Semester> {
     private int year;
     private ArrayList<Course> semesterClass = new ArrayList<>();
 
-    Semester() {
+    public Semester() { }
+
+    public Semester(Term term, int year) {
+        this.term = term;
+        this.year = year;
     }
 
     public void setTerm(Term term) {
