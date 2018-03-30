@@ -1,5 +1,3 @@
-import javafx.collections.ObservableList;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,17 +5,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SemesterTest {
 
-    Semester semesterUnderTest;
-    Course course1;
-    Course course2;
-    BaseCourse baseCourse1;
-    BaseCourse baseCourse2;
+    private Semester semesterUnderTest;
+    private Course course1;
+    private Course course2;
 
     @BeforeEach
     void setUp() {
         semesterUnderTest = new Semester(Term.SPRING, 2018);
-        baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
-        baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
+        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
+        BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
         course1 = new Course(baseCourse1);
         course2 = new Course(baseCourse2);
     }

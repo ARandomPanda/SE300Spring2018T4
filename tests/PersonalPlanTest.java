@@ -1,5 +1,3 @@
-import javafx.collections.ObservableList;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,13 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersonalPlanTest {
 
-    PersonalPlan plan;
-    Semester sem1;
-    Semester sem2;
-    Semester sem3;
-    Course course1;
-    Course course2;
-    Course course3;
+    private PersonalPlan plan;
+    private Semester sem1;
+    private Semester sem2;
+    private Semester sem3;
 
     @BeforeEach
     void setUp() {
@@ -24,9 +19,9 @@ class PersonalPlanTest {
         BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
         BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
         BaseCourse baseCourse3 = new BaseCourse("Test 301", "Test Course", 3);
-        course1 = new Course(baseCourse1);
-        course2 = new Course(baseCourse2);
-        course3 = new Course(baseCourse3);
+        Course course1 = new Course(baseCourse1);
+        Course course2 = new Course(baseCourse2);
+        Course course3 = new Course(baseCourse3);
         sem1.addCourse(course1);
         sem2.addCourse(course2);
         sem2.addCourse(course3);

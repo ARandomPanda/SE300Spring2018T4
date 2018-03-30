@@ -18,9 +18,6 @@ class BaseCourseTest {
 
     @Test
     void constructor() {
-        BaseCourse a = new BaseCourse("AA 101", "TestA", 0);
-        BaseCourse b = new BaseCourse("BB 101", "TestB", 6);
-        BaseCourse c = new BaseCourse("CC 101", "TestC", 3);
         assertThrows(NullPointerException.class,
                 () -> new BaseCourse(null, "Test", 0));
         assertThrows(NullPointerException.class,

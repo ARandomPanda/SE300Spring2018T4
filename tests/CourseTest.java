@@ -5,12 +5,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CourseTest {
 
-    BaseCourse baseCourse1;
-    Course course;
+    private Course course;
 
     @BeforeEach
     void setUp() {
-        baseCourse1 = new BaseCourse("Test 101", "Test", 3);
+        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test", 3);
         course = new Course(baseCourse1);
     }
 
