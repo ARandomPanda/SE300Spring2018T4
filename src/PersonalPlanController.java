@@ -16,7 +16,7 @@ public class PersonalPlanController {
         plan.removeSemester(semester);
     }
 
-    public void addCourse(BaseCourse course, Semester semester) {
+    public void addCourse(Course course, Semester semester) {
         if (plan.getSemesters().contains(semester)) {
             semester.addCourse(course);
         } else {
@@ -24,7 +24,7 @@ public class PersonalPlanController {
         }
     }
 
-    public void removeCourse(BaseCourse course, Semester semester) {
+    public void removeCourse(Course course, Semester semester) {
         if (plan.getSemesters().contains(semester)) {
             semester.removeCourse(course);
         } else {

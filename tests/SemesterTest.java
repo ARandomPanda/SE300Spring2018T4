@@ -1,5 +1,3 @@
-import javafx.collections.ObservableList;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -7,15 +5,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SemesterTest {
 
-    Semester semesterUnderTest;
-    BaseCourse course1;
-    BaseCourse course2;
+    private Semester semesterUnderTest;
+    private Course course1;
+    private Course course2;
 
     @BeforeEach
     void setUp() {
-        semesterUnderTest = new Semester();
-        course1 = new BaseCourse("Test 101", "Test Course", 3);
-        course2 = new BaseCourse("Test 201", "Test Course", 3);
+        semesterUnderTest = new Semester(Term.SPRING, 2018);
+        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
+        BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
+        course1 = new Course(baseCourse1);
+        course2 = new Course(baseCourse2);
     }
 
     @Test
@@ -46,5 +46,19 @@ class SemesterTest {
         assertThrows(UnsupportedOperationException.class, () -> {
             semesterUnderTest.getCourses().add(course1);
         });
+    }
+
+    @Test
+    void comparableTest() {
+        Semester other = new Semester(Term.SPRING, 2018);
+        assertTrue(0 == semesterUnderTest.compareTo(other), "Compare equal is wrong");
+        other.setTerm(Term.FALL);
+        assertTrue(0 > semesterUnderTest.compareTo(other), "Compare less than is wrong");
+        other.setYear(2019);
+        assertTrue(0 > semesterUnderTest.compareTo(other), "Compare less than is wrong");
+        other.setYear(2017);
+        assertTrue(0 < semesterUnderTest.compareTo(other), "Compare greater than is wrong");
+        other.setTerm(Term.SPRING);
+        assertTrue(0 < semesterUnderTest.compareTo(other), "Compare greater than is wrong");
     }
 }
