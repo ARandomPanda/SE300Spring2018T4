@@ -53,6 +53,15 @@ public class Semester implements Comparable<Semester> {
             return 1;
         }
         if (this.year == other.year) {
+            if (this.term == null && other.term == null) {
+                return 0;
+            }
+            if (this.term == null) {
+                return -1;
+            }
+            if (other.term == null) {
+                return 1;
+            }
             return term.compareTo(other.term);
         } else {
             if (this.year > other.year) {
