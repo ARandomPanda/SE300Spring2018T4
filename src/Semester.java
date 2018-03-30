@@ -58,4 +58,9 @@ public class Semester implements Comparable<Semester> {
         // should be unreachable
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return term.toString() + ' ' + year;
+    }
 }
