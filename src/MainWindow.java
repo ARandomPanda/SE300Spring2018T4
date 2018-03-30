@@ -33,20 +33,19 @@ public class MainWindow extends Application{
 	//TODO remove, for testing purposes
 	private void initPlan()
 	{
-		
 		p = new PersonalPlan();
-		
 		int count = 0;
 		
 		for (int i = 0; i < 7; i++)
 		{
-			Semester s = new Semester();
+			Semester s = new Semester(Term.FALL, 2018);
 			
 			for (int k = 0; k<5; k++)
 			{
-				s.addCourse(m.getCourseList().get(count));
+				s.addCourse(new Course(m.getCourseList().get(count)));
 				count ++;
 			}
+			
 			p.addSemester(s);
 		}
 	}
@@ -171,12 +170,12 @@ public class MainWindow extends Application{
 	{
 		ObservableList<String> listOfCourses = FXCollections.observableArrayList();
 		
-		listOfCourses.add(activeSemester.getTerm());
+		listOfCourses.add(activeSemester.getTerm().toString() + " " + activeSemester.getYear());
 		
 		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
 		{
-			BaseCourse activeCourse = activeSemester.getCourses().get(k);
-			listOfCourses.add(activeCourse.getID());	
+			Course activeCourse = activeSemester.getCourses().get(k);
+			listOfCourses.add(activeCourse.getBaseCourse().getID());	
 		}
 		
 		return listOfCourses;
