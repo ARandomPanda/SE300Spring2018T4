@@ -20,9 +20,10 @@ import javafx.collections.ObservableList;
 public class AcademicPlan implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	private ArrayList<DegreeProgram> degrees;
-	private ArrayList<Integer> credits;
-	//private ObservableList<Course> courses = new ObservableList<Course>();
+	private ArrayList<DegreeProgram> listOfDegrees;
+	private ArrayList<String> degreeFileLocations;
+	private ArrayList<Integer> cumulativeCreditsPerDegree;
+	private ObservableList<Course> coursesNotInSemesters;
 	private double GPA;
 	private String fileLocation, catalogYear;
 	
@@ -30,7 +31,7 @@ public class AcademicPlan implements Serializable{
 	 * Creates an empty academic plan
 	 */
 	public AcademicPlan() {
-		degrees = new ArrayList<DegreeProgram>();
+		listOfDegrees = new ArrayList<DegreeProgram>();
 		initializeConstants();
 	}
 
@@ -39,12 +40,12 @@ public class AcademicPlan implements Serializable{
 	 * @param degree A DegreeProgram object representing the chosen major of the student
 	 */
 	public AcademicPlan(DegreeProgram degree) {
-		this.degrees.add(degree);
+		this.listOfDegrees.add(degree);
 		initializeConstants();
 	}
 	
 	private void initializeConstants() {
-		this.credits = new ArrayList<Integer>();
+		this.cumulativeCreditsPerDegree = new ArrayList<Integer>();
 		GPA = 0.0;
 		// TODO allow user to specify location
 		fileLocation = "assets/academicPlan.obj";
@@ -56,7 +57,7 @@ public class AcademicPlan implements Serializable{
 	 * @return returns true when successful (appended to list)
 	 */
 	public boolean addDegree(DegreeProgram degree) {
-		return degrees.add(degree);
+		return listOfDegrees.add(degree);
 	}
 
 	/**
@@ -65,7 +66,7 @@ public class AcademicPlan implements Serializable{
 	 * @return returns true when list changes (first matching element was found and removed)
 	 */
 	public boolean removeDegree(DegreeProgram degree) {
-		return degrees.remove(degree);
+		return listOfDegrees.remove(degree);
 	}
 	
 	/**
@@ -143,9 +144,38 @@ public class AcademicPlan implements Serializable{
 	protected double calculateGPA() {
 
 		double gpa = 0;
-		for (int tmp : credits) {
+		for (int tmp : cumulativeCreditsPerDegree) {
 			gpa += tmp;
 		}
 		return gpa;
+	}
+
+	public boolean addDegreeFileLocation (String location) {
+		if (location == null) {
+			return false;
+		} else {
+			return this.degreeFileLocations.add(location);
+		}
+	}
+	
+	public boolean removeDegreeFileLocation (String location) {
+		if (location == null) {
+			return false;
+		} else {
+			return degreeFileLocations.remove(location);
+		}
+	}
+	
+	public boolean setPlanSaveLocation (String location) {
+		if (location == null) {
+			return false;
+		} else {
+			this.fileLocation = location;
+			return true;
+		}
+	}
+	
+	public String getPlansaveLocation () {
+		return fileLocation;
 	}
 }
