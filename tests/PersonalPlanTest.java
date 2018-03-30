@@ -11,9 +11,9 @@ class PersonalPlanTest {
     Semester sem1;
     Semester sem2;
     Semester sem3;
-    BaseCourse course1;
-    BaseCourse course2;
-    BaseCourse course3;
+    Course course1;
+    Course course2;
+    Course course3;
 
     @BeforeEach
     void setUp() {
@@ -21,9 +21,12 @@ class PersonalPlanTest {
         sem1 = new Semester();
         sem2 = new Semester();
         sem3 = new Semester();
-        course1 = new BaseCourse("Test 101", "Test Course", 3);
-        course2 = new BaseCourse("Test 201", "Test Course", 3);
-        course3 = new BaseCourse("Test 301", "Test Course", 3);
+        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
+        BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
+        BaseCourse baseCourse3 = new BaseCourse("Test 301", "Test Course", 3);
+        course1 = new Course(baseCourse1);
+        course2 = new Course(baseCourse2);
+        course3 = new Course(baseCourse3);
         sem1.addCourse(course1);
         sem2.addCourse(course2);
         sem2.addCourse(course3);
