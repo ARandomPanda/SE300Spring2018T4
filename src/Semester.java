@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Semester implements Comparable<Semester> {
     private Term term;
     private int year;
-    private ArrayList<Course> semesterClass = new ArrayList<>();
+    private ArrayList<Course> courses = new ArrayList<>();
 
     public Semester() { }
 
@@ -25,15 +25,15 @@ public class Semester implements Comparable<Semester> {
     }
 
     public void addCourse(Course course) {
-        semesterClass.add(course);
+        courses.add(course);
     }
 
     public void removeCourse(Course course){
-        semesterClass.remove(course);
+        courses.remove(course);
     }
 
     public ObservableList<Course> getCourses(){
-        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesterClass));
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(courses));
     }
 
     public Term getTerm() {
