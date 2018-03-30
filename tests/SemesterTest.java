@@ -15,7 +15,7 @@ class SemesterTest {
 
     @BeforeEach
     void setUp() {
-        semesterUnderTest = new Semester();
+        semesterUnderTest = new Semester(Term.SPRING, 2018);
         baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
         baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
         course1 = new Course(baseCourse1);
@@ -50,5 +50,19 @@ class SemesterTest {
         assertThrows(UnsupportedOperationException.class, () -> {
             semesterUnderTest.getCourses().add(course1);
         });
+    }
+
+    @Test
+    void comparableTest() {
+        Semester other = new Semester(Term.SPRING, 2018);
+        assertTrue(0 == semesterUnderTest.compareTo(other), "Compare equal is wrong");
+        other.setTerm(Term.FALL);
+        assertTrue(0 > semesterUnderTest.compareTo(other), "Compare less than is wrong");
+        other.setYear(2019);
+        assertTrue(0 > semesterUnderTest.compareTo(other), "Compare less than is wrong");
+        other.setYear(2017);
+        assertTrue(0 < semesterUnderTest.compareTo(other), "Compare greater than is wrong");
+        other.setTerm(Term.SPRING);
+        assertTrue(0 < semesterUnderTest.compareTo(other), "Compare greater than is wrong");
     }
 }
