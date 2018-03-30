@@ -2,6 +2,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class PersonalPlan {
@@ -40,6 +41,7 @@ public class PersonalPlan {
 
     public void addSemester(Semester semester){
         semesters.add(semester);
+        Collections.sort(semesters);
     }
 
     public void removeSemester(Semester semester){
