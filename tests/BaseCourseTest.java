@@ -11,23 +11,25 @@ class BaseCourseTest {
 
     @BeforeEach
     void makeTestBaseCourse() {
-        testA = new BaseCourse("AA 101", "TestA", 0);
-        testB = new BaseCourse("BB 101", "TestB", 3);
-        testC = new BaseCourse("CC 101", "TestC", 6);
+        testA = new BaseCourse(DepartmentID.MA, 101, "TestA", 0);
+        testB = new BaseCourse(DepartmentID.AE,101, "TestB", 3);
+        testC = new BaseCourse(DepartmentID.AF, 101, "TestC", 6);
     }
 
     @Test
     void constructor() {
         assertThrows(NullPointerException.class,
-                () -> new BaseCourse(null, "Test", 0));
+                () -> new BaseCourse(null, 101, "Test", 0));
         assertThrows(NullPointerException.class,
-                () -> new BaseCourse("Test", null, 0));
+                () -> new BaseCourse(DepartmentID.AF, 101, null, 0));
         assertThrows(NullPointerException.class,
-                () -> new BaseCourse(null, null, 0));
+                () -> new BaseCourse(null, 101, null, 0));
         assertThrows(IllegalArgumentException.class,
-                () -> new BaseCourse("a", "b", -1));
+                () -> new BaseCourse(DepartmentID.AF, 101, "b", -1));
         assertThrows(IllegalArgumentException.class,
-                () -> new BaseCourse("a", "b", 7));
+                () -> new BaseCourse(DepartmentID.AF, 101, "b", 7));
+        assertThrows(IllegalArgumentException.class,
+                () -> new BaseCourse(DepartmentID.AF, -1, "b", 3));
     }
 
     @Test
@@ -57,13 +59,18 @@ class BaseCourseTest {
 
     @Test
     void setID() {
-        String var = "varTest";
-        testA.setID("test");
-        assertEquals("test", testA.getID());
-        testA.setID(var);
-        assertEquals(var, testA.getID());
+        testA.setID(DepartmentID.AF);
+        assertEquals(DepartmentID.AF, testA.getID());
         assertThrows(NullPointerException.class,
                 () -> testA.setID(null));
+    }
+
+    @Test
+    void setCourseNum() {
+        testA.setCourseNum(201);
+        assertEquals(201, testA.getCourseNum());
+        assertThrows(IllegalArgumentException.class,
+                () -> testA.setCourseNum(-1));
     }
 
     @Test
