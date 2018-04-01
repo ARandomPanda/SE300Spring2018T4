@@ -1,17 +1,26 @@
-
+/**
+ * @author Adam Babbit
+ * @date 
+ * 
+ */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class MainWindow extends Application{
 	
@@ -24,20 +33,19 @@ public class MainWindow extends Application{
 	//TODO remove, for testing purposes
 	private void initPlan()
 	{
-		
 		p = new PersonalPlan();
-		
 		int count = 0;
 		
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 7; i++)
 		{
-			Semester s = new Semester();
+			Semester s = new Semester(Term.FALL, 2018);
 			
 			for (int k = 0; k<5; k++)
 			{
-				s.addCourse(m.getCourseList().get(count));
+				s.addCourse(new Course(m.getCourseList().get(count)));
 				count ++;
 			}
+			
 			p.addSemester(s);
 		}
 	}
@@ -45,10 +53,12 @@ public class MainWindow extends Application{
 	// Standard start program required to use JavaFX
 	public void start(Stage stage)
 	{
+		//TODO Remove Line Below
 		initPlan();
+		
 		primaryStage = stage;
 		
-		primaryStage.setTitle("Curriculum Map");
+		primaryStage.setTitle("Degree Plan");
 		
 		primaryStage.setX(screenSize.getMinX());
 		primaryStage.setY(screenSize.getMinY());
@@ -58,7 +68,7 @@ public class MainWindow extends Application{
 		primaryStage.setMinWidth(500);
 		primaryStage.setScene(setupScene());
 		
-		this.primaryStage.show();
+		primaryStage.show();
 		
 	}
 	
@@ -74,12 +84,64 @@ public class MainWindow extends Application{
 		BorderPane highestPane = new BorderPane();
 		BorderPane topBorderPane = new BorderPane();
 		Scene scene = new Scene(highestPane);
+		ListView<BaseCourse> list = showCoursePool();
+		
+		
+		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
 		topBorderPane.setTop(makeMenu());
+		highestPane.setCenter(list);
 		highestPane.setTop(topBorderPane);
 		highestPane.setBottom(setUpSemesterPane());
 		
 		return scene;
+	}
+	
+	private ListView<BaseCourse> showCoursePool()
+	{
+		ListView<BaseCourse> coursePool = new ListView<BaseCourse>();
+		
+		coursePool.setMaxHeight(screenSize.getHeight() * 0.15);
+		coursePool.setMaxWidth(screenSize.getWidth() * .5);
+		
+		coursePool.setOrientation(Orientation.HORIZONTAL);
+		
+		coursePool.setCellFactory(new Callback<ListView<BaseCourse>, ListCell<BaseCourse>>() {
+			
+			
+				public ListCell<BaseCourse> call(ListView<BaseCourse> param){
+					Tooltip tooltip = new Tooltip();
+					ListCell<BaseCourse> cell = new ListCell<BaseCourse>() {
+							public void updateItem(BaseCourse item, boolean empty){
+								super.updateItem(item, empty);
+								if (item != null){
+									setText(item.getID());
+									String tipText = item.getName() + "\n" + "Credit Count: " + item.getNumCredits();
+									if (item.getCoreqs().size() == 0)
+									{
+										tipText += "\n" + "CoReqs: None";
+									}
+									if (item.getPrereqs().size() == 0)
+									{
+										tipText += "\n" + "PreReqs: None";
+									}
+									else
+									{
+										tipText += "\n" + "PreReqs: " + item.getPrereqs().get(0).getID() + " | " + item.getPrereqs().get(0).getName();
+									}
+									tooltip.setText(tipText);
+									setTooltip(tooltip);
+								}
+							}
+						};
+						return cell;
+					}
+				});
+		
+		
+		coursePool.setItems(m.getCourseList());
+		
+		return coursePool;
 	}
 	
 	private GridPane setUpSemesterPane()
@@ -89,13 +151,10 @@ public class MainWindow extends Application{
 		for (int i = 0; i < p.getSemesters().size(); i++)
 		{
 			ListView<String> semesterPane = new ListView<String>();
-			
 			Semester sTemp = p.getSemesters().get(i);
-			
 			ObservableList<String> test = setUpCourseList(sTemp);
 			
 			semesterPane.setItems(test);
-
 			semesterGrid.add(semesterPane, i+1, 0);
 		}
 
@@ -105,14 +164,18 @@ public class MainWindow extends Application{
 		return semesterGrid;
 	}
 	
+	
+	
 	private ObservableList<String> setUpCourseList(Semester activeSemester)
 	{
 		ObservableList<String> listOfCourses = FXCollections.observableArrayList();
 		
+		listOfCourses.add(activeSemester.getTerm().toString() + " " + activeSemester.getYear());
+		
 		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
 		{
-			BaseCourse activeCourse = activeSemester.getCourses().get(k);
-			listOfCourses.add(activeCourse.getID() + " | " + activeCourse.getName());	
+			Course activeCourse = activeSemester.getCourses().get(k);
+			listOfCourses.add(activeCourse.getBaseCourse().getID());	
 		}
 		
 		return listOfCourses;
@@ -127,7 +190,7 @@ public class MainWindow extends Application{
 	{
 		MenuBar toolBar = new ApplicationMenu().getMenuBar();
 		MenuItem newCourse = new MenuItem("Display Master Course List");
-		Menu toAdd = new Menu("To Open List");
+		Menu toAdd = new Menu("Open List");
 		
 		toAdd.getItems().add(newCourse);
 		
