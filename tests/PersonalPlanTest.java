@@ -16,9 +16,9 @@ class PersonalPlanTest {
         sem1 = new Semester();
         sem2 = new Semester();
         sem3 = new Semester();
-        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
-        BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
-        BaseCourse baseCourse3 = new BaseCourse("Test 301", "Test Course", 3);
+        BaseCourse baseCourse1 = new BaseCourse(DepartmentID.AF, 101, "Test Course", 3);
+        BaseCourse baseCourse2 = new BaseCourse(DepartmentID.AF, 101, "Test Course", 3);
+        BaseCourse baseCourse3 = new BaseCourse(DepartmentID.AF, 101, "Test Course", 3);
         Course course1 = new Course(baseCourse1);
         Course course2 = new Course(baseCourse2);
         Course course3 = new Course(baseCourse3);

@@ -12,8 +12,8 @@ class SemesterTest {
     @BeforeEach
     void setUp() {
         semesterUnderTest = new Semester(Term.SPRING, 2018);
-        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test Course", 3);
-        BaseCourse baseCourse2 = new BaseCourse("Test 201", "Test Course", 3);
+        BaseCourse baseCourse1 = new BaseCourse(DepartmentID.AF, 101, "Test Course", 3);
+        BaseCourse baseCourse2 = new BaseCourse(DepartmentID.AF, 101, "Test Course", 3);
         course1 = new Course(baseCourse1);
         course2 = new Course(baseCourse2);
     }

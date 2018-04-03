@@ -37,7 +37,7 @@ public class MasterCourseListController {
         IDField.setText(currentText.toUpperCase());
         currentText = IDField.getText();
 
-        boolean validID = currentText.matches("[A-Z]{2,5} [0-9]{3}");
+        boolean validID = currentText.matches("[A-Z]{2,3} [0-9]{3}L?");
 
         if (validID) {
             ArrayList<BaseCourse> prereqs = new ArrayList<>(2);
@@ -48,7 +48,10 @@ public class MasterCourseListController {
             BaseCourse co1Selection = co1.getSelectionModel().getSelectedItem();
             BaseCourse co2Selection = co2.getSelectionModel().getSelectedItem();
 
-            BaseCourse course = new BaseCourse(IDField.getText(), nameField.getText(), numCreditsField.getValue());
+            String courseIdString[] = IDField.getText().split(" ");
+            DepartmentID id = DepartmentID.valueOf(courseIdString[0]);
+            int courseNum = Integer.parseInt(courseIdString[1]);
+            BaseCourse course = new BaseCourse(id, courseNum, nameField.getText(), numCreditsField.getValue());
             if (pre1Selection != null) {
                 course.addPrereq(pre1Selection);
             }

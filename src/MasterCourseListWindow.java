@@ -70,7 +70,7 @@ public class MasterCourseListWindow extends Application {
         // TODO find a way to make writable while keeping BaseCourse Serializable
         TableColumn<BaseCourse, String> IDcol = new TableColumn<>("Course ID");
         IDcol.setCellValueFactory(p -> {
-            return new ReadOnlyObjectWrapper<>(p.getValue().getID());
+            return new ReadOnlyObjectWrapper<>(p.getValue().toString());
         });
 
         TableColumn<BaseCourse, String> nameCol = new TableColumn<>("Course Name");

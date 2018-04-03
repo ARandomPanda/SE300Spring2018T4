@@ -9,7 +9,7 @@ class CourseTest {
 
     @BeforeEach
     void setUp() {
-        BaseCourse baseCourse1 = new BaseCourse("Test 101", "Test", 3);
+        BaseCourse baseCourse1 = new BaseCourse(DepartmentID.AF, 101, "Test", 3);
         course = new Course(baseCourse1);
     }
 

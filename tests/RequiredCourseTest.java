@@ -9,7 +9,7 @@ class RequiredCourseTest {
         assertThrows(NullPointerException.class, () -> {
             new RequiredCourse(null, Grade.A);
         });
-        BaseCourse bc = new BaseCourse("Test 101", "Test", 3);
+        BaseCourse bc = new BaseCourse(DepartmentID.AF, 101, "Test", 3);
         assertThrows(IllegalArgumentException.class, () -> {
             new RequiredCourse(bc, Grade.F);
         });
