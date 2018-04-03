@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.collections.ObservableList;
 
@@ -23,13 +24,12 @@ public class AcademicPlan implements Serializable{
 	private ArrayList<DegreeProgram> listOfDegrees;
 	private ArrayList<String> degreeFileLocations;
 	private ArrayList<Integer> cumulativeCreditsPerDegree;
-	private ObservableList<Course> coursesNotInSemesters;
+	// TODO figure out how to add all courses in one list
+	// TODO maintain course list not in any semester
+	private ObservableList<Course> coursesNotInSemesters, allCoursesInPlan;
+	private PersonalPlan personalPlan = new PersonalPlan();
 	private double GPA;
 	private String fileLocation, catalogYear;
-	
-	public String getPlanFileLocation () {
-		return fileLocation;
-	}
 	
 	/**
 	 * Creates an empty academic plan
@@ -46,8 +46,21 @@ public class AcademicPlan implements Serializable{
 	public AcademicPlan(DegreeProgram degree) {
 		this.listOfDegrees.add(degree);
 		initializeConstants();
+		initializeLists();
+		removeRedundantCourses();
 	}
 	
+	private void removeRedundantCourses() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void initializeLists() {
+		// TODO Auto-generated method stub
+		// iterate through each degree and pull classes
+		
+	}
+
 	private void initializeConstants() {
 		this.cumulativeCreditsPerDegree = new ArrayList<Integer>();
 		GPA = 0.0;
@@ -145,13 +158,35 @@ public class AcademicPlan implements Serializable{
 	 * Gives the GPA of the cumulative credits.
 	 * @return A double value of the Grade Point Average (GPA) on a 4.0 scale.
 	 */
-	protected double calculateGPA() {
-
+	public double getEachDegreeGPA () {
+		// TODO
+		/*
 		double gpa = 0;
 		for (int tmp : cumulativeCreditsPerDegree) {
 			gpa += tmp;
 		}
-		return gpa;
+		return gpa = null;
+		*/
+		return 0;
+	}
+	
+	public double getCumulativeGPA () {
+		int count = 0;
+		double sum = 0;
+		Course course;
+		Iterator<Course> itr = allcoursesInPlan.iterator();
+		while (itr.hasNext()) {
+			if ((course = itr.next()) != null) {
+				count++;
+				sum += course.getGrade().getGradeValue();
+			}
+		}
+		return (sum / count);
+	}
+	
+	public int getEachDegreeCredits () {
+		// TODO
+		return 0;
 	}
 
 	public boolean addDegreeFileLocation (String location) {
@@ -179,7 +214,11 @@ public class AcademicPlan implements Serializable{
 		}
 	}
 	
-	public String getPlansaveLocation () {
+	public String getPlanFileLocation () {
 		return fileLocation;
+	}
+	
+	public PersonalPlan getPersonalPlan() {
+		return personalPlan;
 	}
 }
