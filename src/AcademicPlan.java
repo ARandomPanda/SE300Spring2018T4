@@ -154,22 +154,6 @@ public class AcademicPlan implements Serializable{
 		this.catalogYear = FallYear + " - " + SpringYear;
 	}
 	
-	/**
-	 * Gives the GPA of the cumulative credits.
-	 * @return A double value of the Grade Point Average (GPA) on a 4.0 scale.
-	 */
-	public double getEachDegreeGPA () {
-		// TODO
-		/*
-		double gpa = 0;
-		for (int tmp : cumulativeCreditsPerDegree) {
-			gpa += tmp;
-		}
-		return gpa = null;
-		*/
-		return 0;
-	}
-	
 	public double getCumulativeGPA () {
 		int count = 0;
 		double sum = 0;
@@ -182,11 +166,6 @@ public class AcademicPlan implements Serializable{
 			}
 		}
 		return (sum / count);
-	}
-	
-	public int getEachDegreeCredits () {
-		// TODO
-		return 0;
 	}
 
 	public boolean addDegreeFileLocation (String location) {
