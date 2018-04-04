@@ -17,6 +17,14 @@ class AcademicPlanTest {
 	}
 	
 	@Test
+	void changePlanFileLocation () {
+		String inputURL = "asset/temporary";
+		plan.setPlanSaveLocation(inputURL);
+		assertEquals(inputURL, plan.getPlanFileLocation());
+		
+	}
+	
+	@Test
 	void addDegree() {
 		assertEquals(true, plan.addDegree(degree));
 	}

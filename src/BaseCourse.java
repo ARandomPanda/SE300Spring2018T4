@@ -14,7 +14,8 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
     // This keeps the serialization backwards compatable if we add or change methods.
     static final long serialVersionUID = -3027139528909119438L;
 
-    private String ID;
+    private DepartmentID id;
+    private int courseNum;
     private String name;
     private int numCredits;
 
@@ -28,8 +29,9 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
      * @throws NullPointerException if ID or name are null
      * @throws IllegalArgumentException if numCredits is not between 0 and 6
      */
-    public BaseCourse(String ID, String name, int numCredits, List<BaseCourse> prereqs, List<BaseCourse> coreqs) {
-        setID(ID);
+    public BaseCourse(DepartmentID id, int courseNum, String name, int numCredits, List<BaseCourse> prereqs, List<BaseCourse> coreqs) {
+    		setID(id);
+        setCourseNum(courseNum);
         setName(name);
         setNumCredits(numCredits);
 
@@ -44,28 +46,40 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
         } else {
             this.coreqs = new ArrayList<>(coreqs);
         }
+        System.out.println(this);
     }
 
     /**
      * @throws NullPointerException if ID or name are null
      * @throws IllegalArgumentException if numCredits is not between 0 and 6
      */
-    public BaseCourse(String ID, String name, int numCredits) {
-        this(ID, name, numCredits, null, null);
+    public BaseCourse(DepartmentID id, int courseNum, String name, int numCredits) {
+        this(id, courseNum, name, numCredits, null, null);
     }
 
-    public String getID() {
-        return ID;
+    public DepartmentID getID() {
+        return id;
+    }
+
+    public int getCourseNum() {
+        return courseNum;
     }
 
     /**
      * @throws NullPointerException if ID is null
      */
-    public void setID(String ID) {
-        if (ID == null) {
+    public void setID(DepartmentID id) {
+        if (id == null) {
             throw new NullPointerException();
         }
-        this.ID = ID;
+        this.id = id;
+    }
+
+    public void setCourseNum(int courseNum) {
+        if (courseNum <= 0) {
+            throw new IllegalArgumentException();
+        }
+        this.courseNum = courseNum;
     }
 
     public String getName() {
@@ -146,11 +160,15 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
 
     @Override
     public String toString() {
-        return this.getID();
+        return id.toString() + ' ' + courseNum;
     }
 
     @Override
     public int compareTo(BaseCourse o) {
-        return this.ID.compareTo(o.ID);
+        if (id == o.id) {
+            return Integer.compare(courseNum, o.courseNum);
+        } else {
+            return id.compareTo(o.id);
+        }
     }
 }

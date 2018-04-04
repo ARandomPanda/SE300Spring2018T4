@@ -27,6 +27,10 @@ public class AcademicPlan implements Serializable{
 	private double GPA;
 	private String fileLocation, catalogYear;
 	
+	public String getPlanFileLocation () {
+		return fileLocation;
+	}
+	
 	/**
 	 * Creates an empty academic plan
 	 */

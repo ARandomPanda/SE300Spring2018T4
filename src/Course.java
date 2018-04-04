@@ -5,7 +5,8 @@ public class Course {
     private Grade grade;
 
     // Disable default constructor
-    private Course() {}
+    private Course() {
+    }
 
     public Course(BaseCourse course) {
         if (course == null) {
@@ -23,6 +24,9 @@ public class Course {
         return this.grade;
     }
 
+    public int getNumCreadits() {
+        return baseCourse.getNumCredits();
+    }
     public void setGrade(Grade newGrade) {
         grade = newGrade;
     }
