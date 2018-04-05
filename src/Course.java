@@ -1,5 +1,8 @@
+import java.io.Serializable;
 
-public class Course {
+public class Course implements Serializable {
+
+    static final long serialVersionUID = 1L;
 
     private BaseCourse baseCourse;
     private Grade grade;
