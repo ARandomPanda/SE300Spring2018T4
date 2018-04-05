@@ -13,10 +13,11 @@ public class ApplicationMenu {
 	MenuBar menuBar = new MenuBar();
 
 	// Menu tabs
-	Menu file, course, edit, status;
-
+	Menu file,semester , course, edit, status;
 	// File
 	MenuItem savePlan, saveasPlan, loadPlan, exportPlan, printPlan, refreshPlan;
+	//Semester
+	MenuItem addSemester, removeSemester;
 	// Course
 	MenuItem addCourse, addMajor, addMinor, removeCourse, removeMajor, removeMinor;
 	// Edit
@@ -32,6 +33,7 @@ public class ApplicationMenu {
 
 	private void addMenusToMenubar() {
 		menuBar.getMenus().add(file);
+		menuBar.getMenus().add(semester);
 		menuBar.getMenus().add(course);
 		menuBar.getMenus().add(edit);
 		menuBar.getMenus().add(status);
@@ -45,6 +47,11 @@ public class ApplicationMenu {
 		file.getItems().add(exportPlan);
 		file.getItems().add(printPlan);
 		file.getItems().add(refreshPlan);
+
+		//Semester
+		semester.getItems().add(addSemester);
+		semester.getItems().add(removeSemester);
+
 		// Course
 		course.getItems().add(addCourse);
 		course.getItems().add(addMajor);
@@ -62,9 +69,13 @@ public class ApplicationMenu {
 
 	private void initializeConstants() {
 		file = new Menu("File");
+		semester = new Menu("Semester");
 		course = new Menu("Course");
 		edit = new Menu("Edit");
 		status = new Menu("Status");
+
+		addSemester = new MenuItem("Add Semester");
+		removeSemester = new MenuItem("Remove Semester");
 
 		savePlan = new MenuItem("Save");
 		saveasPlan = new MenuItem("Save as");
@@ -72,6 +83,7 @@ public class ApplicationMenu {
 		exportPlan = new MenuItem("Export");
 		printPlan = new MenuItem("Print");
 		refreshPlan = new MenuItem("Refresh Plan");
+
 
 		addCourse = new MenuItem("Add Course");
 		addMajor = new MenuItem("Add Major");
