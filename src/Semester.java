@@ -1,10 +1,14 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 //comment
-public class Semester implements Comparable<Semester> {
+public class Semester implements Serializable, Comparable<Semester> {
+
+    static final long serialVersionUID = 1L;
+
     private Term term;
     private int year;
     private ArrayList<Course> courses = new ArrayList<>();

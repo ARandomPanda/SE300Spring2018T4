@@ -120,7 +120,7 @@ public class MainWindow extends Application{
 						public void updateItem(BaseCourse item, boolean empty){
 							super.updateItem(item, empty);
 							if (item != null){
-								setText(item.getID().toString());
+								setText(item.toString());
 								String tipText = item.getName() + "\n" + "Credit Count: " + item.getNumCredits();
 								if (item.getCoreqs().size() == 0)
 								{

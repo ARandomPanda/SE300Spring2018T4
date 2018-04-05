@@ -1,5 +1,8 @@
+import java.io.Serializable;
 
-public class Course {
+public class Course implements Serializable {
+
+    static final long serialVersionUID = 1L;
 
     private BaseCourse baseCourse;
     private Grade grade;
@@ -24,9 +27,10 @@ public class Course {
         return this.grade;
     }
 
-    public int getNumCreadits() {
+    public int getNumCredits() {
         return baseCourse.getNumCredits();
     }
+
     public void setGrade(Grade newGrade) {
         grade = newGrade;
     }

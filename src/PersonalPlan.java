@@ -1,11 +1,14 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
 
-public class PersonalPlan {
+public class PersonalPlan implements Serializable {
+
+    static final long serialVersionUID = 1L;
 
     private ArrayList<Semester> semesters = new ArrayList<>();
 
