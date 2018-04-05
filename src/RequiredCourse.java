@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class RequiredCourse implements Serializable {
 
+    static final long serialVersionUID = 1L;
+
     private BaseCourse course;
 
     private Grade requiredGrade;
