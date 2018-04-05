@@ -93,7 +93,7 @@ public class MasterCourseListWindow extends Application {
             } else {
                 sb = new StringBuilder();
                 for (BaseCourse c : prereqs) {
-                    sb.append(c.getID());
+                    sb.append(c.toString());
                     sb.append(", ");
                 }
                 if (sb.substring(sb.length() - 2).equals(", ")) {
@@ -114,7 +114,7 @@ public class MasterCourseListWindow extends Application {
             } else {
                 sb = new StringBuilder();
                 for (BaseCourse c : coreqs) {
-                    sb.append(c.getID());
+                    sb.append(c.toString());
                     sb.append(", ");
                 }
                 if (sb.substring(sb.length() - 2).equals(", ")) {
