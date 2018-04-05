@@ -23,9 +23,10 @@ public class Course {
         return this.grade;
     }
 
-    public int getNumCreadits() {
+    public int getNumCredits() {
         return baseCourse.getNumCredits();
     }
+
     public void setGrade(Grade newGrade) {
         grade = newGrade;
     }
