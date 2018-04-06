@@ -13,30 +13,25 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import javafx.collections.ObservableList;
 
 public class AcademicPlan implements Serializable{
 	
-	private static final long serialVersionUID = 1L;
-	private ArrayList<DegreeProgram> listOfDegrees;
-	private ArrayList<String> degreeFileLocations;
-	private ArrayList<Integer> cumulativeCreditsPerDegree;
-	// TODO figure out how to add all courses in one list
-	// TODO maintain course list not in any semester
-	private ObservableList<Course> coursesNotInSemesters, allCoursesInPlan;
-	private PersonalPlan personalPlan = new PersonalPlan();
+	private static final long serialVersionUID = -8031135960947860998L;
+	private DegreeProgram degree;
+	private String degreeFileLocation;
+	private ObservableList<Course> coursesNotInSemesters;
+	private PersonalPlan personalPlan;
 	private double GPA;
-	private String fileLocation, catalogYear;
+	private String saveLocation, catalogYear;
 	
 	/**
 	 * Creates an empty academic plan
 	 */
 	public AcademicPlan() {
-		listOfDegrees = new ArrayList<DegreeProgram>();
 		initializeConstants();
+		initializeObjects();
 	}
 
 	/**
@@ -44,46 +39,28 @@ public class AcademicPlan implements Serializable{
 	 * @param degree A DegreeProgram object representing the chosen major of the student
 	 */
 	public AcademicPlan(DegreeProgram degree) {
-		this.listOfDegrees.add(degree);
+		this.degree = degree;
 		initializeConstants();
-		initializeLists();
-		removeRedundantCourses();
-	}
-	
-	private void removeRedundantCourses() {
-		// TODO Auto-generated method stub
-		
+		initializeObjects();
 	}
 
-	private void initializeLists() {
-		// TODO Auto-generated method stub
-		// iterate through each degree and pull classes
-		
+	private void initializeObjects() {
+		personalPlan = new PersonalPlan();
 	}
 
 	private void initializeConstants() {
-		this.cumulativeCreditsPerDegree = new ArrayList<Integer>();
 		GPA = 0.0;
-		// TODO allow user to specify location
-		fileLocation = "assets/academicPlan.obj";
+		catalogYear = "catalog year";
+		saveLocation = "assets/academicPlan.obj";
+		degreeFileLocation = "assets/";
 	}
-
-	/**
-	 * 
-	 * @param degree - degree program/major
-	 * @return returns true when successful (appended to list)
-	 */
-	public boolean addDegree(DegreeProgram degree) {
-		return listOfDegrees.add(degree);
+	
+	public void setDegree (DegreeProgram degree) {
+		this.degree = degree;
 	}
-
-	/**
-	 * 
-	 * @param degree - degree program/major
-	 * @return returns true when list changes (first matching element was found and removed)
-	 */
-	public boolean removeDegree(DegreeProgram degree) {
-		return listOfDegrees.remove(degree);
+	
+	public DegreeProgram getDegree () {
+		return degree;
 	}
 	
 	/**
@@ -95,7 +72,7 @@ public class AcademicPlan implements Serializable{
 		ObjectOutputStream oos = null;
 		
 		try {
-			fOut = new FileOutputStream(fileLocation);
+			fOut = new FileOutputStream(saveLocation);
 			oos = new ObjectOutputStream(fOut);
 			oos.writeObject(this);
 			oos.close();
@@ -120,7 +97,7 @@ public class AcademicPlan implements Serializable{
 		ObjectInputStream ois = null;
 		
 		try {
-			fIn = new FileInputStream(fileLocation);
+			fIn = new FileInputStream(saveLocation);
 			ois = new ObjectInputStream(fIn);
 			ois.readObject();
 			ois.close();
@@ -130,7 +107,7 @@ public class AcademicPlan implements Serializable{
 			System.out.println("The file doesn't exist for academic plan.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("The academic plan object is missing from '" + fileLocation + "'.");
+			System.out.println("The academic plan object is missing from '" + saveLocation + "'.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("The academic plan object may be corrupted, causing a failure to load academic plan object.");
@@ -139,7 +116,7 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 
-	public int calculateCredits() {
+	private int calculateCredits() {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -154,47 +131,37 @@ public class AcademicPlan implements Serializable{
 		this.catalogYear = FallYear + " - " + SpringYear;
 	}
 	
+	public String getCatalogYear () {
+		return catalogYear;
+	}
+	
 	public double getCumulativeGPA () {
-		int count = 0;
-		double sum = 0;
-		Course course;
-		Iterator<Course> itr = allcoursesInPlan.iterator();
-		while (itr.hasNext()) {
-			if ((course = itr.next()) != null) {
-				count++;
-				sum += course.getGrade().getGradeValue();
-			}
-		}
-		return (sum / count);
+		return GPA;
+	}
+	
+	private void calculateGPA () {
+		// TODO
+	}
+	
+	public ObservableList<Course> getCourseList () {
+		return coursesNotInSemesters;
+	}
+	
+	private void updateCourseList () {
+		// TODO
 	}
 
-	public boolean addDegreeFileLocation (String location) {
-		if (location == null) {
-			return false;
-		} else {
-			return this.degreeFileLocations.add(location);
-		}
-	}
-	
-	public boolean removeDegreeFileLocation (String location) {
-		if (location == null) {
-			return false;
-		} else {
-			return degreeFileLocations.remove(location);
-		}
-	}
-	
 	public boolean setPlanSaveLocation (String location) {
 		if (location == null) {
 			return false;
 		} else {
-			this.fileLocation = location;
+			this.saveLocation = location;
 			return true;
 		}
 	}
 	
-	public String getPlanFileLocation () {
-		return fileLocation;
+	public String getPlanSaveLocation () {
+		return saveLocation;
 	}
 	
 	public PersonalPlan getPersonalPlan() {
