@@ -13,19 +13,22 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Iterator;
 
 import javafx.collections.ObservableList;
 
 public class AcademicPlan implements Serializable{
-	
+
 	private static final long serialVersionUID = -8031135960947860998L;
 	private DegreeProgram degree;
 	private String degreeFileLocation;
 	private ObservableList<Course> coursesNotInSemesters;
+	private ObservableList<Semester> semesters;
 	private PersonalPlan personalPlan;
+	private int credits, numberOfCourses;
 	private double GPA;
 	private String saveLocation, catalogYear;
-	
+
 	/**
 	 * Creates an empty academic plan
 	 */
@@ -46,23 +49,26 @@ public class AcademicPlan implements Serializable{
 
 	private void initializeObjects() {
 		personalPlan = new PersonalPlan();
+		semesters = personalPlan.getSemesters();
 	}
 
 	private void initializeConstants() {
 		GPA = 0.0;
 		catalogYear = "catalog year";
+		credits = 0;
+		numberOfCourses = 0;
 		saveLocation = "assets/academicPlan.obj";
 		degreeFileLocation = "assets/";
 	}
-	
+
 	public void setDegree (DegreeProgram degree) {
 		this.degree = degree;
 	}
-	
+
 	public DegreeProgram getDegree () {
 		return degree;
 	}
-	
+
 	/**
 	 * Save the plan's state
 	 * @return true when successful
@@ -70,7 +76,7 @@ public class AcademicPlan implements Serializable{
 	public boolean savePlan() {
 		FileOutputStream fOut = null;
 		ObjectOutputStream oos = null;
-		
+
 		try {
 			fOut = new FileOutputStream(saveLocation);
 			oos = new ObjectOutputStream(fOut);
@@ -87,7 +93,7 @@ public class AcademicPlan implements Serializable{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Load the previous plan's state
 	 * @return true when successful
@@ -95,7 +101,7 @@ public class AcademicPlan implements Serializable{
 	public boolean loadPlan() {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
-		
+
 		try {
 			fIn = new FileInputStream(saveLocation);
 			ois = new ObjectInputStream(fIn);
@@ -116,37 +122,74 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 
-	private int calculateCredits() {
-		// TODO Auto-generated method stub
-		return 0;
+	private void calculateCreditsAndGPA () {
+		credits = 0;
+		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
+		int[] tmp2 = getCreditsFromCoursePool();
+		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
 	}
-	
+
+	private int[] getCreditsFromCoursePool() {
+		Iterator<Course> iter = coursesNotInSemesters.iterator();
+		Course course;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			course = (Course) iter.next();
+			if (course.getGrade().getGradeValue() >= 0) {
+				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+				numberOfCompletedCourses++;
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
+	private int[] getCreditsFromSemesters() {
+		Iterator<Semester> iter = semesters.iterator();
+		Semester semester;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			semester = (Semester) iter.next();
+			ObservableList<Course> courses = semester.getCourses();
+			
+			Iterator<Course> iter2 = courses.iterator();
+			Course course;
+			while (iter2.hasNext()) {
+				course = (Course) iter2.next();
+				credits += course.getNumCredits();
+				if (course.getGrade().getGradeValue() >= 0) {
+					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+					numberOfCompletedCourses++;
+				}
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
 	/**
-	 * Sets the years for the first academic calender in which the student made contractual relations with the school
-	 * @param FallYear A string of the first year (YYYY format) of your first academic calender
-	 * @param SpringYear A string of the second year (YYYY format) of your first academic calender
+	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
+	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
+	 * @param SpringYear A string of the second year (YYYY format) of your first academic calendar
 	 */
 	public void setCatalogYear(String FallYear, String SpringYear) {
-		// TODO restrict inputs to just numbers like 20XX
-		this.catalogYear = FallYear + " - " + SpringYear;
+		if (compareYears(FallYear, SpringYear)) {
+			this.catalogYear = FallYear + " - " + SpringYear;
+		}
 	}
-	
+
 	public String getCatalogYear () {
 		return catalogYear;
 	}
-	
+
 	public double getCumulativeGPA () {
 		return GPA;
 	}
-	
-	private void calculateGPA () {
-		// TODO
-	}
-	
+
 	public ObservableList<Course> getCourseList () {
 		return coursesNotInSemesters;
 	}
-	
+
 	private void updateCourseList () {
 		// TODO
 	}
@@ -159,12 +202,17 @@ public class AcademicPlan implements Serializable{
 			return true;
 		}
 	}
-	
+
 	public String getPlanSaveLocation () {
 		return saveLocation;
 	}
-	
+
 	public PersonalPlan getPersonalPlan() {
 		return personalPlan;
+	}
+
+	private boolean compareYears (String FallYear, String SpringYear) {
+		int tmp;
+		return (tmp = Integer.valueOf(FallYear).intValue()) > 2000 && Integer.valueOf(FallYear).intValue() < 3000 && Integer.valueOf(SpringYear) - 1 == tmp;
 	}
 }
