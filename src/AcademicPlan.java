@@ -128,45 +128,6 @@ public class AcademicPlan implements Serializable{
 		int[] tmp2 = getCreditsFromCoursePool();
 		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
 	}
-
-	private int[] getCreditsFromCoursePool() {
-		Iterator<Course> iter = coursesNotInSemesters.iterator();
-		Course course;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
-		while (iter.hasNext()) {
-			course = (Course) iter.next();
-			if (course.getGrade().getGradeValue() >= 0) {
-				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
-				numberOfCompletedCourses++;
-			}
-		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
-		return tmp;
-	}
-
-	private int[] getCreditsFromSemesters() {
-		Iterator<Semester> iter = semesters.iterator();
-		Semester semester;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
-		while (iter.hasNext()) {
-			semester = (Semester) iter.next();
-			ObservableList<Course> courses = semester.getCourses();
-			
-			Iterator<Course> iter2 = courses.iterator();
-			Course course;
-			while (iter2.hasNext()) {
-				course = (Course) iter2.next();
-				credits += course.getNumCredits();
-				if (course.getGrade().getGradeValue() >= 0) {
-					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
-					numberOfCompletedCourses++;
-				}
-			}
-		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
-		return tmp;
-	}
-
 	/**
 	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
 	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
@@ -215,4 +176,43 @@ public class AcademicPlan implements Serializable{
 		int tmp;
 		return (tmp = Integer.valueOf(FallYear).intValue()) > 2000 && Integer.valueOf(FallYear).intValue() < 3000 && Integer.valueOf(SpringYear) - 1 == tmp;
 	}
+
+	private int[] getCreditsFromCoursePool() {
+		Iterator<Course> iter = coursesNotInSemesters.iterator();
+		Course course;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			course = (Course) iter.next();
+			if (course.getGrade().getGradeValue() >= 0) {
+				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+				numberOfCompletedCourses++;
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
+	private int[] getCreditsFromSemesters() {
+		Iterator<Semester> iter = semesters.iterator();
+		Semester semester;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			semester = (Semester) iter.next();
+			ObservableList<Course> courses = semester.getCourses();
+			
+			Iterator<Course> iter2 = courses.iterator();
+			Course course;
+			while (iter2.hasNext()) {
+				course = (Course) iter2.next();
+				credits += course.getNumCredits();
+				if (course.getGrade().getGradeValue() >= 0) {
+					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+					numberOfCompletedCourses++;
+				}
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
 }
