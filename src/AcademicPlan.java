@@ -13,30 +13,28 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.collections.ObservableList;
 
 public class AcademicPlan implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	private ArrayList<DegreeProgram> listOfDegrees;
-	private ArrayList<String> degreeFileLocations;
-	private ArrayList<Integer> cumulativeCreditsPerDegree;
+
+	private static final long serialVersionUID = -8031135960947860998L;
+	private DegreeProgram degree;
+	private String degreeFileLocation;
 	private ObservableList<Course> coursesNotInSemesters;
+	private ObservableList<Semester> semesters;
+	private PersonalPlan personalPlan;
+	private int credits, numberOfCourses;
 	private double GPA;
-	private String fileLocation, catalogYear;
-	
-	public String getPlanFileLocation () {
-		return fileLocation;
-	}
-	
+	private String saveLocation, catalogYear;
+
 	/**
 	 * Creates an empty academic plan
 	 */
 	public AcademicPlan() {
-		listOfDegrees = new ArrayList<DegreeProgram>();
 		initializeConstants();
+		initializeObjects();
 	}
 
 	/**
@@ -44,35 +42,33 @@ public class AcademicPlan implements Serializable{
 	 * @param degree A DegreeProgram object representing the chosen major of the student
 	 */
 	public AcademicPlan(DegreeProgram degree) {
-		this.listOfDegrees.add(degree);
+		this.degree = degree;
 		initializeConstants();
+		initializeObjects();
 	}
-	
+
+	private void initializeObjects() {
+		personalPlan = new PersonalPlan();
+		semesters = personalPlan.getSemesters();
+	}
+
 	private void initializeConstants() {
-		this.cumulativeCreditsPerDegree = new ArrayList<Integer>();
 		GPA = 0.0;
-		// TODO allow user to specify location
-		fileLocation = "assets/academicPlan.obj";
+		catalogYear = "catalog year";
+		credits = 0;
+		numberOfCourses = 0;
+		saveLocation = "assets/academicPlan.obj";
+		degreeFileLocation = "assets/";
 	}
 
-	/**
-	 * 
-	 * @param degree - degree program/major
-	 * @return returns true when successful (appended to list)
-	 */
-	public boolean addDegree(DegreeProgram degree) {
-		return listOfDegrees.add(degree);
+	public void setDegree (DegreeProgram degree) {
+		this.degree = degree;
 	}
 
-	/**
-	 * 
-	 * @param degree - degree program/major
-	 * @return returns true when list changes (first matching element was found and removed)
-	 */
-	public boolean removeDegree(DegreeProgram degree) {
-		return listOfDegrees.remove(degree);
+	public DegreeProgram getDegree () {
+		return degree;
 	}
-	
+
 	/**
 	 * Save the plan's state
 	 * @return true when successful
@@ -80,9 +76,9 @@ public class AcademicPlan implements Serializable{
 	public boolean savePlan() {
 		FileOutputStream fOut = null;
 		ObjectOutputStream oos = null;
-		
+
 		try {
-			fOut = new FileOutputStream(fileLocation);
+			fOut = new FileOutputStream(saveLocation);
 			oos = new ObjectOutputStream(fOut);
 			oos.writeObject(this);
 			oos.close();
@@ -97,7 +93,7 @@ public class AcademicPlan implements Serializable{
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Load the previous plan's state
 	 * @return true when successful
@@ -105,9 +101,9 @@ public class AcademicPlan implements Serializable{
 	public boolean loadPlan() {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
-		
+
 		try {
-			fIn = new FileInputStream(fileLocation);
+			fIn = new FileInputStream(saveLocation);
 			ois = new ObjectInputStream(fIn);
 			ois.readObject();
 			ois.close();
@@ -117,7 +113,7 @@ public class AcademicPlan implements Serializable{
 			System.out.println("The file doesn't exist for academic plan.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("The academic plan object is missing from '" + fileLocation + "'.");
+			System.out.println("The academic plan object is missing from '" + saveLocation + "'.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("The academic plan object may be corrupted, causing a failure to load academic plan object.");
@@ -126,60 +122,97 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 
-	public int calculateCredits() {
-		// TODO Auto-generated method stub
-		return 0;
+	private void calculateCreditsAndGPA () {
+		credits = 0;
+		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
+		int[] tmp2 = getCreditsFromCoursePool();
+		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
 	}
-	
+
+	private int[] getCreditsFromCoursePool() {
+		Iterator<Course> iter = coursesNotInSemesters.iterator();
+		Course course;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			course = (Course) iter.next();
+			if (course.getGrade().getGradeValue() >= 0) {
+				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+				numberOfCompletedCourses++;
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
+	private int[] getCreditsFromSemesters() {
+		Iterator<Semester> iter = semesters.iterator();
+		Semester semester;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		while (iter.hasNext()) {
+			semester = (Semester) iter.next();
+			ObservableList<Course> courses = semester.getCourses();
+			
+			Iterator<Course> iter2 = courses.iterator();
+			Course course;
+			while (iter2.hasNext()) {
+				course = (Course) iter2.next();
+				credits += course.getNumCredits();
+				if (course.getGrade().getGradeValue() >= 0) {
+					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+					numberOfCompletedCourses++;
+				}
+			}
+		}
+		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		return tmp;
+	}
+
 	/**
-	 * Sets the years for the first academic calender in which the student made contractual relations with the school
-	 * @param FallYear A string of the first year (YYYY format) of your first academic calender
-	 * @param SpringYear A string of the second year (YYYY format) of your first academic calender
+	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
+	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
+	 * @param SpringYear A string of the second year (YYYY format) of your first academic calendar
 	 */
 	public void setCatalogYear(String FallYear, String SpringYear) {
-		// TODO restrict inputs to just numbers like 20XX
-		this.catalogYear = FallYear + " - " + SpringYear;
-	}
-	
-	/**
-	 * Gives the GPA of the cumulative credits.
-	 * @return A double value of the Grade Point Average (GPA) on a 4.0 scale.
-	 */
-	protected double calculateGPA() {
-
-		double gpa = 0;
-		for (int tmp : cumulativeCreditsPerDegree) {
-			gpa += tmp;
+		if (compareYears(FallYear, SpringYear)) {
+			this.catalogYear = FallYear + " - " + SpringYear;
 		}
-		return gpa;
 	}
 
-	public boolean addDegreeFileLocation (String location) {
-		if (location == null) {
-			return false;
-		} else {
-			return this.degreeFileLocations.add(location);
-		}
+	public String getCatalogYear () {
+		return catalogYear;
 	}
-	
-	public boolean removeDegreeFileLocation (String location) {
-		if (location == null) {
-			return false;
-		} else {
-			return degreeFileLocations.remove(location);
-		}
+
+	public double getCumulativeGPA () {
+		return GPA;
 	}
-	
+
+	public ObservableList<Course> getCourseList () {
+		return coursesNotInSemesters;
+	}
+
+	private void updateCourseList () {
+		// TODO
+	}
+
 	public boolean setPlanSaveLocation (String location) {
 		if (location == null) {
 			return false;
 		} else {
-			this.fileLocation = location;
+			this.saveLocation = location;
 			return true;
 		}
 	}
-	
-	public String getPlansaveLocation () {
-		return fileLocation;
+
+	public String getPlanSaveLocation () {
+		return saveLocation;
+	}
+
+	public PersonalPlan getPersonalPlan() {
+		return personalPlan;
+	}
+
+	private boolean compareYears (String FallYear, String SpringYear) {
+		int tmp;
+		return (tmp = Integer.valueOf(FallYear).intValue()) > 2000 && Integer.valueOf(FallYear).intValue() < 3000 && Integer.valueOf(SpringYear) - 1 == tmp;
 	}
 }
