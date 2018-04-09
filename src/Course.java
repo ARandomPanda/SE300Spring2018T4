@@ -8,7 +8,8 @@ public class Course implements Serializable {
     private Grade grade;
 
     // Disable default constructor
-    private Course() {}
+    private Course() {
+    }
 
     public Course(BaseCourse course) {
         if (course == null) {
