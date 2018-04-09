@@ -25,9 +25,9 @@ public class AcademicPlan implements Serializable{
 	private ObservableList<Course> coursesNotInSemesters;
 	private ObservableList<Semester> semesters;
 	private PersonalPlan personalPlan;
-	private int credits, numberOfCourses;
+	private int credits, numberOfCourses, catalogYear;
 	private double GPA;
-	private String saveLocation, catalogYear;
+	private String saveLocation;
 
 	/**
 	 * Creates an empty academic plan
@@ -54,14 +54,14 @@ public class AcademicPlan implements Serializable{
 
 	private void initializeConstants() {
 		GPA = 0.0;
-		catalogYear = "catalog year";
+		catalogYear = 2015;
 		credits = 0;
 		numberOfCourses = 0;
 		saveLocation = "assets/academicPlan.obj";
 		degreeFileLocation = "assets/";
 	}
 
-	public void setDegree (DegreeProgram degree) {
+	public void setPrimaryDegree (DegreeProgram degree) {
 		this.degree = degree;
 	}
 
@@ -133,13 +133,13 @@ public class AcademicPlan implements Serializable{
 	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
 	 * @param SpringYear A string of the second year (YYYY format) of your first academic calendar
 	 */
-	public void setCatalogYear(String FallYear, String SpringYear) {
-		if (compareYears(FallYear, SpringYear)) {
-			this.catalogYear = FallYear + " - " + SpringYear;
+	public void setCatalogYear(int year) {
+		if (year > 2000 && year < 3000) { // "reasonable" limitations
+			this.catalogYear = year;
 		}
 	}
 
-	public String getCatalogYear () {
+	public int getCatalogYear () {
 		return catalogYear;
 	}
 
@@ -147,7 +147,7 @@ public class AcademicPlan implements Serializable{
 		return GPA;
 	}
 
-	public ObservableList<Course> getCourseList () {
+	public ObservableList<Course> getUnplannedCourses () {
 		return coursesNotInSemesters;
 	}
 
@@ -213,6 +213,22 @@ public class AcademicPlan implements Serializable{
 		}
 		int[] tmp = {completedCredits, numberOfCompletedCourses};
 		return tmp;
+	}
+	
+	public void setDegreeFileLocation(String location) {
+		this.degreeFileLocation = location;
+	}
+	
+	public String getDegreeFileLocation() {
+		return degreeFileLocation;
+	}
+	
+	public void setPersonalPlan(PersonalPlan plan) {
+		this.personalPlan = plan;
+	}
+	
+	public ObservableList<Semester> getSemesterList() {
+		return semesters;
 	}
 
 }
