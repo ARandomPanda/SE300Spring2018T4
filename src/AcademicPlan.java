@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javafx.collections.ObservableList;
@@ -122,12 +123,6 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 
-	private void calculateCreditsAndGPA () {
-		credits = 0;
-		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
-		int[] tmp2 = getCreditsFromCoursePool();
-		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
-	}
 	/**
 	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
 	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
@@ -167,6 +162,67 @@ public class AcademicPlan implements Serializable{
 	public PersonalPlan getPersonalPlan() {
 		return personalPlan;
 	}
+	
+	public void setDegreeFileLocation(String location) {
+		this.degreeFileLocation = location;
+	}
+	
+	public String getDegreeFileLocation() {
+		return degreeFileLocation;
+	}
+	
+	public void setPersonalPlan(PersonalPlan plan) {
+		this.personalPlan = plan;
+	}
+	
+	public ObservableList<Semester> getSemesterList() {
+		return semesters;
+	}
+	
+	public boolean loadDegree() {
+		// TODO how to load courses into list?
+		return false;
+	}
+	
+	public void moveCourseToSemester(Semester semester, Course course) {
+		int cindex = coursesNotInSemesters.indexOf(course);
+		int sindex = semesters.indexOf(semester);
+		
+		Course courseFound = coursesNotInSemesters.remove(cindex);
+		semesters.get(sindex).addCourse(courseFound);
+	}
+	
+	public void moveCourseToCoursePool(Semester semester, Course course) {
+		int cindex = coursesNotInSemesters.indexOf(course);
+		int sindex = semesters.indexOf(semester);
+		
+		Course courseFound = semesters.get(sindex).removeCourse(course);
+		coursesNotInSemesters.add(courseFound);
+	}
+
+	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
+		// TODO
+		//personalPlan.movesemestertosemester(from, to, course)
+	}
+
+	private void calculateCreditsAndGPA () {
+		// TODO get unique courses, THEN calculate credits and GPA
+		ArrayList<Course> uniqueCourses = getNewestCourses();
+		credits = 0;
+		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
+		int[] tmp2 = getCreditsFromCoursePool();
+		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
+	}
+	
+	/**
+	 * Grabs all the newest courses from the academic plan. This will ignore previously graded 
+	 * courses if a newer one already has a grade.
+	 * @return list of unique courses
+	 */
+	private ArrayList<Course> getNewestCourses() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private int[] getCreditsFromCoursePool() {
 		Iterator<Course> iter = coursesNotInSemesters.iterator();
@@ -204,46 +260,6 @@ public class AcademicPlan implements Serializable{
 		}
 		int[] tmp = {completedCredits, numberOfCompletedCourses};
 		return tmp;
-	}
-	
-	public void setDegreeFileLocation(String location) {
-		this.degreeFileLocation = location;
-	}
-	
-	public String getDegreeFileLocation() {
-		return degreeFileLocation;
-	}
-	
-	public void setPersonalPlan(PersonalPlan plan) {
-		this.personalPlan = plan;
-	}
-	
-	public ObservableList<Semester> getSemesterList() {
-		return semesters;
-	}
-	
-	public boolean loadDegree() {
-		// TODO how to load courses into list?
-		return false;
-	}
-	
-	public void moveCourseToSemester(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		Course courseFound = coursesNotInSemesters.remove(cindex);
-		semesters.get(sindex).addCourse(courseFound);
-	}
-	
-	public void moveCourseToCoursePool(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		// TODO what to do?
-	}
-
-	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
-		// TODO
 	}
 
 }
