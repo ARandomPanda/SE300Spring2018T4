@@ -35,8 +35,8 @@ public class Semester implements Serializable, Comparable<Semester> {
         courses.add(course);
     }
 
-    public void removeCourse(Course course){
-        courses.remove(course);
+    public boolean removeCourse(Course course){
+        return courses.remove(course);
     }
 
     public ObservableList<Course> getCourses(){
