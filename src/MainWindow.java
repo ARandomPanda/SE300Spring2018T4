@@ -1,7 +1,8 @@
 /**
  * @author Adam Babbit
- * @date 
+ * @date 04/02/2018
  * 
+ * @version 3.2
  */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -25,7 +26,7 @@ import javafx.util.Callback;
 public class MainWindow extends Application{
 	
 	// Instantiates the main window for the program 
-	private Stage primaryStage = null;
+	private Stage primaryStage;
 	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 	private PersonalPlan p;
 	private MasterCourseList m = MasterCourseList.get();
@@ -42,7 +43,7 @@ public class MainWindow extends Application{
 			
 			for (int k = 0; k<5; k++)
 			{
-				s.addCourse(new Course(m.getCourseList().get(count)));
+				s.addCourse(new Course(new BaseCourse(DepartmentID.EGR, 101, "Intro to Engineering", 3, null, null)));
 				count ++;
 			}
 			
@@ -60,12 +61,17 @@ public class MainWindow extends Application{
 		
 		primaryStage.setTitle("Degree Plan");
 		
+		// Setting the size of the window to the size of the screen, maximizing the window.
 		primaryStage.setX(screenSize.getMinX());
 		primaryStage.setY(screenSize.getMinY());
 		primaryStage.setHeight(screenSize.getHeight());
 		primaryStage.setWidth(screenSize.getWidth());
+		
+		//Limiting the minimum size of the window as to not affect the UI display
 		primaryStage.setMinHeight(300);
 		primaryStage.setMinWidth(500);
+		
+		//Creating all the notes 
 		primaryStage.setScene(setupScene());
 		
 		primaryStage.show();
@@ -73,70 +79,83 @@ public class MainWindow extends Application{
 	}
 	
 	/**
-	 * Creates the Standard first scene of the program. Displays the first Window 
-	 * including the Semesters, Classes, Class pool, and toolbars
+	 * Sets up the first scene of the program including the Semesters, Classes, Class Pool, and Toolbars
 	 * 
 	 * @return scene		The Scene in which the other scenes are stored, This should be added directly to the Stage
 	 */
 	private Scene setupScene()
 	{
-		// the Highest level pane that contains all the other panes
-		BorderPane highestPane = new BorderPane();
-		BorderPane topBorderPane = new BorderPane();
+		BorderPane highestPane = new BorderPane(); // Highest level container for the window
+		BorderPane topBorderPane = new BorderPane(); // placed in the tap border section of the highestPane
 		Scene scene = new Scene(highestPane);
-		ListView<BaseCourse> list = showCoursePool();
+		ListView<BaseCourse> list = showCoursePool(); // the listview of all the courses
 		
-		
+		// forcing the course pool to be right above the list of semesters
 		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
 		topBorderPane.setTop(makeMenu());
-		highestPane.setCenter(list);
+		highestPane.setRight(list);
 		highestPane.setTop(topBorderPane);
 		highestPane.setBottom(setUpSemesterPane());
 		
 		return scene;
 	}
 	
+	
+	
 	private ListView<BaseCourse> showCoursePool()
 	{
 		ListView<BaseCourse> coursePool = new ListView<BaseCourse>();
 		
 		coursePool.setMaxHeight(screenSize.getHeight() * 0.15);
-		coursePool.setMaxWidth(screenSize.getWidth() * .5);
+		coursePool.setPrefWidth(screenSize.getWidth() * .5);
 		
 		coursePool.setOrientation(Orientation.HORIZONTAL);
 		
 		coursePool.setCellFactory(new Callback<ListView<BaseCourse>, ListCell<BaseCourse>>() {
 			
-			
-				public ListCell<BaseCourse> call(ListView<BaseCourse> param){
-					Tooltip tooltip = new Tooltip();
-					ListCell<BaseCourse> cell = new ListCell<BaseCourse>() {
-							public void updateItem(BaseCourse item, boolean empty){
-								super.updateItem(item, empty);
-								if (item != null){
-									setText(item.getID());
-									String tipText = item.getName() + "\n" + "Credit Count: " + item.getNumCredits();
-									if (item.getCoreqs().size() == 0)
-									{
-										tipText += "\n" + "CoReqs: None";
-									}
-									if (item.getPrereqs().size() == 0)
-									{
-										tipText += "\n" + "PreReqs: None";
-									}
-									else
-									{
-										tipText += "\n" + "PreReqs: " + item.getPrereqs().get(0).getID() + " | " + item.getPrereqs().get(0).getName();
-									}
-									tooltip.setText(tipText);
-									setTooltip(tooltip);
+			public ListCell<BaseCourse> call(ListView<BaseCourse> param){
+				Tooltip tooltip = new Tooltip();
+				ListCell<BaseCourse> cell = new ListCell<BaseCourse>() {
+						public void updateItem(BaseCourse item, boolean empty){
+							super.updateItem(item, empty);
+							if (item != null){
+								setText(item.toString());
+								String tipText = item.getName() + "\n" + "Credit Count: " + item.getNumCredits();
+								if (item.getCoreqs().size() == 0)
+								{
+									tipText += "\n" + "CoReqs: None";
 								}
+								else
+								{
+									tipText += "\n" + "Co-Reqs:";
+									for (int i = 0; i < item.getCoreqs().size(); i++)
+									{
+										 tipText += "\n" + item.getCoreqs().get(i).getID() + " | " + item.getCoreqs().get(i).getName();
+								
+									}
+								}
+								if (item.getPrereqs().size() == 0)
+								{
+									tipText += "\n" + "Pre-Reqs: None";
+								}
+								else
+								{
+									tipText += "\n" + "PreReqs:";
+									for (int i = 0; i < item.getPrereqs().size(); i++)
+									{
+										 tipText += "\n" + item.getPrereqs().get(i).getID() + " | " + item.getPrereqs().get(i).getName() +"\n";
+								
+									}
+								}
+								tooltip.setText(tipText);
+								setTooltip(tooltip);
 							}
-						};
-						return cell;
-					}
-				});
+						}
+					};
+					return cell;
+				}
+			});
 		
 		
 		coursePool.setItems(m.getCourseList());
@@ -173,9 +192,9 @@ public class MainWindow extends Application{
 		listOfCourses.add(activeSemester.getTerm().toString() + " " + activeSemester.getYear());
 		
 		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
-		{
+		{	
 			Course activeCourse = activeSemester.getCourses().get(k);
-			listOfCourses.add(activeCourse.getBaseCourse().getID());	
+			listOfCourses.add(activeCourse.getBaseCourse().getID().toString() + " " + activeCourse.getBaseCourse().getCourseNum());	
 		}
 		
 		return listOfCourses;
@@ -205,5 +224,11 @@ public class MainWindow extends Application{
 	public static void main(String[] args)
 	{
 		launch();
+	}
+	
+	// to be implemented
+	private static class ToolTipSetUp extends ListCell<BaseCourse>
+	{
+	
 	}
 }

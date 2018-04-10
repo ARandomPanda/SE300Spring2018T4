@@ -30,7 +30,7 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
      * @throws IllegalArgumentException if numCredits is not between 0 and 6
      */
     public BaseCourse(DepartmentID id, int courseNum, String name, int numCredits, List<BaseCourse> prereqs, List<BaseCourse> coreqs) {
-        setID(id);
+    		setID(id);
         setCourseNum(courseNum);
         setName(name);
         setNumCredits(numCredits);
@@ -46,6 +46,7 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
         } else {
             this.coreqs = new ArrayList<>(coreqs);
         }
+        System.out.println(this);
     }
 
     /**
