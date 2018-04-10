@@ -151,10 +151,6 @@ public class AcademicPlan implements Serializable{
 		return coursesNotInSemesters;
 	}
 
-	private void updateCourseList () {
-		// TODO
-	}
-
 	public boolean setPlanSaveLocation (String location) {
 		if (location == null) {
 			return false;
@@ -170,11 +166,6 @@ public class AcademicPlan implements Serializable{
 
 	public PersonalPlan getPersonalPlan() {
 		return personalPlan;
-	}
-
-	private boolean compareYears (String FallYear, String SpringYear) {
-		int tmp;
-		return (tmp = Integer.valueOf(FallYear).intValue()) > 2000 && Integer.valueOf(FallYear).intValue() < 3000 && Integer.valueOf(SpringYear) - 1 == tmp;
 	}
 
 	private int[] getCreditsFromCoursePool() {
@@ -229,6 +220,30 @@ public class AcademicPlan implements Serializable{
 	
 	public ObservableList<Semester> getSemesterList() {
 		return semesters;
+	}
+	
+	public boolean loadDegree() {
+		// TODO how to load courses into list?
+		return false;
+	}
+	
+	public void moveCourseToSemester(Semester semester, Course course) {
+		int cindex = coursesNotInSemesters.indexOf(course);
+		int sindex = semesters.indexOf(semester);
+		
+		Course courseFound = coursesNotInSemesters.remove(cindex);
+		semesters.get(sindex).addCourse(courseFound);
+	}
+	
+	public void moveCourseToCoursePool(Semester semester, Course course) {
+		int cindex = coursesNotInSemesters.indexOf(course);
+		int sindex = semesters.indexOf(semester);
+		
+		// TODO what to do?
+	}
+
+	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
+		// TODO
 	}
 
 }
