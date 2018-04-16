@@ -182,16 +182,18 @@ public class AcademicPlan implements Serializable {
 		return false;
 	}
 	
-	public void moveCourseToSemester(Semester semester, Course course) {
+	public boolean moveCourseToSemester(Semester semester, Course course) {
 		if (coursesNotInSemesters.remove(course)) {
-			semester.addCourse(course);
+			return semester.addCourse(course);
 		}
+		return false;
 	}
 	
-	public void moveCourseToCoursePool(Semester semester, Course course) {
+	public boolean moveCourseToCoursePool(Semester semester, Course course) {
 		if (semester.removeCourse(course)) {
-			coursesNotInSemesters.add(course);
+			return coursesNotInSemesters.add(course);
 		}
+		return false;
 	}
 
 	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
@@ -264,6 +266,18 @@ public class AcademicPlan implements Serializable {
 		}
 		int[] tmp = {completedCredits, numberOfCompletedCourses, totalNongradedCredits};
 		return tmp;
+	}
+	
+	public int getCredits () {
+		return credits;
+	}
+	
+	public boolean addCourse (Course course) {
+		return coursesNotInSemesters.add(course);
+	}
+	
+	public boolean removeCourse (Course course) {
+		return coursesNotInSemesters.remove(course);
 	}
 
 }

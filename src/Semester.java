@@ -29,11 +29,11 @@ public class Semester implements Serializable, Comparable<Semester> {
         this.year = year;
     }
 
-    public void addCourse(Course course) {
+    public boolean addCourse(Course course) {
         if (course == null) {
             throw new NullPointerException();
         }
-        courses.add(course);
+        return courses.add(course);
     }
 
     public boolean removeCourse(Course course){
