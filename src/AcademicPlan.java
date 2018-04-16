@@ -27,7 +27,7 @@ public class AcademicPlan implements Serializable {
 	private ArrayList<Course> coursesNotInSemesters;
 	private ArrayList<Semester> semesters;
 	private PersonalPlan personalPlan;
-	private int credits, numberOfCourses, catalogYear;
+	private int credits, catalogYear;
 	private double GPA;
 	private String saveLocation;
 
@@ -51,13 +51,15 @@ public class AcademicPlan implements Serializable {
 
 	private void initializeObjects() {
 		personalPlan = new PersonalPlan();
+		coursesNotInSemesters = new ArrayList<Course>();
+		semesters = new ArrayList<Semester>();
+		degree = null;
 	}
 
 	private void initializeConstants() {
 		GPA = 0.0;
 		catalogYear = 2015;
 		credits = 0;
-		numberOfCourses = 0;
 		saveLocation = "assets/academicPlan.obj";
 		degreeFileLocation = "assets/";
 	}
@@ -198,13 +200,20 @@ public class AcademicPlan implements Serializable {
 		}
 	}
 
-	private void calculateCreditsAndGPA () {
+	public double calculateCreditsAndGPA () {
 		// TODO get unique courses, THEN calculate credits and GPA
-		ArrayList<Course> uniqueCourses = getNewestCourses();
-		credits = 0;
-		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
+		//ArrayList<Course> uniqueCourses = getNewestCourses();
+		
+		// tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters, totalNongradedCredits}
+		int[] tmp = getCreditsFromSemesters();
 		int[] tmp2 = getCreditsFromCoursePool();
-		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
+		if (tmp[1] == 0 || tmp2[1] == 0) {
+			return 0.0;
+		} else {
+			GPA = (double) (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
+		}
+		credits += tmp[2] + tmp2[2];
+		return GPA;
 	}
 	
 	/**
@@ -212,30 +221,31 @@ public class AcademicPlan implements Serializable {
 	 * courses if a newer one already has a grade.
 	 * @return list of unique courses
 	 */
-	private ArrayList<Course> getNewestCourses() {
+	/*private ArrayList<Course> getNewestCourses() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	private int[] getCreditsFromCoursePool() {
 		Iterator<Course> iter = coursesNotInSemesters.iterator();
 		Course course;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
+		int completedCredits = 0, numberOfCompletedCourses = 0, totalNongradedCredits = 0;
 		while (iter.hasNext()) {
 			course = (Course) iter.next();
 			if (course.getGrade().getGradeValue() >= 0) {
 				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
 				numberOfCompletedCourses++;
 			}
+			totalNongradedCredits += course.getNumCredits();
 		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		int[] tmp = {completedCredits, numberOfCompletedCourses, totalNongradedCredits};
 		return tmp;
 	}
 
 	private int[] getCreditsFromSemesters() {
 		Iterator<Semester> iter = semesters.iterator();
 		Semester semester;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
+		int completedCredits = 0, numberOfCompletedCourses = 0, totalNongradedCredits = 0;
 		while (iter.hasNext()) {
 			semester = (Semester) iter.next();
 			ObservableList<Course> courses = semester.getCourses();
@@ -249,9 +259,10 @@ public class AcademicPlan implements Serializable {
 					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
 					numberOfCompletedCourses++;
 				}
+				totalNongradedCredits += course.getNumCredits();
 			}
 		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		int[] tmp = {completedCredits, numberOfCompletedCourses, totalNongradedCredits};
 		return tmp;
 	}
 
