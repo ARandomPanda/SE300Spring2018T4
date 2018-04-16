@@ -16,15 +16,16 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class AcademicPlan implements Serializable{
+public class AcademicPlan implements Serializable {
 
 	private static final long serialVersionUID = -8031135960947860998L;
 	private DegreeProgram degree;
 	private String degreeFileLocation;
-	private ObservableList<Course> coursesNotInSemesters;
-	private ObservableList<Semester> semesters;
+	private ArrayList<Course> coursesNotInSemesters;
+	private ArrayList<Semester> semesters;
 	private PersonalPlan personalPlan;
 	private int credits, numberOfCourses, catalogYear;
 	private double GPA;
@@ -50,7 +51,6 @@ public class AcademicPlan implements Serializable{
 
 	private void initializeObjects() {
 		personalPlan = new PersonalPlan();
-		semesters = personalPlan.getSemesters();
 	}
 
 	private void initializeConstants() {
@@ -99,35 +99,31 @@ public class AcademicPlan implements Serializable{
 	 * Load the previous plan's state
 	 * @return true when successful
 	 */
-	public boolean loadPlan() {
+	public static AcademicPlan loadPlan(String filename) {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
+		AcademicPlan plan;
 
 		try {
-			fIn = new FileInputStream(saveLocation);
+			fIn = new FileInputStream(filename);
 			ois = new ObjectInputStream(fIn);
-			ois.readObject();
+			plan = (AcademicPlan) ois.readObject();
 			ois.close();
 			fIn.close();
-			return true;
+			return plan;
 		} catch (FileNotFoundException e) {
 			System.out.println("The file doesn't exist for academic plan.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("The academic plan object is missing from '" + saveLocation + "'.");
+			System.out.println("The academic plan object is missing from '" + filename + "'.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("The academic plan object may be corrupted, causing a failure to load academic plan object.");
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
-	/**
-	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
-	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
-	 * @param SpringYear A string of the second year (YYYY format) of your first academic calendar
-	 */
 	public void setCatalogYear(int year) {
 		if (year > 2000 && year < 3000) { // "reasonable" limitations
 			this.catalogYear = year;
@@ -143,7 +139,7 @@ public class AcademicPlan implements Serializable{
 	}
 
 	public ObservableList<Course> getUnplannedCourses () {
-		return coursesNotInSemesters;
+		return FXCollections.observableArrayList(coursesNotInSemesters);
 	}
 
 	public boolean setPlanSaveLocation (String location) {
@@ -176,7 +172,7 @@ public class AcademicPlan implements Serializable{
 	}
 	
 	public ObservableList<Semester> getSemesterList() {
-		return semesters;
+		return personalPlan.getSemesters();
 	}
 	
 	public boolean loadDegree() {
@@ -185,24 +181,21 @@ public class AcademicPlan implements Serializable{
 	}
 	
 	public void moveCourseToSemester(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		Course courseFound = coursesNotInSemesters.remove(cindex);
-		semesters.get(sindex).addCourse(courseFound);
+		if (coursesNotInSemesters.remove(course)) {
+			semester.addCourse(course);
+		}
 	}
 	
 	public void moveCourseToCoursePool(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		Course courseFound = semesters.get(sindex).removeCourse(course);
-		coursesNotInSemesters.add(courseFound);
+		if (semester.removeCourse(course)) {
+			coursesNotInSemesters.add(course);
+		}
 	}
 
 	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
-		// TODO
-		//personalPlan.movesemestertosemester(from, to, course)
+		if (from.removeCourse(course)) {
+			to.addCourse(course);
+		}
 	}
 
 	private void calculateCreditsAndGPA () {
