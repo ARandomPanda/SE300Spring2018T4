@@ -193,11 +193,12 @@ public class AcademicPlan implements Serializable{
 	}
 	
 	public void moveCourseToCoursePool(Semester semester, Course course) {
+		/*
 		int cindex = coursesNotInSemesters.indexOf(course);
 		int sindex = semesters.indexOf(semester);
 		
-		Course courseFound = semesters.get(sindex).removeCourse(course);
-		coursesNotInSemesters.add(courseFound);
+		semesters.get(sindex).removeCourse(course);
+		coursesNotInSemesters.add(course);*/
 	}
 
 	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
