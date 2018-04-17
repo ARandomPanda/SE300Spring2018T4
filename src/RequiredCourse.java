@@ -8,7 +8,7 @@ import java.util.List;
  *
  * Represents a course requirement of an academic plan. The co/prerequisites of the BaseCourse can be overwritten.
  */
-public class RequiredCourse implements Serializable {
+public class RequiredCourse implements Serializable, DegreeRequirement {
 
     static final long serialVersionUID = 1L;
 
@@ -99,4 +99,9 @@ public class RequiredCourse implements Serializable {
         }
     }
 
+    @Override
+    public boolean meetsRequirement(Course course) {
+        return this.course == course.getBaseCourse() &&
+                this.requiredGrade.getGradeValue() > course.getGrade().getGradeValue();
+    }
 }
