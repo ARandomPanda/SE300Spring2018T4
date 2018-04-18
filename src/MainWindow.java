@@ -66,7 +66,7 @@ public class MainWindow extends Application{
 		primaryStage.setY(screenSize.getMinY());
 		primaryStage.setHeight(screenSize.getHeight());
 		primaryStage.setWidth(screenSize.getWidth());
-		
+
 		//Limiting the minimum size of the window as to not affect the UI display
 		primaryStage.setMinHeight(300);
 		primaryStage.setMinWidth(500);

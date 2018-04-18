@@ -25,7 +25,7 @@ public class MasterCourseWindowDialog {
 
     // TODO ensure a blank choice is available
     private static Label prereqsLabel, coreqsLabel;
-    private static ComboBox<BaseCourse> pre1, pre2, co1, co2;
+    private static ComboBox<BaseCourse>pre1, pre2, co1, co2;
 
     private static Button okButton, cancelButton;
 
