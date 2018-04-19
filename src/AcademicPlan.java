@@ -182,11 +182,6 @@ public class AcademicPlan implements Serializable {
 		return personalPlan.getSemesters();
 	}
 	
-	public boolean loadDegree() {
-		// TODO how to load courses into list?
-		return false;
-	}
-	
 	public boolean moveCourseToSemester(Semester semester, Course course) {
 		if (coursesNotInSemesters.remove(course)) {
 			return semester.addCourse(course);
