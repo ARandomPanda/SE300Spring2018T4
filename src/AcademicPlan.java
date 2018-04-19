@@ -29,7 +29,7 @@ public class AcademicPlan implements Serializable {
 	private PersonalPlan personalPlan;
 	private int credits, catalogYear;
 	private double GPA;
-	private String saveLocation;
+	private static String saveLocation;
 
 	/**
 	 * Creates an empty academic plan
@@ -101,13 +101,13 @@ public class AcademicPlan implements Serializable {
 	 * Load the previous plan's state
 	 * @return true when successful
 	 */
-	public static AcademicPlan loadPlan(String filename) {
+	public static AcademicPlan loadPlan() {//String filename) {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
 		AcademicPlan plan;
 
 		try {
-			fIn = new FileInputStream(filename);
+			fIn = new FileInputStream(saveLocation);
 			ois = new ObjectInputStream(fIn);
 			plan = (AcademicPlan) ois.readObject();
 			ois.close();
@@ -117,7 +117,7 @@ public class AcademicPlan implements Serializable {
 			System.out.println("The file doesn't exist for academic plan.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("The academic plan object is missing from '" + filename + "'.");
+			System.out.println("The academic plan object is missing from '" + saveLocation + "'.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("The academic plan object may be corrupted, causing a failure to load academic plan object.");
