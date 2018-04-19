@@ -71,6 +71,11 @@ public class AcademicPlan implements Serializable {
 	public DegreeProgram getDegree () {
 		return degree;
 	}
+	
+	public void removeDegree () {
+		// TODO How to remove courses from the degree
+		degree = null;
+	}
 
 	/**
 	 * Save the plan's state
