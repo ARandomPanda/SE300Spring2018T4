@@ -1,8 +1,9 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 //comment
 public class Semester implements Serializable, Comparable<Semester> {
@@ -28,15 +29,15 @@ public class Semester implements Serializable, Comparable<Semester> {
         this.year = year;
     }
 
-    public void addCourse(Course course) {
+    public boolean addCourse(Course course) {
         if (course == null) {
             throw new NullPointerException();
         }
-        courses.add(course);
+        return courses.add(course);
     }
 
-    public void removeCourse(Course course){
-        courses.remove(course);
+    public boolean removeCourse(Course course){
+        return courses.remove(course);
     }
 
     public ObservableList<Course> getCourses(){
@@ -76,6 +77,24 @@ public class Semester implements Serializable, Comparable<Semester> {
         }
         // should be unreachable
         return 0;
+    }
+    
+    public double calculateGPA() {
+    	
+    	Iterator<Course> iter = courses.iterator();
+    	double GPA = 0.0;
+		Course course;
+		int completedCredits = 0, numberOfCompletedCourses = 0;
+		
+		while (iter.hasNext()) {
+			course = (Course) iter.next();
+			if (course.getGrade().getGradeValue() >= 0) {
+				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
+				numberOfCompletedCourses++;
+			}
+		}
+    	GPA = (double) completedCredits / numberOfCompletedCourses;
+    	return GPA;
     }
 
     @Override

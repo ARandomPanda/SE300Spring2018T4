@@ -16,17 +16,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class AcademicPlan implements Serializable{
+public class AcademicPlan implements Serializable {
 
 	private static final long serialVersionUID = -8031135960947860998L;
 	private DegreeProgram degree;
 	private String degreeFileLocation;
-	private ObservableList<Course> coursesNotInSemesters;
-	private ObservableList<Semester> semesters;
+	private ArrayList<Course> coursesNotInSemesters;
+	private ArrayList<Semester> semesters;
 	private PersonalPlan personalPlan;
-	private int credits, numberOfCourses, catalogYear;
+	private int credits, catalogYear;
 	private double GPA;
 	private String saveLocation;
 
@@ -50,14 +51,15 @@ public class AcademicPlan implements Serializable{
 
 	private void initializeObjects() {
 		personalPlan = new PersonalPlan();
-		semesters = personalPlan.getSemesters();
+		coursesNotInSemesters = new ArrayList<Course>();
+		semesters = new ArrayList<Semester>();
+		degree = null;
 	}
 
 	private void initializeConstants() {
 		GPA = 0.0;
 		catalogYear = 2015;
 		credits = 0;
-		numberOfCourses = 0;
 		saveLocation = "assets/academicPlan.obj";
 		degreeFileLocation = "assets/";
 	}
@@ -99,35 +101,31 @@ public class AcademicPlan implements Serializable{
 	 * Load the previous plan's state
 	 * @return true when successful
 	 */
-	public boolean loadPlan() {
+	public static AcademicPlan loadPlan(String filename) {
 		FileInputStream fIn = null;
 		ObjectInputStream ois = null;
+		AcademicPlan plan;
 
 		try {
-			fIn = new FileInputStream(saveLocation);
+			fIn = new FileInputStream(filename);
 			ois = new ObjectInputStream(fIn);
-			ois.readObject();
+			plan = (AcademicPlan) ois.readObject();
 			ois.close();
 			fIn.close();
-			return true;
+			return plan;
 		} catch (FileNotFoundException e) {
 			System.out.println("The file doesn't exist for academic plan.");
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.out.println("The academic plan object is missing from '" + saveLocation + "'.");
+			System.out.println("The academic plan object is missing from '" + filename + "'.");
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			System.out.println("The academic plan object may be corrupted, causing a failure to load academic plan object.");
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 
-	/**
-	 * Sets the years for the first academic calendar in which the student made contractual relations with the school
-	 * @param FallYear A string of the first year (YYYY format) of your first academic calendar
-	 * @param SpringYear A string of the second year (YYYY format) of your first academic calendar
-	 */
 	public void setCatalogYear(int year) {
 		if (year > 2000 && year < 3000) { // "reasonable" limitations
 			this.catalogYear = year;
@@ -143,7 +141,7 @@ public class AcademicPlan implements Serializable{
 	}
 
 	public ObservableList<Course> getUnplannedCourses () {
-		return coursesNotInSemesters;
+		return FXCollections.observableArrayList(coursesNotInSemesters);
 	}
 
 	public boolean setPlanSaveLocation (String location) {
@@ -176,7 +174,7 @@ public class AcademicPlan implements Serializable{
 	}
 	
 	public ObservableList<Semester> getSemesterList() {
-		return semesters;
+		return personalPlan.getSemesters();
 	}
 	
 	public boolean loadDegree() {
@@ -184,34 +182,40 @@ public class AcademicPlan implements Serializable{
 		return false;
 	}
 	
-	public void moveCourseToSemester(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		Course courseFound = coursesNotInSemesters.remove(cindex);
-		semesters.get(sindex).addCourse(courseFound);
+	public boolean moveCourseToSemester(Semester semester, Course course) {
+		if (coursesNotInSemesters.remove(course)) {
+			return semester.addCourse(course);
+		}
+		return false;
 	}
 	
-	public void moveCourseToCoursePool(Semester semester, Course course) {
-		int cindex = coursesNotInSemesters.indexOf(course);
-		int sindex = semesters.indexOf(semester);
-		
-		//Course courseFound = semesters.get(sindex).removeCourse(course);
-		//coursesNotInSemesters.add(courseFound);
+	public boolean moveCourseToCoursePool(Semester semester, Course course) {
+		if (semester.removeCourse(course)) {
+			return coursesNotInSemesters.add(course);
+		}
+		return false;
 	}
 
 	public void moveCourseSemesterToSemester(Semester from, Semester to, Course course) {
-		// TODO
-		//personalPlan.movesemestertosemester(from, to, course)
+		if (from.removeCourse(course)) {
+			to.addCourse(course);
+		}
 	}
 
-	private void calculateCreditsAndGPA () {
+	public double calculateCreditsAndGPA () {
 		// TODO get unique courses, THEN calculate credits and GPA
-		ArrayList<Course> uniqueCourses = getNewestCourses();
-		credits = 0;
-		int[] tmp = getCreditsFromSemesters(); // tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters}
+		//ArrayList<Course> uniqueCourses = getNewestCourses();
+		
+		// tmp = {gradeCreditsInSemesters, numberOfGradedCoursesInSemesters, totalNongradedCredits}
+		int[] tmp = getCreditsFromSemesters();
 		int[] tmp2 = getCreditsFromCoursePool();
-		GPA = (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
+		if (tmp[1] == 0 || tmp2[1] == 0) {
+			return 0.0;
+		} else {
+			GPA = (double) (tmp[0] + tmp2[0]) / (tmp[1] + tmp2[1]);
+		}
+		credits += tmp[2] + tmp2[2];
+		return GPA;
 	}
 	
 	/**
@@ -219,30 +223,31 @@ public class AcademicPlan implements Serializable{
 	 * courses if a newer one already has a grade.
 	 * @return list of unique courses
 	 */
-	private ArrayList<Course> getNewestCourses() {
+	/*private ArrayList<Course> getNewestCourses() {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	private int[] getCreditsFromCoursePool() {
 		Iterator<Course> iter = coursesNotInSemesters.iterator();
 		Course course;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
+		int completedCredits = 0, numberOfCompletedCourses = 0, totalNongradedCredits = 0;
 		while (iter.hasNext()) {
 			course = (Course) iter.next();
 			if (course.getGrade().getGradeValue() >= 0) {
 				completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
 				numberOfCompletedCourses++;
 			}
+			totalNongradedCredits += course.getNumCredits();
 		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		int[] tmp = {completedCredits, numberOfCompletedCourses, totalNongradedCredits};
 		return tmp;
 	}
 
 	private int[] getCreditsFromSemesters() {
 		Iterator<Semester> iter = semesters.iterator();
 		Semester semester;
-		int completedCredits = 0, numberOfCompletedCourses = 0;
+		int completedCredits = 0, numberOfCompletedCourses = 0, totalNongradedCredits = 0;
 		while (iter.hasNext()) {
 			semester = (Semester) iter.next();
 			ObservableList<Course> courses = semester.getCourses();
@@ -256,10 +261,23 @@ public class AcademicPlan implements Serializable{
 					completedCredits += course.getNumCredits() * course.getGrade().getGradeValue();
 					numberOfCompletedCourses++;
 				}
+				totalNongradedCredits += course.getNumCredits();
 			}
 		}
-		int[] tmp = {completedCredits, numberOfCompletedCourses};
+		int[] tmp = {completedCredits, numberOfCompletedCourses, totalNongradedCredits};
 		return tmp;
+	}
+	
+	public int getCredits () {
+		return credits;
+	}
+	
+	public boolean addCourse (Course course) {
+		return coursesNotInSemesters.add(course);
+	}
+	
+	public boolean removeCourse (Course course) {
+		return coursesNotInSemesters.remove(course);
 	}
 
 }
