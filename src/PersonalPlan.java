@@ -9,8 +9,7 @@ import java.util.Collections;
 public class PersonalPlan implements Serializable {
 
     static final long serialVersionUID = 1L;
-
-    private ObservableList<Semester> semestersO = FXCollections.observableArrayList();
+    private ObservableList<Semester>	semesters = FXCollections.observableArrayList();
 
     PersonalPlan() { }
 
@@ -18,16 +17,23 @@ public class PersonalPlan implements Serializable {
         if (semester == null) {
             throw new NullPointerException();
         }
-        semestersO.add(semester);
-        Collections.sort(semestersO);
+        semesters.add(semester);
+        Collections.sort(semesters);
     }
 
-    public void removeSemester(Semester semester){
-        semestersO.remove(semester);
+    public ObservableList<Semester> getSemesterList() {
+        return FXCollections.observableArrayList(semesters);
+    }
+    
+    public void removeSemester(Semester semester)
+    {
+        semesters.remove(semester);
     }
 
     public ObservableList<Semester> getSemesters() {
-        return semestersO;
+        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesters));
+
     }
+
 
 }

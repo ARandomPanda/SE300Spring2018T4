@@ -71,6 +71,11 @@ public class AcademicPlan implements Serializable {
 	public DegreeProgram getDegree () {
 		return degree;
 	}
+	
+	public void removeDegree () {
+		// TODO How to remove courses from the degree
+		degree = null;
+	}
 
 	/**
 	 * Save the plan's state
@@ -175,11 +180,6 @@ public class AcademicPlan implements Serializable {
 	
 	public ObservableList<Semester> getSemesterList() {
 		return personalPlan.getSemesters();
-	}
-	
-	public boolean loadDegree() {
-		// TODO how to load courses into list?
-		return false;
 	}
 	
 	public boolean moveCourseToSemester(Semester semester, Course course) {

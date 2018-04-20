@@ -72,7 +72,7 @@ public class MainWindow extends Application{
 		primaryStage.setY(screenSize.getMinY());
 		primaryStage.setHeight(screenSize.getHeight());
 		primaryStage.setWidth(screenSize.getWidth());
-		
+
 		//Limiting the minimum size of the window as to not affect the UI display
 		primaryStage.setMinHeight(300);
 		primaryStage.setMinWidth(500);
@@ -102,7 +102,7 @@ public class MainWindow extends Application{
 		// forcing the course pool to be right above the list of semesters
 		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
-		academicPlan.getPersonalPlan().getSemesters().addListener((ListChangeListener<Semester>) e -> semesterGrid = setUpSemesterPane());
+		academicPlan.getPersonalPlan().getSemesterList().addListener((ListChangeListener<Semester>) e -> System.out.println("Change Made"));
 		
 		topBorderPane.setTop(makeMenu());
 		highestPane.setRight(list);
