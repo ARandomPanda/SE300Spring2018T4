@@ -6,7 +6,11 @@
  */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -28,8 +32,9 @@ public class MainWindow extends Application{
 	// Instantiates the main window for the program 
 	private Stage primaryStage;
 	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
-	private PersonalPlan p;
+	private AcademicPlan academicPlan;
 	private MasterCourseList m = MasterCourseList.get();
+	private ObservableList<Semester> semesterList;
 
 	//TODO remove, for testing purposes
 	private void initPlan()
@@ -54,8 +59,9 @@ public class MainWindow extends Application{
 	// Standard start program required to use JavaFX
 	public void start(Stage stage)
 	{
-		//TODO Remove Line Below
-		initPlan();
+		academicPlan = new AcademicPlan();
+		//academicPlan.getPersonalPlan().getSemesters().addListener((ListChangeListener<Semester>) e -> System.out.println("Chage Made"));
+		academicPlan.getPersonalPlan().addSemester(new Semester(Term.FALL, 2018));
 		
 		primaryStage = stage;
 		
@@ -83,25 +89,28 @@ public class MainWindow extends Application{
 	 * 
 	 * @return scene		The Scene in which the other scenes are stored, This should be added directly to the Stage
 	 */
+	
+	ListView<Semester> semesterGrid;
 	private Scene setupScene()
 	{
 		BorderPane highestPane = new BorderPane(); // Highest level container for the window
 		BorderPane topBorderPane = new BorderPane(); // placed in the tap border section of the highestPane
 		Scene scene = new Scene(highestPane);
+		semesterGrid = setUpSemesterPane();
 		ListView<BaseCourse> list = showCoursePool(); // the listview of all the courses
 		
 		// forcing the course pool to be right above the list of semesters
 		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
+		academicPlan.getPersonalPlan().getSemesterList().addListener((ListChangeListener<Semester>) e -> System.out.println("Change Made"));
+		
 		topBorderPane.setTop(makeMenu());
 		highestPane.setRight(list);
 		highestPane.setTop(topBorderPane);
-		highestPane.setBottom(setUpSemesterPane());
+		highestPane.setBottom(semesterGrid);
 		
 		return scene;
 	}
-	
-	
 	
 	private ListView<BaseCourse> showCoursePool()
 	{
@@ -150,6 +159,7 @@ public class MainWindow extends Application{
 								}
 								tooltip.setText(tipText);
 								setTooltip(tooltip);
+								
 							}
 						}
 					};
@@ -163,38 +173,51 @@ public class MainWindow extends Application{
 		return coursePool;
 	}
 	
-	private GridPane setUpSemesterPane()
+	private ListView<Semester> setUpSemesterPane()
 	{
-		GridPane semesterGrid = new GridPane();
+		PersonalPlan p = academicPlan.getPersonalPlan();
+		/*GridPane semesterGrid = new GridPane();
 		
 		for (int i = 0; i < p.getSemesters().size(); i++)
 		{
-			ListView<String> semesterPane = new ListView<String>();
+			ListView<BaseCourse> semesterPane = new ListView<BaseCourse>();
+			semesterPane.setOrientation(Orientation.HORIZONTAL);
 			Semester sTemp = p.getSemesters().get(i);
-			ObservableList<String> test = setUpCourseList(sTemp);
+			ObservableList<BaseCourse> test = setUpCourseList(sTemp);
 			
 			semesterPane.setItems(test);
 			semesterGrid.add(semesterPane, i+1, 0);
 		}
 
 		semesterGrid.prefHeightProperty().bind(primaryStage.heightProperty().multiply(.6666));
-		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());
+		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());*/
 		
-		return semesterGrid;
+		ListView<Semester> l = new ListView<Semester>(p.getSemesters());
+		l.setOrientation(Orientation.HORIZONTAL);
+		
+		return l;
+	}
+	
+	private ListView<Course> setUpCourseList()
+	{
+		ListView<BaseCourse> b = new ListView<BaseCourse>();
+		
+		
+		
+		return academicPlan.getPersonalPlan().getSemesters().get(0).getCourseListView();
 	}
 	
 	
-	
-	private ObservableList<String> setUpCourseList(Semester activeSemester)
+	private ObservableList<BaseCourse> setUpCourseList(Semester activeSemester)
 	{
-		ObservableList<String> listOfCourses = FXCollections.observableArrayList();
+		ObservableList<BaseCourse> listOfCourses = FXCollections.observableArrayList();
 		
-		listOfCourses.add(activeSemester.getTerm().toString() + " " + activeSemester.getYear());
+		//listOfCourses.add(activeSemester.getTerm().toString() + " " + activeSemester.getYear());
 		
 		for (int k = 0; k < activeSemester.getCourses().size(); k ++)
 		{	
 			Course activeCourse = activeSemester.getCourses().get(k);
-			listOfCourses.add(activeCourse.getBaseCourse().getID().toString() + " " + activeCourse.getBaseCourse().getCourseNum());	
+			listOfCourses.add(activeCourse.getBaseCourse());	
 		}
 		
 		return listOfCourses;
@@ -207,7 +230,7 @@ public class MainWindow extends Application{
 	 */
 	private MenuBar makeMenu()
 	{
-		MenuBar toolBar = new ApplicationMenu().getMenuBar();
+		MenuBar toolBar = new ApplicationMenu(academicPlan).getMenuBar();
 		MenuItem newCourse = new MenuItem("Display Master Course List");
 		Menu toAdd = new Menu("Open List");
 		
@@ -229,6 +252,6 @@ public class MainWindow extends Application{
 	// to be implemented
 	private static class ToolTipSetUp extends ListCell<BaseCourse>
 	{
-	
+		
 	}
 }

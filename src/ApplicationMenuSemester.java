@@ -12,14 +12,28 @@ public class ApplicationMenuSemester {
     private static Stage stage;
     private static GridPane grid;
     private static Scene scene;
+    private static javafx.scene.control.Label label1, label2;
+    private static javafx.scene.control.TextField field1, field2;
+    private static javafx.scene.control.Button button1, button2;
+    private static Semester s;
+    private static AcademicPlan academicPlan;
     private static javafx.scene.control.Label termlabel, termlabel2, yearlabel;
     private static javafx.scene.control.TextField yearfield;
     private static javafx.scene.control.Button buttonAdd, buttonRemove, buttonClose;
     private static ComboBox<Term> term;
     private static ComboBox<Semester> existingterm;
 
-    public static void addSemester() {
+
+    public static void addSemester(AcademicPlan a) {
         grid = new GridPane();
+        academicPlan = a;
+        
+        label1 = new javafx.scene.control.Label("Term");
+        field1 = new javafx.scene.control.TextField();
+        label2 = new javafx.scene.control.Label("Year ");
+        field2 = new javafx.scene.control.TextField();
+        button1 = new Button("Add Semester");
+        button2 = new Button("Cancel");
 
         termlabel = new javafx.scene.control.Label("Term");
         yearlabel = new javafx.scene.control.Label("Year ");
@@ -43,37 +57,41 @@ public class ApplicationMenuSemester {
         stage.setScene(scene);
         stage.show();
 
-        buttonAdd.setOnAction((ActionEvent event) -> {
+        button1.setOnAction((event) -> {
+            s = new Semester(Term.SPRING, Integer.parseInt(field2.getText()));
+        		academicPlan.getPersonalPlan().addSemester(s);
+        		stage.close();
+        });
+        
+        buttonAdd.setOnAction(e -> {
 
-            yearfield.textProperty().addListener(
-                    (observable, oldValue, newValue) -> {
+        			yearfield.textProperty().addListener( (observable, oldValue, newValue) -> {
                         if (newValue.isEmpty() || newValue.matches("[0-9 ]+")) {
                             ((StringProperty) observable).setValue(newValue);
-                        } else {
-                            ((StringProperty) observable).setValue(oldValue);
+                       } else {
+                          	((StringProperty) observable).setValue(oldValue);
                         }
-                    }
-            );
+        			});
 
             Term newTerm = term.getSelectionModel().getSelectedItem();
             int inputyear = Integer.parseInt(yearfield.getText());
-            PersonalPlan.addSemester(new Semester(newTerm, inputyear));
+            academicPlan.getPersonalPlan().addSemester(new Semester(newTerm, inputyear));
             stage.close();
 
         });
 
-        buttonClose.setOnAction((event) -> {
+        buttonClose.setOnAction((e) -> {
             stage.close();
         });
 
     }
 
-
-    public static void removeSemester() {
+    public static void removeSemester() 
+    {
         grid = new GridPane();
 
         termlabel2 = new Label("Term");
-        existingterm = new ComboBox<>(PersonalPlan.getSemesters());
+        existingterm = new ComboBox<>(academicPlan.getPersonalPlan().getSemesters());
         buttonRemove = new Button("Remove Semester");
         buttonClose = new Button("Close");
 
@@ -91,7 +109,7 @@ public class ApplicationMenuSemester {
         buttonRemove.setOnAction((ActionEvent event) -> {
 
             Semester selectedTerm = existingterm.getSelectionModel().getSelectedItem();
-            PersonalPlan.removeSemester(selectedTerm);
+            academicPlan.getPersonalPlan().removeSemester(selectedTerm);
             stage.close();
         });
 

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
 
 //comment
 public class Semester implements Serializable, Comparable<Semester> {
@@ -100,6 +101,11 @@ public class Semester implements Serializable, Comparable<Semester> {
     @Override
     public String toString() {
         return term.toString() + ' ' + year;
+    }
+    
+    public ListView<Course> getCourseListView()
+    {
+    		return new ListView<Course>(FXCollections.observableArrayList(courses));
     }
 
 
