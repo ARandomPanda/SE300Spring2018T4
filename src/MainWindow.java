@@ -198,6 +198,14 @@ public class MainWindow extends Application{
 		return l;
 	}
 	
+	private ListView<Course> setUpCourseList()
+	{
+		ListView<BaseCourse> b = new ListView<BaseCourse>();
+		
+		
+		
+		return academicPlan.getPersonalPlan().getSemesters().get(0).getCourseListView();
+	}
 	
 	
 	private ObservableList<BaseCourse> setUpCourseList(Semester activeSemester)

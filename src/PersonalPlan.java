@@ -31,7 +31,7 @@ public class PersonalPlan implements Serializable {
     }
 
     public ObservableList<Semester> getSemesters() {
-        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesters));
+        return semesters;
 
     }
 

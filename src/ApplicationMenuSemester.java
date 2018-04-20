@@ -65,13 +65,13 @@ public class ApplicationMenuSemester {
         
         buttonAdd.setOnAction(e -> {
 
-        	/*yearfield.textProperty().addListener(
-                    (observable, oldValue, newValue) -> {
+        			yearfield.textProperty().addListener( (observable, oldValue, newValue) -> {
                         if (newValue.isEmpty() || newValue.matches("[0-9 ]+")) {
                             ((StringProperty) observable).setValue(newValue);
                        } else {
                           	((StringProperty) observable).setValue(oldValue);
-                        }*/
+                        }
+        			});
 
             Term newTerm = term.getSelectionModel().getSelectedItem();
             int inputyear = Integer.parseInt(yearfield.getText());
