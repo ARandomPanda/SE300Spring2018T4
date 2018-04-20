@@ -10,7 +10,7 @@ public class PersonalPlan implements Serializable {
 
     static final long serialVersionUID = 1L;
 
-    private ArrayList<Semester> semesters = new ArrayList<>();
+    private ObservableList<Semester> semestersO = FXCollections.observableArrayList();
 
     PersonalPlan() { }
 
@@ -18,16 +18,16 @@ public class PersonalPlan implements Serializable {
         if (semester == null) {
             throw new NullPointerException();
         }
-        semesters.add(semester);
-        Collections.sort(semesters);
+        semestersO.add(semester);
+        Collections.sort(semestersO);
     }
 
     public void removeSemester(Semester semester){
-        semesters.remove(semester);
+        semestersO.remove(semester);
     }
 
     public ObservableList<Semester> getSemesters() {
-        return FXCollections.unmodifiableObservableList(FXCollections.observableList(semesters));
+        return semestersO;
     }
 
 }

@@ -26,8 +26,10 @@ public class ApplicationMenu {
     MenuItem resetCoursesToPool, resetCoursesToSemester;
     // Status
     MenuItem markDoneCourse, markDoneSemester;
+    private AcademicPlan academicPlan;
 
-    public ApplicationMenu() {
+    public ApplicationMenu(AcademicPlan a) {
+    		academicPlan = a;
         initializeConstants();
         addMenuItemsToMenus();
         addMenusToMenubar();
@@ -104,7 +106,7 @@ public class ApplicationMenu {
         addSemester.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ApplicationMenuSemester.addSemester();
+                ApplicationMenuSemester.addSemester(academicPlan);
             }
         });
 

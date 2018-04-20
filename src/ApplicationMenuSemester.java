@@ -11,10 +11,13 @@ public class ApplicationMenuSemester {
     private static javafx.scene.control.Label label1, label2;
     private static javafx.scene.control.TextField field1, field2;
     private static javafx.scene.control.Button button1, button2;
+    private static Semester s;
+    private static AcademicPlan academicPlan;
 
-    public static void addSemester() {
+    public static void addSemester(AcademicPlan a) {
         grid = new GridPane();
-
+        academicPlan = a;
+        
         label1 = new javafx.scene.control.Label("Term");
         field1 = new javafx.scene.control.TextField();
         label2 = new javafx.scene.control.Label("Year ");
@@ -37,14 +40,14 @@ public class ApplicationMenuSemester {
         stage.show();
 
         button1.setOnAction((event) -> {
-
+            s = new Semester(Term.SPRING, Integer.parseInt(field2.getText()));
+        		academicPlan.getPersonalPlan().addSemester(s);
+        		stage.close();
         });
 
         button2.setOnAction((event) -> {
             stage.close();
         });
-
-
     }
 
 
