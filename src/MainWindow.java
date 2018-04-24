@@ -6,6 +6,7 @@
  */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -38,10 +39,10 @@ public class MainWindow extends Application{
 	public void start(Stage stage)
 	{
 		academicPlan = new AcademicPlan();
+		
 		//academicPlan.getPersonalPlan().getSemesters().addListener((ListChangeListener<Semester>) e -> System.out.println("Chage Made"));
 		academicPlan.getPersonalPlan().addSemester(new Semester(Term.FALL, 2018));
-		academicPlan.getPersonalPlan().getSemesterList().get(0).addCourse((new Course(new BaseCourse(DepartmentID.EGR, 101, "Intro to engineering", 2 , null, null)))
-				);
+		academicPlan.getPersonalPlan().getSemesterList().get(0).addCourse((new Course(new BaseCourse(DepartmentID.EGR, 101, "Intro to engineering", 2 , null, null))));
 		
 		primaryStage = stage;
 		
@@ -74,21 +75,18 @@ public class MainWindow extends Application{
 	{
 		BorderPane highestPane = new BorderPane(); // Highest level container for the window
 		BorderPane topBorderPane = new BorderPane(); // placed in the tap border section of the highestPane
-		BorderPane listViewPanes = new BorderPane();
+		//BorderPane listViewPanes = new BorderPane();
 		Scene scene = new Scene(highestPane);
-		ListView<Semester> semesterGrid = setUpSemesterPane();
+		GridPane semesterGrid = setUpSemesterPane();
 		ListView<BaseCourse> list = showCoursePool(); // the listview of all the courses
 		
-		// forcing the course pool to be right above the list of semesters
-		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
+		// forcing the course pool to be right above the list of semeste
 		
-		listViewPanes.setMaxHeight(screenSize.getHeight()/3);
-		listViewPanes.setTop(semesterGrid);
-		listViewPanes.setCenter(setUpCourseList());
+		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		topBorderPane.setTop(makeMenu());
 		highestPane.setRight(list);
 		highestPane.setTop(topBorderPane);
-		highestPane.setBottom(listViewPanes);
+		highestPane.setCenter(semesterGrid);
 		
 		return scene;
 	}
@@ -143,6 +141,8 @@ public class MainWindow extends Application{
 				        	p.getSemesters().get(p.getSemesterIndex(semesters.getValue())).addCourse(new Course(cell.getItem()));
 				        	
 				        System.out.println(academicPlan.getPersonalPlan().getSemesterIndex(semesters.getValue()));
+				        	stage.close();
+				        	start(new Stage());
 				        });
 				        
 				        grid.add(semesters, 1, 0);
@@ -169,45 +169,27 @@ public class MainWindow extends Application{
 		return coursePool;
 	}
 	
-	private ListView<Semester> setUpSemesterPane()
+	private GridPane setUpSemesterPane()
 	{
 		PersonalPlan p = academicPlan.getPersonalPlan();
-		/*GridPane semesterGrid = new GridPane();
+		GridPane semesterGrid = new GridPane();
 		
-		for (int i = 0; i < p.getSemesters().size(); i++)
+		for (int i = 0; i < p.getSemesterList().size(); i++)
 		{
 			ListView<BaseCourse> semesterPane = new ListView<BaseCourse>();
-			semesterPane.setOrientation(Orientation.HORIZONTAL);
-			Semester sTemp = p.getSemesters().get(i);
+			Semester sTemp = p.getSemesterList().get(i);
 			ObservableList<BaseCourse> test = setUpCourseList(sTemp);
 			
 			semesterPane.setItems(test);
-			semesterGrid.add(semesterPane, i+1, 0);
+			semesterGrid.add(semesterPane, i, 0);
 		}
 
 		semesterGrid.prefHeightProperty().bind(primaryStage.heightProperty().multiply(.6666));
-		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());*/
-		
-		ListView<Semester> l = new ListView<Semester>(p.getSemesters());
-		l.setOrientation(Orientation.HORIZONTAL);
-		
-		return l;
+		semesterGrid.prefWidthProperty().bind(primaryStage.widthProperty());
+
+		return semesterGrid;
 	}
 	
-	private GridPane setUpCourseList()
-	{
-		PersonalPlan activePlan = academicPlan.getPersonalPlan();
-		GridPane panel = new GridPane();
-		ListView<BaseCourse>	listOfCourses = new ListView<BaseCourse>();
-		
-		for (int i = 0; i<activePlan.getSemesters().size(); i++)
-		{
-			listOfCourses.setItems(setUpCourseList(activePlan.getSemesters().get(i)));
-			panel.add(listOfCourses, i, 0);
-		}
-		
-		return panel;
-	}
 	
 	private ObservableList<BaseCourse> setUpCourseList(Semester activeSemester)
 	{
