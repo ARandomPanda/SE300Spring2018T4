@@ -8,9 +8,6 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -34,27 +31,6 @@ public class MainWindow extends Application{
 	private Rectangle2D screenSize = Screen.getPrimary().getVisualBounds();
 	private AcademicPlan academicPlan;
 	private MasterCourseList m = MasterCourseList.get();
-	private ObservableList<Semester> semesterList;
-
-	//TODO remove, for testing purposes
-	private void initPlan()
-	{
-		p = new PersonalPlan();
-		int count = 0;
-		
-		for (int i = 0; i < 7; i++)
-		{
-			Semester s = new Semester(Term.FALL, 2018);
-			
-			for (int k = 0; k<5; k++)
-			{
-				s.addCourse(new Course(new BaseCourse(DepartmentID.EGR, 101, "Intro to Engineering", 3, null, null)));
-				count ++;
-			}
-			
-			p.addSemester(s);
-		}
-	}
 	
 	// Standard start program required to use JavaFX
 	public void start(Stage stage)
@@ -62,6 +38,8 @@ public class MainWindow extends Application{
 		academicPlan = new AcademicPlan();
 		//academicPlan.getPersonalPlan().getSemesters().addListener((ListChangeListener<Semester>) e -> System.out.println("Chage Made"));
 		academicPlan.getPersonalPlan().addSemester(new Semester(Term.FALL, 2018));
+		academicPlan.getPersonalPlan().getSemesterList().get(0).addCourse((new Course(new BaseCourse(DepartmentID.EGR, 101, "Intro to engineering", 2 , null, null)))
+				);
 		
 		primaryStage = stage;
 		
@@ -90,24 +68,27 @@ public class MainWindow extends Application{
 	 * @return scene		The Scene in which the other scenes are stored, This should be added directly to the Stage
 	 */
 	
-	ListView<Semester> semesterGrid;
 	private Scene setupScene()
 	{
 		BorderPane highestPane = new BorderPane(); // Highest level container for the window
 		BorderPane topBorderPane = new BorderPane(); // placed in the tap border section of the highestPane
+		BorderPane listViewPanes = new BorderPane();
 		Scene scene = new Scene(highestPane);
-		semesterGrid = setUpSemesterPane();
+		ListView<Semester> semesterGrid = setUpSemesterPane();
 		ListView<BaseCourse> list = showCoursePool(); // the listview of all the courses
 		
 		// forcing the course pool to be right above the list of semesters
 		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
 		academicPlan.getPersonalPlan().getSemesterList().addListener((ListChangeListener<Semester>) e -> System.out.println("Change Made"));
+		listViewPanes.setMaxHeight(screenSize.getHeight()/3);
 		
+		listViewPanes.setTop(semesterGrid);
+		listViewPanes.setCenter(setUpCourseList());
 		topBorderPane.setTop(makeMenu());
 		highestPane.setRight(list);
 		highestPane.setTop(topBorderPane);
-		highestPane.setBottom(semesterGrid);
+		highestPane.setBottom(listViewPanes);
 		
 		return scene;
 	}
@@ -129,35 +110,8 @@ public class MainWindow extends Application{
 						public void updateItem(BaseCourse item, boolean empty){
 							super.updateItem(item, empty);
 							if (item != null){
-								setText(item.toString());
-								String tipText = item.getName() + "\n" + "Credit Count: " + item.getNumCredits();
-								if (item.getCoreqs().size() == 0)
-								{
-									tipText += "\n" + "CoReqs: None";
-								}
-								else
-								{
-									tipText += "\n" + "Co-Reqs:";
-									for (int i = 0; i < item.getCoreqs().size(); i++)
-									{
-										 tipText += "\n" + item.getCoreqs().get(i).getID() + " | " + item.getCoreqs().get(i).getName();
-								
-									}
-								}
-								if (item.getPrereqs().size() == 0)
-								{
-									tipText += "\n" + "Pre-Reqs: None";
-								}
-								else
-								{
-									tipText += "\n" + "PreReqs:";
-									for (int i = 0; i < item.getPrereqs().size(); i++)
-									{
-										 tipText += "\n" + item.getPrereqs().get(i).getID() + " | " + item.getPrereqs().get(i).getName() +"\n";
-								
-									}
-								}
-								tooltip.setText(tipText);
+								setText(item.toStringDetails());
+								tooltip.setText(item.toString());
 								setTooltip(tooltip);
 								
 							}
@@ -198,15 +152,20 @@ public class MainWindow extends Application{
 		return l;
 	}
 	
-	private ListView<Course> setUpCourseList()
+	private GridPane setUpCourseList()
 	{
-		ListView<BaseCourse> b = new ListView<BaseCourse>();
+		PersonalPlan activePlan = academicPlan.getPersonalPlan();
+		GridPane panel = new GridPane();
+		ListView<BaseCourse>	listOfCourses = new ListView<BaseCourse>();
 		
+		for (int i = 0; i<activePlan.getSemesters().size(); i++)
+		{
+			listOfCourses.setItems(setUpCourseList(activePlan.getSemesters().get(i)));
+			panel.add(listOfCourses, i, 0);
+		}
 		
-		
-		return academicPlan.getPersonalPlan().getSemesters().get(0).getCourseListView();
+		return panel;
 	}
-	
 	
 	private ObservableList<BaseCourse> setUpCourseList(Semester activeSemester)
 	{
@@ -247,11 +206,5 @@ public class MainWindow extends Application{
 	public static void main(String[] args)
 	{
 		launch();
-	}
-	
-	// to be implemented
-	private static class ToolTipSetUp extends ListCell<BaseCourse>
-	{
-		
 	}
 }

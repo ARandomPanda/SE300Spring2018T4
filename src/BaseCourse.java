@@ -159,8 +159,41 @@ public class BaseCourse implements Serializable, Comparable<BaseCourse> {
     }
 
     @Override
-    public String toString() {
-        return id.toString() + ' ' + courseNum;
+    public String toString()
+    {
+    		return id.toString() + " " + courseNum;
+    }
+    
+    public String toStringDetails() {
+    	String tipText = id.toString() + " " + courseNum + " " + name + "\n" + "Credit Count: " + getNumCredits();
+		if (getCoreqs().size() == 0)
+		{
+			tipText += "\n" + "CoReqs: None";
+		}
+		else
+		{
+			tipText += "\n" + "Co-Reqs:";
+			for (int i = 0; i < getCoreqs().size(); i++)
+			{
+				 tipText += "\n" + coreqs.get(i).getID() + " " + coreqs.get(i).getCourseNum();
+		
+			}
+		}
+		if (getPrereqs().size() == 0)
+		{
+			tipText += "\n" + "Pre-Reqs: None";
+		}
+		else
+		{
+			tipText += "\n" + "PreReqs:";
+			for (int i = 0; i < getPrereqs().size(); i++)
+			{
+				 tipText += "\n" + getPrereqs().get(i).getID() + " " + getPrereqs().get(i).getName() +"\n";
+		
+			}
+		}
+		
+		return tipText;
     }
 
     @Override
