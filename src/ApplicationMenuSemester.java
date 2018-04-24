@@ -43,7 +43,8 @@ public class ApplicationMenuSemester {
         buttonAdd = new Button("Add Semester");
         buttonClose = new Button("Close");
 
-
+        buttonAdd.setDefaultButton(true);
+        
         grid.add(termlabel, 0, 0);
         grid.add(term, 1, 0);
         grid.add(yearlabel, 0, 1);

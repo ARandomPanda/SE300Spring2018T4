@@ -6,18 +6,20 @@
  */
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Screen;
@@ -80,9 +82,7 @@ public class MainWindow extends Application{
 		// forcing the course pool to be right above the list of semesters
 		BorderPane.setAlignment(list,Pos.BOTTOM_RIGHT);
 		
-		academicPlan.getPersonalPlan().getSemesterList().addListener((ListChangeListener<Semester>) e -> System.out.println("Change Made"));
 		listViewPanes.setMaxHeight(screenSize.getHeight()/3);
-		
 		listViewPanes.setTop(semesterGrid);
 		listViewPanes.setCenter(setUpCourseList());
 		topBorderPane.setTop(makeMenu());
@@ -101,22 +101,64 @@ public class MainWindow extends Application{
 		coursePool.setPrefWidth(screenSize.getWidth() * .5);
 		
 		coursePool.setOrientation(Orientation.HORIZONTAL);
-		
-		coursePool.setCellFactory(new Callback<ListView<BaseCourse>, ListCell<BaseCourse>>() {
-			
-			public ListCell<BaseCourse> call(ListView<BaseCourse> param){
-				Tooltip tooltip = new Tooltip();
-				ListCell<BaseCourse> cell = new ListCell<BaseCourse>() {
-						public void updateItem(BaseCourse item, boolean empty){
+
+		coursePool.setCellFactory(new Callback<ListView<BaseCourse>, ListCell<BaseCourse>>() 
+		{	
+			public ListCell<BaseCourse> call(ListView<BaseCourse> param)
+			{
+				ListCell<BaseCourse> cell = new ListCell<BaseCourse>()
+				{
+						public void updateItem(BaseCourse item, boolean empty)
+						{
 							super.updateItem(item, empty);
-							if (item != null){
+							if (!empty)
+							{
 								setText(item.toStringDetails());
-								tooltip.setText(item.toString());
-								setTooltip(tooltip);
 								
+								ContextMenu rightClickMenu = new ContextMenu();
+								MenuItem addToSemesterOption = new MenuItem();
+								
+								addToSemesterOption.setOnAction(e -> {System.out.println(item.toString());});
+								
+								rightClickMenu.getItems().add(addToSemesterOption);
 							}
 						}
 					};
+					
+					ContextMenu rightClickMenu = new ContextMenu();
+					MenuItem addToSemesterOption = new MenuItem("Add to Semester");
+					
+					addToSemesterOption.setOnAction(e -> {
+						GridPane grid = new GridPane();
+						Scene scene = new Scene(grid);
+						Stage stage = new Stage();
+						ComboBox<Semester> semesters = new ComboBox<Semester>();
+				        Label label1 = new Label("Select Semester:");
+				        Button button1 = new Button("Add Semester");
+				        
+				        semesters.setItems(academicPlan.getPersonalPlan().getSemesters());
+				        
+				        button1.setOnAction(active -> {
+				        	PersonalPlan p = academicPlan.getPersonalPlan();
+				        	p.getSemesters().get(p.getSemesterIndex(semesters.getValue())).addCourse(new Course(cell.getItem()));
+				        	
+				        System.out.println(academicPlan.getPersonalPlan().getSemesterIndex(semesters.getValue()));
+				        });
+				        
+				        grid.add(semesters, 1, 0);
+				        grid.add(label1, 0, 0);
+				        grid.add(button1, 0, 1);
+				        
+				        stage.setTitle("Add Semester");
+				        stage.setScene(scene);
+				        stage.show();
+						
+					});
+					
+					rightClickMenu.getItems().add(addToSemesterOption);
+
+					cell.setOnContextMenuRequested(e -> {rightClickMenu.show(cell, e.getSceneX(), e.getSceneY());});
+					
 					return cell;
 				}
 			});

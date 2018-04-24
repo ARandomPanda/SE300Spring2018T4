@@ -25,6 +25,22 @@ public class PersonalPlan implements Serializable {
         return FXCollections.observableArrayList(semesters);
     }
     
+    public int getSemesterIndex(Semester semester)
+    {
+    	int index = 0;
+    	
+    	for(int i = 0; i<semesters.size(); i++)
+    	{
+    		Semester activeSemester = semesters.get(i);
+    		if (activeSemester.getTerm() == semester.getTerm() && activeSemester.getYear() == semester.getYear())
+    		{
+    			index = i;
+    		}
+    	}
+    	
+    	return index;
+    }
+    
     public void removeSemester(Semester semester)
     {
         semesters.remove(semester);
